@@ -7,7 +7,7 @@ require("dotenv").config();
 const app = express();
 
 const corsOptions = {
-  origin: "https://one-online-touch.herokuapp.com/",
+  origin: "https://onetouch-vectorux.herokuapp.com/",
 
   // origin: "http://localhost:3000",
   credentials: true,
