@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+body{
+  background: #ecf0f3;
+}
