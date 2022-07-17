@@ -29,6 +29,7 @@ const Container = styled.div`
     right: 0;
     margin: 0 auto;
     padding: 20px;
+    z-index: 20;
   }
   .close {
     position: absolute;
@@ -50,6 +51,20 @@ const Container = styled.div`
     margin-left: 10px;
     margin-bottom: 20px;
   }
+  .button_and_loader {
+    position: relative;
+  }
+  .btn_loader {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    bottom: -5px;
+    right: -5px;
+    background: white;
+    padding: 15px 20px;
+  }
+  .load {
+  }
 `;
 
 const SearchArea = () => {
@@ -59,6 +74,7 @@ const SearchArea = () => {
 
   const [data, setdata] = useState();
 
+  const [btnloader, setbtnloader] = useState(false);
   //title area
   const [coding, setcoding] = useState(false);
 
@@ -72,6 +88,7 @@ const SearchArea = () => {
 
   const PostData = async () => {
     try {
+      setbtnloader(true);
       const res = await axios.post(
         apiUrl + `/student/get_filter_stud`,
         {
@@ -110,8 +127,10 @@ const SearchArea = () => {
       setcplus(false);
       setjs(false);
       setsql(false);
+      setbtnloader(false);
     } catch (error) {
       console.log(error);
+      setbtnloader(false);
     }
   };
 
@@ -207,9 +226,25 @@ const SearchArea = () => {
 
               <br />
               <br />
-              <button type="submit" onClick={PostData}>
-                Submit
-              </button>
+              <div className="button_and_loader">
+                <button
+                  className="btn btn-outline-primary"
+                  type="submit"
+                  onClick={PostData}
+                >
+                  Submit
+                </button>
+                {btnloader && (
+                  <div className="btn_loader">
+                    <div
+                      class="spinner-border spinner-border-sm load"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

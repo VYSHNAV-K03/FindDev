@@ -11,6 +11,25 @@ import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
+  position: relative;
+  .loader {
+    position: absolute;
+    background: white;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70vh;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .loader_sub {
+    width: 300px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+  }
   .studenteach {
     padding: 20px 50px;
     border: 1px solid blue;
@@ -76,6 +95,8 @@ const StudentList = (props) => {
 
   const [nu_un, setnu_un] = useState(false);
 
+  const [loader, setloader] = useState(true);
+
   const navigate = useNavigate();
 
   console.log(props.id);
@@ -83,13 +104,17 @@ const StudentList = (props) => {
 
   const getStudentList = async () => {
     try {
+      setloader(true);
+
       const res = await axios.post(apiUrl + `/student/get_stud`, {
         id: props.id,
         nu: nu_un,
       });
       setdata(res.data);
+      setloader(false);
     } catch (error) {
       console.log(error);
+      setloader(false);
     }
   };
 
@@ -107,6 +132,20 @@ const StudentList = (props) => {
 
   return (
     <Container>
+      {loader && (
+        <div className="loader">
+          <div className="loader_sub">
+            <div class="d-flex align-items-center">
+              <strong>Loading...</strong>
+              <div
+                class="spinner-border ms-auto"
+                role="status"
+                aria-hidden="true"
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
       {data &&
         data.map(
           (element, index) =>

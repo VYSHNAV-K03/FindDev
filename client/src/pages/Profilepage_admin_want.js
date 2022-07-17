@@ -8,7 +8,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import git from "../assets/profilepage/git.png";
 import linkedin from "../assets/profilepage/linkedin.png";
 import twitter from "../assets/profilepage/twitter.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Buffer } from "buffer";
 import { apiUrl } from "../data/api";
@@ -18,10 +18,35 @@ const Approve = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 20px 0;
+  position: relative;
+  .loader {
+    position: absolute;
+    background: white;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .loader_sub {
+    width: 300px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+  }
+  .button_container {
+    display: flex;
+  }
   .update {
     display: flex;
     margin: 20px 30px 10px auto;
+  }
+  .signout {
+    display: flex;
+    margin: 20px auto 10px 30px;
   }
   .profile_container {
     width: min(95%, 1300px);
@@ -376,12 +401,18 @@ const Profilepage_admin_want = () => {
 
   const [data, setdata] = useState();
 
+  const [loader, setloader] = useState(true);
+
+  const navigate = useNavigate();
+
   const location = useLocation();
 
   console.log(location.state.id);
   const id = location.state.id;
   const getDataProfile = async () => {
     try {
+      setloader(true);
+
       const res = await axios.post(
         apiUrl + `/student/get_stud_admin_want`,
         { id },
@@ -393,8 +424,10 @@ const Profilepage_admin_want = () => {
       setdata(res.data);
 
       console.log(res.data);
+      setloader(false);
     } catch (error) {
       console.log(error);
+      setloader(false);
     }
   };
 
@@ -404,6 +437,34 @@ const Profilepage_admin_want = () => {
 
   return (
     <Container bg={bg1}>
+      {loader && (
+        <div className="loader">
+          <div className="loader_sub">
+            <div class="d-flex align-items-center">
+              <strong>Loading...</strong>
+              <div
+                class="spinner-border ms-auto"
+                role="status"
+                aria-hidden="true"
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="button_container">
+        <button
+          className="btn btn-outline-primary signout"
+          onClick={() => navigate("/")}
+        >
+          Back To Home
+        </button>
+        <button
+          className="btn btn-outline-primary update"
+          onClick={() => navigate("/logout")}
+        >
+          Sign Out
+        </button>
+      </div>
       <div className="profile_container">
         <div className="left">
           <div className="image">

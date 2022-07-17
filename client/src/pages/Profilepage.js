@@ -18,9 +18,35 @@ const Approve = styled.div`
 `;
 
 const Container = styled.div`
+  position: relative;
+  .loader {
+    position: absolute;
+    background: white;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .loader_sub {
+    width: 300px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+  }
+  .button_container {
+    display: flex;
+  }
   .update {
     display: flex;
     margin: 20px 30px 10px auto;
+  }
+  .signout {
+    display: flex;
+    margin: 20px auto 10px 30px;
   }
   .profile_container {
     width: min(95%, 1300px);
@@ -372,8 +398,12 @@ const Profilepage = () => {
 
   const [data, setdata] = useState();
 
+  const [loader, setloader] = useState(true);
+
   const callNavbar = async () => {
     try {
+      setloader(true);
+
       const res = await axios.get(apiUrl + `/getData`, {
         withCredentials: true,
       });
@@ -386,9 +416,11 @@ const Profilepage = () => {
       if (res.status !== 200) {
         throw new Error(res.error);
       }
+      setloader(false);
     } catch (e) {
       console.log("error", e);
       navigate("/login");
+      setloader(false);
     }
   };
 
@@ -398,12 +430,34 @@ const Profilepage = () => {
 
   return (
     <Container bg={bg1}>
-      <button
-        className="btn btn-outline-primary update"
-        onClick={() => navigate("/infoform")}
-      >
-        Update your details
-      </button>
+      {loader && (
+        <div className="loader">
+          <div className="loader_sub">
+            <div class="d-flex align-items-center">
+              <strong>Loading...</strong>
+              <div
+                class="spinner-border ms-auto"
+                role="status"
+                aria-hidden="true"
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="button_container">
+        <button
+          className="btn btn-outline-primary signout"
+          onClick={() => navigate("/infoform")}
+        >
+          Update your details
+        </button>
+        <button
+          className="btn btn-outline-primary update"
+          onClick={() => navigate("/logout")}
+        >
+          Sign Out
+        </button>
+      </div>
       <div className="profile_container">
         <div className="left">
           <div className="image">

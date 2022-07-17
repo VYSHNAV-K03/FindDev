@@ -15,13 +15,31 @@ const Container = styled.div`
     margin-right: 10px;
     margin-bottom: 10px;
   }
+  .button_container {
+    display: flex;
+  }
   button {
     margin-right: 20px;
+  }
+  .button_and_loader {
+    position: relative;
+  }
+  .btn_loader {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    bottom: -5px;
+    right: -5px;
+    background: white;
+    border-radius: 5px;
+    padding: 15px 20px;
   }
 `;
 
 const DetailsForm = () => {
   const [step, setstep] = useState(0);
+
+  const [btnloader, setbtnloader] = useState(false);
 
   const navigate = useNavigate();
 
@@ -74,6 +92,8 @@ const DetailsForm = () => {
   const PostData = async (e) => {
     e.preventDefault();
     try {
+      setbtnloader(true);
+
       const res = await axios.post(
         apiUrl + `/student/upload_stud`,
         {
@@ -115,7 +135,9 @@ const DetailsForm = () => {
         }
       );
       navigate("/profile");
+      setbtnloader(false);
     } catch (error) {
+      setbtnloader(false);
       console.log(error);
     }
   };
@@ -600,14 +622,27 @@ const DetailsForm = () => {
             />
             <br />
             <br />
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => setstep(0)}
-            >
-              Back
-            </button>
-
-            <input className="btn btn-outline-success" type="submit" />
+            <div className="button_container">
+              <button
+                className="btn btn-outline-primary"
+                onClick={() => setstep(0)}
+              >
+                Back
+              </button>
+              <div className="button_and_loader">
+                <input className="btn btn-outline-success" type="submit" />
+                {btnloader && (
+                  <div className="btn_loader">
+                    <div
+                      class="spinner-border spinner-border-sm load"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </form>

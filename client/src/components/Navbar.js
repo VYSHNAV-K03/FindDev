@@ -11,6 +11,25 @@ const Container = styled.div`
   align-items: center;
   padding: 20px;
   background: blue;
+  position: relative;
+  .loader {
+    position: absolute;
+    background: white;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .loader_sub {
+    width: 300px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+  }
   .logo {
     font-size: 2rem;
     font-weight: bold;
@@ -68,10 +87,13 @@ const Navbar = () => {
   const [login, setlogin] = useState(true);
   const [profileimg, setprofileimg] = useState();
 
+  const [loader, setloader] = useState(true);
+
   const navigate = useNavigate();
 
   const callNavbar = async () => {
     try {
+      setloader(true);
       const res = await axios.get(apiUrl + `/getData`, {
         withCredentials: true,
       });
@@ -92,9 +114,11 @@ const Navbar = () => {
       if (res.status !== 200) {
         throw new Error(res.error);
       }
+      setloader(false);
     } catch (e) {
       console.log("error", e);
       setlogin(true);
+      setloader(false);
       navigate("/login");
     }
   };
@@ -108,6 +132,20 @@ const Navbar = () => {
   return (
     <>
       <Container>
+        {loader && (
+          <div className="loader">
+            <div className="loader_sub">
+              <div class="d-flex align-items-center">
+                <strong>Loading...</strong>
+                <div
+                  class="spinner-border ms-auto"
+                  role="status"
+                  aria-hidden="true"
+                ></div>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="logo">OneTouch</div>
         <div className="login_status">
           {login ? (
