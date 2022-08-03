@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import SearchArea from "../components/SearchArea";
+import SearchAreaCollege from "../components/SearchAreaCollege";
 import StudentList from "../components/StudentList";
 
 const Container = styled.div``;
@@ -12,11 +13,13 @@ const Home = () => {
 
   const [id, setid] = useState();
 
+  const [role, setrole] = useState(1);
+
   // console.log(location.state && location.state.id);
   return (
     <Container>
       <Navbar />
-      <SearchArea />
+      {role === 1 ? <SearchArea /> : <SearchAreaCollege />}
       <StudentList id={location.state && location.state.id} />
     </Container>
   );

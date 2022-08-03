@@ -53,6 +53,14 @@ const userschema = new mongoose.Schema(
           type: String,
           default: "",
         },
+        back_papers: {
+          type: String,
+          default: "",
+        },
+        branch: {
+          type: String,
+          default: "",
+        },
 
         sslc: [
           {
@@ -138,6 +146,14 @@ const userschema = new mongoose.Schema(
             },
           },
         ],
+        hardware: [
+          {
+            hardware_field: {
+              type: String,
+              default: "",
+            },
+          },
+        ],
         working_status: {
           type: String,
           default: "not working",
@@ -155,6 +171,30 @@ const userschema = new mongoose.Schema(
           },
         ],
         frameworks: [],
+      },
+    ],
+    college_admin: [
+      {
+        interview: [
+          {
+            attended: {
+              type: String,
+              default: "",
+            },
+            selected: {
+              type: String,
+              default: "all",
+            },
+          },
+        ],
+        placement: [
+          {
+            placed: {
+              type: String,
+              default: "",
+            },
+          },
+        ],
       },
     ],
 

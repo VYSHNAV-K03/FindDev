@@ -21,9 +21,11 @@ app.use(bodyParser.json());
 
 const AuthRoute = require("./routes/auth");
 const getStudentInfo = require("./routes/getStudentInfo");
+const mailSendRoute = require("./routes/mailsend");
 
 app.use("/api", AuthRoute);
 app.use("/api/student", getStudentInfo);
+app.use("/api/mailsend", mailSendRoute);
 
 app.use("/uploads", express.static(path.join("uploads")));
 

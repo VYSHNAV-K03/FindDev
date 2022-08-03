@@ -433,10 +433,10 @@ const Profilepage = () => {
       {loader && (
         <div className="loader">
           <div className="loader_sub">
-            <div class="d-flex align-items-center">
+            <div className="d-flex align-items-center">
               <strong>Loading...</strong>
               <div
-                class="spinner-border ms-auto"
+                className="spinner-border ms-auto"
                 role="status"
                 aria-hidden="true"
               ></div>

@@ -431,6 +431,20 @@ const Profilepage_admin_want = () => {
     }
   };
 
+  const SendMail = async () => {
+    try {
+      const res = await axios.post(
+        apiUrl + `/mailsend/sendmail`,
+        { id },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      window.alert(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -440,10 +454,10 @@ const Profilepage_admin_want = () => {
       {loader && (
         <div className="loader">
           <div className="loader_sub">
-            <div class="d-flex align-items-center">
+            <div className="d-flex align-items-center">
               <strong>Loading...</strong>
               <div
-                class="spinner-border ms-auto"
+                className="spinner-border ms-auto"
                 role="status"
                 aria-hidden="true"
               ></div>
@@ -467,6 +481,12 @@ const Profilepage_admin_want = () => {
       </div>
       <div className="profile_container">
         <div className="left">
+          <button
+            className="btn btn-outline-primary signout"
+            onClick={SendMail}
+          >
+            select this student
+          </button>
           <div className="image">
             <img
               src={

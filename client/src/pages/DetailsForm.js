@@ -634,10 +634,10 @@ const DetailsForm = () => {
                 {btnloader && (
                   <div className="btn_loader">
                     <div
-                      class="spinner-border spinner-border-sm load"
+                      className="spinner-border spinner-border-sm load"
                       role="status"
                     >
-                      <span class="visually-hidden">Loading...</span>
+                      <span className="visually-hidden">Loading...</span>
                     </div>
                   </div>
                 )}
