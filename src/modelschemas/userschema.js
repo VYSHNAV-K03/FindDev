@@ -46,16 +46,13 @@ const userschema = new mongoose.Schema(
           default: "",
         },
         year: {
-          type: String,
-          default: "",
+          type: Number,
         },
         cgpa: {
-          type: String,
-          default: "",
+          type: Number,
         },
         back_papers: {
-          type: String,
-          default: "",
+          type: Number,
         },
         branch: {
           type: String,
@@ -65,44 +62,35 @@ const userschema = new mongoose.Schema(
         sslc: [
           {
             phy: {
-              type: String,
-              default: "",
+              type: Number,
             },
             che: {
-              type: String,
-              default: "",
+              type: Number,
             },
             maths: {
-              type: String,
-              default: "",
+              type: Number,
             },
             english: {
-              type: String,
-              default: "",
+              type: Number,
             },
           },
         ],
         plustwo: [
           {
             phy: {
-              type: String,
-              default: "",
+              type: Number,
             },
             che: {
-              type: String,
-              default: "",
+              type: Number,
             },
             maths: {
-              type: String,
-              default: "",
+              type: Number,
             },
             english: {
-              type: String,
-              default: "",
+              type: Number,
             },
             cs: {
-              type: String,
-              default: "",
+              type: Number,
             },
           },
         ],

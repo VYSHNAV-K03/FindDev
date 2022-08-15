@@ -46,8 +46,8 @@ const DetailsForm = () => {
   ///educational details ///
 
   const [college_name, setcollege_name] = useState();
-  const [branch, setbranch] = useState("CSE");
-  const [year, setyear] = useState(1);
+  const [branch, setbranch] = useState();
+  const [year, setyear] = useState();
   const [cgpa, setcgpa] = useState();
   const [sscl_maths, setsscl_maths] = useState();
   const [sscl_phy, setsscl_phy] = useState();
@@ -147,7 +147,10 @@ const DetailsForm = () => {
   return (
     <Container>
       <h1 className="title">Enter The Details</h1>
-      <form action="post" onSubmit={PostData}>
+      <form
+        action="post"
+        // onSubmit={PostData}
+      >
         {step === 0 ? (
           <div className="edu_detail">
             <h2>Educational details</h2>
@@ -158,10 +161,15 @@ const DetailsForm = () => {
               className=""
               placeholder="Enter the college"
               onChange={(e) => setcollege_name(e.target.value)}
+              value={college_name}
             />
             <br />
             <label htmlFor="branch">Branch</label>
-            <select name="branch" onChange={(e) => setbranch(e.target.value)}>
+            <select
+              name="branch"
+              onChange={(e) => setbranch(e.target.value)}
+              defaultValue={branch}
+            >
               <option value=""></option>
               <option value="CSE">CSE</option>
               <option value="MECH">MECH</option>
@@ -172,7 +180,11 @@ const DetailsForm = () => {
             </select>
             <br />
             <label>Year</label>
-            <select name="year" onChange={(e) => setyear(e.target.value)}>
+            <select
+              name="year"
+              onChange={(e) => setyear(e.target.value)}
+              defaultValue={year}
+            >
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -186,6 +198,7 @@ const DetailsForm = () => {
               min="0"
               max="10"
               onChange={(e) => setcgpa(e.target.value)}
+              value={cgpa}
             />
             <br />
             <br />
@@ -198,6 +211,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setsscl_maths(e.target.value)}
+              value={sscl_maths}
             />
             <br />
             <label>Physics:</label>
@@ -207,6 +221,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setsscl_phy(e.target.value)}
+              value={sscl_phy}
             />
             <br />
             <label>Chemistry:</label>
@@ -216,6 +231,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setsscl_che(e.target.value)}
+              value={sscl_che}
             />
             <br />
             <label>English:</label>
@@ -225,6 +241,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setsscl_english(e.target.value)}
+              value={sslc_english}
             />
             <br />
             <br />
@@ -237,6 +254,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setplustwo_maths(e.target.value)}
+              value={plustwo_maths}
             />
             <br />
             <label>Physics:</label>
@@ -246,6 +264,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setplustwo_phy(e.target.value)}
+              value={plustwo_phy}
             />
             <br />
             <label>Chemistry:</label>
@@ -255,6 +274,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setplustwo_che(e.target.value)}
+              value={plustwo_che}
             />
             <br />
             <label>English:</label>
@@ -264,6 +284,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setplustwo_english(e.target.value)}
+              value={plustwo_english}
             />
             <br />
             <label>Computer science:</label>
@@ -274,6 +295,7 @@ const DetailsForm = () => {
               min="0"
               max="100"
               onChange={(e) => setplustwo_cs(e.target.value)}
+              value={plustwo_cs}
             />
             <br />
             <br />
@@ -293,6 +315,7 @@ const DetailsForm = () => {
             <select
               name="developer"
               onChange={(e) => setdeveloper(e.target.value)}
+              defaultValue={developer}
             >
               <option value="false">no</option>
               <option value="true">yes</option>
@@ -304,6 +327,7 @@ const DetailsForm = () => {
                 <select
                   name="developer"
                   onChange={(e) => setdeveloper_status(e.target.value)}
+                  defaultValue={developer_status}
                 >
                   <option value="Not A Developer Now"></option>
                   <option value="App Developer">App Developer</option>
@@ -320,6 +344,7 @@ const DetailsForm = () => {
             <select
               name="working_status"
               onChange={(e) => setwork(e.target.value)}
+              defaultValue={work}
             >
               <option value="Not working"></option>
               <option value="student">Student</option>
@@ -339,6 +364,7 @@ const DetailsForm = () => {
                 id="python"
                 name="coding_language_name"
                 onClick={() => setpython(!python)}
+                checked={python === true}
               />
               <label htmlFor="python">Python</label>
               {python && (
@@ -349,6 +375,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="python_language_level"
                     onChange={(e) => setpython_level(e.target.value)}
+                    checked={python_level === "beginner"}
                   />
                   <label htmlFor="python_beginner">beginner</label>
                   <input
@@ -357,6 +384,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="python_language_level"
                     onChange={(e) => setpython_level(e.target.value)}
+                    checked={python_level === "intermediate"}
                   />
                   <label htmlFor="python_intermediate">intermediate</label>
                   <input
@@ -365,6 +393,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="python_language_level"
                     onChange={(e) => setpython_level(e.target.value)}
+                    checked={python_level === "advanced"}
                   />
                   <label htmlFor="python_advanced">advanced</label>
                 </div>
@@ -377,6 +406,7 @@ const DetailsForm = () => {
                 name="coding_language_name"
                 value="c"
                 onClick={() => setc(!c)}
+                checked={c === true}
               />
               <label htmlFor="c">C</label>
               {c && (
@@ -387,6 +417,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="c_language_level"
                     onChange={(e) => setc_level(e.target.value)}
+                    checked={c_level === "beginner"}
                   />
                   <label htmlFor="c_beginner">beginner</label>
                   <input
@@ -395,6 +426,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="c_language_level"
                     onChange={(e) => setc_level(e.target.value)}
+                    checked={c_level === "intermediate"}
                   />
                   <label htmlFor="c_intermediate">intermediate</label>
                   <input
@@ -403,6 +435,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="c_language_level"
                     onChange={(e) => setc_level(e.target.value)}
+                    checked={c_level === "advanced"}
                   />
                   <label htmlFor="c_advanced">advanced</label>
                 </div>
@@ -415,6 +448,7 @@ const DetailsForm = () => {
                 name="coding_language_name"
                 value="c++"
                 onClick={() => setcplus(!cplus)}
+                checked={cplus === true}
               />
               <label htmlFor="c++">C++</label>
               {cplus && (
@@ -425,6 +459,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="cplus_language_level"
                     onChange={(e) => setcplus_level(e.target.value)}
+                    checked={cplus_level === "beginner"}
                   />
                   <label htmlFor="cplus_beginner">beginner</label>
                   <input
@@ -433,6 +468,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="cplus_language_level"
                     onChange={(e) => setcplus_level(e.target.value)}
+                    checked={cplus_level === "intermediate"}
                   />
                   <label htmlFor="cplus_intermediate">intermediate</label>
                   <input
@@ -441,6 +477,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="cplus_language_level"
                     onChange={(e) => setcplus_level(e.target.value)}
+                    checked={cplus_level === "advanced"}
                   />
                   <label htmlFor="cplus_advanced">advanced</label>
                 </div>
@@ -453,6 +490,7 @@ const DetailsForm = () => {
                 name="coding_language_name"
                 value="js"
                 onClick={() => setjs(!js)}
+                checked={js === true}
               />
               <label htmlFor="js">Javascript</label>
               {js && (
@@ -463,6 +501,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="js_language_level"
                     onChange={(e) => setjs_level(e.target.value)}
+                    checked={js_level === "beginner"}
                   />
                   <label htmlFor="js_beginner">beginner</label>
                   <input
@@ -471,6 +510,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="js_language_level"
                     onChange={(e) => setjs_level(e.target.value)}
+                    checked={js_level === "intermediate"}
                   />
                   <label htmlFor="js_intermediate">intermediate</label>
                   <input
@@ -479,6 +519,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="js_language_level"
                     onChange={(e) => setjs_level(e.target.value)}
+                    checked={js_level === "advanced"}
                   />
                   <label htmlFor="js_advanced">advanced</label>
                 </div>
@@ -491,6 +532,7 @@ const DetailsForm = () => {
                 name="coding_language_name"
                 value="sql"
                 onClick={() => setsql(!sql)}
+                checked={sql === true}
               />
               <label htmlFor="sql">SQL</label>
               {sql && (
@@ -501,6 +543,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="sql_language_level"
                     onChange={(e) => setsql_level(e.target.value)}
+                    checked={sql_level === "beginner"}
                   />
                   <label htmlFor="sql_beginner">beginner</label>
                   <input
@@ -509,6 +552,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="sql_language_level"
                     onChange={(e) => setsql_level(e.target.value)}
+                    checked={sql_level === "intermediate"}
                   />
                   <label htmlFor="sql_intermediate">intermediate</label>
                   <input
@@ -517,6 +561,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="sql_language_level"
                     onChange={(e) => setsql_level(e.target.value)}
+                    checked={sql_level === "advanced"}
                   />
                   <label htmlFor="sql_advanced">advanced</label>
                 </div>
@@ -534,6 +579,7 @@ const DetailsForm = () => {
                 name="communication_language_name"
                 value="english"
                 onClick={() => setenglish(!english)}
+                checked={english === true}
               />
               <label htmlFor="english">english</label>
               {english && (
@@ -544,6 +590,8 @@ const DetailsForm = () => {
                     value="beginner"
                     name="english_language_level"
                     onChange={(e) => setenglish_level(e.target.value)}
+                    checked={english_level === "beginner"}
+                    label="beginner"
                   />
                   <label htmlFor="english_beginner">beginner</label>
                   <input
@@ -552,6 +600,8 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="english_language_level"
                     onChange={(e) => setenglish_level(e.target.value)}
+                    checked={english_level === "intermediate"}
+                    label="intermediate"
                   />
                   <label htmlFor="english_intermediate">intermediate</label>
                   <input
@@ -560,6 +610,8 @@ const DetailsForm = () => {
                     value="advanced"
                     name="english_language_level"
                     onChange={(e) => setenglish_level(e.target.value)}
+                    checked={english_level === "advanced"}
+                    label="advanced"
                   />
                   <label htmlFor="english_advanced">advanced</label>
                 </div>
@@ -571,6 +623,7 @@ const DetailsForm = () => {
                 name="communication_language_name"
                 value="hindi"
                 onClick={() => sethindi(!hindi)}
+                checked={hindi === true}
               />
               <label htmlFor="hindi">hindi</label>
               {hindi && (
@@ -581,6 +634,7 @@ const DetailsForm = () => {
                     value="beginner"
                     name="hindi_language_level"
                     onChange={(e) => sethindi_level(e.target.value)}
+                    checked={hindi_level === "beginner"}
                   />
                   <label htmlFor="hindi_beginner">beginner</label>
                   <input
@@ -589,6 +643,7 @@ const DetailsForm = () => {
                     value="intermediate"
                     name="hindi_language_level"
                     onChange={(e) => sethindi_level(e.target.value)}
+                    checked={hindi_level === "intermediate"}
                   />
                   <label htmlFor="hindi_intermediate">intermediate</label>
                   <input
@@ -597,6 +652,7 @@ const DetailsForm = () => {
                     value="advanced"
                     name="hindi_language_level"
                     onChange={(e) => sethindi_level(e.target.value)}
+                    checked={hindi_level === "advanced"}
                   />
                   <label htmlFor="hindi_advanced">advanced</label>
                 </div>
@@ -610,6 +666,7 @@ const DetailsForm = () => {
               id="git"
               placeholder="paste your github profile link"
               onChange={(e) => setgit(e.target.value)}
+              value={git}
             />
             <br />
             <label htmlFor="linkedin">Linkedin:</label>
@@ -619,6 +676,7 @@ const DetailsForm = () => {
               id="linkedin"
               placeholder="paste your linkedin profile link"
               onChange={(e) => setlinkedin(e.target.value)}
+              value={linkedin}
             />
             <br />
             <br />

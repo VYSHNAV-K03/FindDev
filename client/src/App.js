@@ -7,6 +7,7 @@ import DetailsForm from "./pages/DetailsForm";
 import Profilepage from "./pages/Profilepage";
 import Logout from "./pages/Logout";
 import Profilepage_admin_want from "./pages/Profilepage_admin_want";
+import Form from "./pages/Form";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/logout" exact element={<Logout />} />
         <Route path="/infoform" exact element={<DetailsForm />} />
         <Route path="/profile" exact element={<Profilepage />} />
+        <Route path="/detailsform" exact element={<Form />} />
+
         <Route
           path="/profile_admin_want"
           exact

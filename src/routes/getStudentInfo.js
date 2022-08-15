@@ -434,15 +434,15 @@ router.post("/get_filter_stud", async (req, res) => {
             },
           }
         : { "education.plustwo": { $elemMatch: { phy: "0.1" } } },
-      0 < year < 5
+      year
         ? {
             education: {
-              $elemMatch: { year: year },
+              $elemMatch: { year: { $eq: year } },
             },
           }
         : {
             education: {
-              $elemMatch: { year: "ramesh" },
+              $elemMatch: { year: 0 },
             },
           },
       cgpa < 10
@@ -456,17 +456,17 @@ router.post("/get_filter_stud", async (req, res) => {
               $elemMatch: { cgpa: { $gte: "sumesh" } },
             },
           },
-      // suppli && suppli < 50
-      //   ? {
-      //       education: {
-      //         $elemMatch: { back_papers: { $lte: suppli } },
-      //       },
-      //     }
-      //   : {
-      //       education: {
-      //         $elemMatch: { back_papers: { $lte: "rajesh" } },
-      //       },
-      //     },
+      suppli
+        ? {
+            education: {
+              $elemMatch: { back_papers: { $lte: suppli } },
+            },
+          }
+        : {
+            education: {
+              $elemMatch: { back_papers: { $lte: "rajesh" } },
+            },
+          },
       branch
         ? {
             education: {

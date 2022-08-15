@@ -143,7 +143,7 @@ const SearchArea = () => {
 
   const [year, setyear] = useState();
   const [cgpa, setcgpa] = useState();
-  const [suppli, setsuppli] = useState(50);
+  const [suppli, setsuppli] = useState();
   const [branch, setbranch] = useState();
 
   const [english, setenglish] = useState(false);
@@ -410,12 +410,12 @@ const SearchArea = () => {
               <br />
               <input
                 type="checkbox"
-                id="english"
+                id="hindi"
                 name="communication_language_name"
                 onClick={() => sethindi(!hindi)}
               />
-              <label htmlFor="english">Hindi</label>
-              {english && (
+              <label htmlFor="hindi">Hindi</label>
+              {hindi && (
                 <div className="level">
                   <input
                     type="radio"

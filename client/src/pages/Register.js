@@ -77,14 +77,7 @@ export default function SignUp() {
 
       const res = await axios.post(
         apiUrl + `/signup`,
-        // {
-        //   name,
-        //   email,
-        //   password,
-        //   phone,
-        //   cpassword,
-        //   a,
-        // },
+
         formData,
         {
           withCredentials: true,
