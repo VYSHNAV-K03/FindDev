@@ -194,6 +194,10 @@ const Container = styled.div`
       margin-bottom: 10px;
       display: flex;
     }
+    .language_container li {
+      margin-right: 15px;
+      list-style: none;
+    }
     .icon_container {
       display: flex;
       align-items: center;
@@ -392,7 +396,7 @@ const Container = styled.div`
 `;
 
 const Profilepage = () => {
-  const [block, setblock] = useState(3);
+  const [block, setblock] = useState(1);
 
   const navigate = useNavigate();
 
@@ -540,41 +544,21 @@ const Profilepage = () => {
               <div className="department_container">
                 Dep :
                 <div className="department">
-                  {data && data.education[0] && data.education[0].course}
+                  {data && data.education[0] && data.education[0].branch}
                 </div>
               </div>
               <div className="language_container">
                 Languages :{" "}
                 {data &&
-                data.coding[0] &&
-                data.coding[0].communication_languages[0] &&
-                data.coding[0].communication_languages[0].language_name ? (
-                  <div className="language">
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[0] &&
-                      data.coding[0].communication_languages[0]
-                        .language_name}{" "}
-                    :{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[0] &&
-                      data.coding[0].communication_languages[0].language_level}
-                    ,{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[1] &&
-                      data.coding[0].communication_languages[1]
-                        .language_name}{" "}
-                    :{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[1] &&
-                      data.coding[0].communication_languages[1].language_level}
-                  </div>
-                ) : (
-                  <></>
-                )}
+                  data.coding[0] &&
+                  data.coding[0].communication_languages &&
+                  data.coding[0].communication_languages.map(
+                    (item, index) =>
+                      item.language_name &&
+                      item.language_name !== "null" && (
+                        <li key={index}>{item.language_name}</li>
+                      )
+                  )}
               </div>
               <div className="icon_container">
                 <a
@@ -618,31 +602,33 @@ const Profilepage = () => {
                   data.coding[0].languages &&
                   data.coding[0].languages.map(
                     (item, index) =>
-                      item.language_name && (
+                      item.language_name &&
+                      item.language_name !== "null" && (
                         <li key={index}>
                           {item.language_name} : {item.language_level}
                         </li>
                       )
                   )}
               </ul>
-              {data &&
-              data.coding[0] &&
-              data.coding[0].development[0] &&
-              data.coding[0].development[0].developer ? (
+
+              {data && data.coding[0] && data.coding[0].dev_status ? (
                 <div className="second_skill">
                   He is an {"\t"}
-                  {data &&
-                    data.coding[0] &&
-                    data.coding[0].development[0] &&
-                    data.coding[0].development[0].developer}
+                  {data && data.coding[0] && data.coding[0].dev_status}
                 </div>
               ) : (
-                <div className="second_skill">Not a Developer Now</div>
+                <div className="second_skill">He is not a developer</div>
               )}
-
               <div className="current_status_skill">
-                Current Status : student &{" "}
-                {data && data.coding[0] && data.coding[0].working_status}
+                Current Status : student{" "}
+                {data &&
+                  data.coding[0] &&
+                  data.coding[0].dev_desc !== "undefined" &&
+                  "&"}
+                {data &&
+                  data.coding[0] &&
+                  data.coding[0].dev_desc !== "undefined" &&
+                  data.coding[0].dev_desc}
               </div>
             </div>
           )}

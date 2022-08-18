@@ -94,6 +94,41 @@ const DetailsForm = () => {
     try {
       setbtnloader(true);
 
+      const formData = new FormData(); //work only with multer in backend
+      formData.append("python", python);
+      formData.append("python_level", python_level);
+      formData.append("c", c);
+      formData.append("c_level", c_level);
+      formData.append("cplus", cplus);
+      formData.append("cplus_level", cplus_level);
+      formData.append("js", js);
+      formData.append("js_level", js_level);
+      formData.append("sql", sql);
+      formData.append("sql_level", sql_level);
+      formData.append("english", english);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+      formData.append("python", python);
+
+
       const res = await axios.post(
         apiUrl + `/student/upload_stud`,
         {

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import code_bro from "../assets/form/Code typing-bro.svg";
 import appdevsvg from "../assets/form/App development-bro.svg";
 import discussionsvg from "../assets/form/Discussion-amico.svg";
+import axios from "axios";
+import { apiUrl } from "../data/api";
+import { useNavigate } from "react-router-dom";
 
 const Coc = styled.div`
   display: flex;
@@ -1042,6 +1045,10 @@ const Container = styled.div``;
 const Form = () => {
   const [component, setcomponent] = useState(1);
 
+  const [btnloader, setbtnloader] = useState(false);
+
+  const navigate = useNavigate();
+
   const [python, setpython] = useState(false);
   const [c, setc] = useState(false);
   const [cplus, setcplus] = useState(false);
@@ -1074,7 +1081,7 @@ const Form = () => {
   const [plustwo_phy, setplustwo_phy] = useState();
   const [plustwo_che, setplustwo_che] = useState();
   const [plustwo_english, setplustwo_english] = useState();
-  const [plustwo_cs, setplustwo_cs] = useState();
+  const [plustwo_cs, setplustwo_cs] = useState(0);
 
   const [sslc_certificate, setsslc_certificate] = useState();
   const [plustwo_certificate, setplustwo_certificate] = useState();
@@ -1082,6 +1089,83 @@ const Form = () => {
   const [developer_status, setdeveloper_status] = useState();
   const [dev_description, setdev_description] = useState();
   const [nodev_status, setnodev_status] = useState();
+
+  const PostData = async (e) => {
+    e.preventDefault();
+
+    if (
+      !sslc_certificate ||
+      !plustwo_certificate ||
+      !college_name ||
+      !branch ||
+      !year ||
+      !cgpa ||
+      !backpapers ||
+      !sscl_maths ||
+      !sscl_phy ||
+      !sscl_che ||
+      !sslc_english ||
+      !plustwo_maths ||
+      !plustwo_phy ||
+      !plustwo_che ||
+      !plustwo_english
+    ) {
+      window.alert("pls fill properly");
+    } else {
+      try {
+        setbtnloader(true);
+
+        const formData = new FormData();
+        formData.append("python", python);
+        formData.append("python_level", python_level);
+        formData.append("c", c);
+        formData.append("c_level", c_level);
+        formData.append("cplus", cplus);
+        formData.append("cplus_level", cplus_level);
+        formData.append("js", js);
+        formData.append("js_level", js_level);
+        formData.append("sql", sql);
+        formData.append("sql_level", sql_level);
+        formData.append("english", english);
+        formData.append("hindi", hindi);
+        formData.append("malayalam", malayalam);
+        formData.append("developer_status", developer_status);
+        formData.append("dev_description", dev_description);
+        formData.append("nodev_status", nodev_status);
+        formData.append("git", git);
+        formData.append("linkedin", linkedin);
+        formData.append("college_name", college_name);
+        formData.append("branch", branch);
+        formData.append("year", year);
+        formData.append("cgpa", cgpa);
+        formData.append("backpapers", backpapers);
+        formData.append("sscl_maths", sscl_maths);
+        formData.append("sscl_phy", sscl_phy);
+        formData.append("sscl_che", sscl_che);
+        formData.append("sslc_english", sslc_english);
+        formData.append("plustwo_maths", plustwo_maths);
+        formData.append("plustwo_phy", plustwo_phy);
+        formData.append("plustwo_che", plustwo_che);
+        formData.append("plustwo_english", plustwo_english);
+        formData.append("plustwo_cs", plustwo_cs);
+        formData.append("sslc_certificate", sslc_certificate);
+        formData.append("plustwo_certificate", plustwo_certificate);
+
+        const res = await axios.post(
+          apiUrl + `/student/upload_stud`,
+          formData,
+          {
+            withCredentials: true,
+          }
+        );
+        // navigate("/profile");
+        setbtnloader(false);
+      } catch (error) {
+        setbtnloader(false);
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <Container>
@@ -1092,8 +1176,13 @@ const Form = () => {
               <img src={code_bro} alt="" />
             </div>
             <div className="buttons_coc">
-              <button className="submit_btn_coc">Back</button>
-              <button className="done_btn_coc" onClick={() => setcomponent(1)}>
+              <button
+                className="submit_btn_coc"
+                onClick={() => setcomponent(1)}
+              >
+                Back
+              </button>
+              <button className="done_btn_coc" onClick={() => setcomponent(3)}>
                 Next
               </button>
             </div>
@@ -1389,7 +1478,7 @@ const Form = () => {
               <button className="submit_wsta" onClick={() => setcomponent(1)}>
                 Back
               </button>
-              <button className="done_wsta" onClick={() => setcomponent(3)}>
+              <button className="done_wsta" onClick={() => setcomponent(0)}>
                 Next
               </button>
             </div>
@@ -1461,7 +1550,7 @@ const Form = () => {
             </div>
           </div>
           <div className="buttons_cs">
-            <button className="submit_cs" onClick={() => setcomponent(1)}>
+            <button className="submit_cs" onClick={() => setcomponent(0)}>
               Back
             </button>
             <button className="done_cs" onClick={() => setcomponent(4)}>
@@ -1508,6 +1597,7 @@ const Form = () => {
                 onChange={(e) => setyear(e.target.value)}
                 defaultValue={year}
               >
+                <option value=""></option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -1575,7 +1665,7 @@ const Form = () => {
             <div className="file_section_sslc">
               <input
                 type="file"
-                name=""
+                name="sslc_certificate"
                 id=""
                 onChange={(e) => setsslc_certificate(e.target.files[0])}
               />
@@ -1633,7 +1723,7 @@ const Form = () => {
             <div className="file_section_sslc">
               <input
                 type="file"
-                name=""
+                name="plustwo_certificate"
                 id=""
                 onChange={(e) => setplustwo_certificate(e.target.files[0])}
               />
@@ -1643,7 +1733,9 @@ const Form = () => {
             <button className="submit_edu" onClick={() => setcomponent(3)}>
               Back
             </button>
-            <button className="done_edu">Submit</button>
+            <button className="done_edu" onClick={PostData}>
+              Submit
+            </button>
           </div>
         </Edu>
       )}
@@ -1690,7 +1782,7 @@ const Form = () => {
             <button className="back_devy" onClick={() => setcomponent(1)}>
               Back
             </button>
-            <button className="next_devy" onClick={() => setcomponent(3)}>
+            <button className="next_devy" onClick={() => setcomponent(0)}>
               Next
             </button>
           </div>

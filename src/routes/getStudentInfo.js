@@ -3,163 +3,211 @@ const { upload } = require("../helpers/filehelper");
 const Authenticate = require("../middleware/authenticate");
 const USER = require("../modelschemas/userschema");
 const router = express.Router();
+const fs = require("fs");
 
-router.post("/upload_stud", Authenticate, async (req, res) => {
-  const {
-    python,
-    c,
-    cplus,
-    js,
-    sql,
-    python_level,
-    c_level,
-    js_level,
-    sql_level,
-    cplus_level,
-    english,
-    english_level,
-    hindi,
-    hindi_level,
-    developer,
-    developer_status,
-    work,
-    git,
-    linkedin,
-    college_name,
-    branch,
-    year,
-    cgpa,
-    sscl_maths,
-    sscl_phy,
-    sscl_che,
-    sslc_english,
-    plustwo_maths,
-    plustwo_phy,
-    plustwo_che,
-    plustwo_english,
-    plustwo_cs,
-  } = req.body;
-  var user_id = req.userID;
-  const userUpdate = await USER.findByIdAndUpdate(user_id, {
-    education: [
-      {
-        institution_name: college_name,
-        course: branch,
-        year: year,
-        cgpa: cgpa,
-        sslc: [
-          {
-            phy: sscl_phy,
-            che: sscl_che,
-            maths: sscl_maths,
-            english: sslc_english,
-          },
-        ],
-        plustwo: [
-          {
-            phy: plustwo_phy,
-            che: plustwo_che,
-            maths: plustwo_maths,
-            english: plustwo_english,
-            cs: plustwo_cs,
-          },
-        ],
-      },
-    ],
-    coding: [
-      {
-        languages: [
-          python
-            ? {
-                language_name: "python",
-                language_level: python_level,
-              }
-            : {},
-          c
-            ? {
-                language_name: "c",
-                language_level: c_level,
-              }
-            : {},
-          js
-            ? {
-                language_name: "js",
-                language_level: js_level,
-              }
-            : {},
-          cplus
-            ? {
-                language_name: "c++",
-                language_level: cplus_level,
-              }
-            : {},
-          sql
-            ? {
-                language_name: "sql",
-                language_level: sql_level,
-              }
-            : {},
-        ],
-        communication_languages: [
-          english
-            ? {
-                language_name: "english",
-                language_level: english_level,
-              }
-            : {},
-          hindi
-            ? {
-                language_name: "hindi",
-                language_level: hindi_level,
-              }
-            : {},
-        ],
-        development: [
-          developer
-            ? {
-                developer: developer_status,
-              }
-            : {},
-        ],
-        working_status: work,
-        links: [
-          {
-            github: git,
-            linkedin: linkedin,
-          },
-        ],
-      },
-    ],
-    ver:
-      python ||
-      c ||
-      cplus ||
-      js ||
-      (sql && english) ||
-      (hindi &&
-        developer &&
-        developer_status &&
-        work &&
-        git &&
-        linkedin &&
-        college_name &&
-        branch &&
-        year &&
-        cgpa &&
-        sscl_maths &&
-        sscl_phy &&
-        sscl_che &&
-        sslc_english &&
-        plustwo_maths &&
-        plustwo_phy &&
-        plustwo_che &&
-        plustwo_english &&
-        plustwo_cs)
-        ? 1
-        : 0,
-  });
-  res.send(userUpdate);
-});
+router.post(
+  "/upload_stud",
+  upload.fields([
+    {
+      name: "sslc_certificate",
+    },
+    {
+      name: "plustwo_certificate",
+    },
+  ]),
+  Authenticate,
+  async (req, res) => {
+    // console.log(req.files);
+
+    const final_path_sslc =
+      req.files.sslc_certificate[0] && req.files.sslc_certificate[0].path;
+
+    const base64_sslc =
+      req.files.sslc_certificate[0] &&
+      fs.readFileSync(final_path_sslc, "base64");
+
+    const buffer_sslc =
+      req.files.sslc_certificate[0] && Buffer.from(base64_sslc, "base64");
+
+    const final_path__plustwo =
+      req.files.plustwo_certificate[0] && req.files.plustwo_certificate[0].path;
+
+    const base64_plustwo =
+      req.files.plustwo_certificate[0] &&
+      fs.readFileSync(final_path__plustwo, "base64");
+
+    const buffer_plustwo =
+      req.files.plustwo_certificate[0] && Buffer.from(base64_plustwo, "base64");
+
+    const {
+      python,
+      c,
+      cplus,
+      js,
+      sql,
+      python_level,
+      c_level,
+      js_level,
+      sql_level,
+      cplus_level,
+      english,
+      hindi,
+      malayalam,
+      developer_status,
+      dev_description,
+      nodev_status,
+      git,
+      linkedin,
+      college_name,
+      branch,
+      year,
+      cgpa,
+      backpapers,
+      sscl_maths,
+      sscl_phy,
+      sscl_che,
+      sslc_english,
+      plustwo_maths,
+      plustwo_phy,
+      plustwo_che,
+      plustwo_english,
+      plustwo_cs,
+    } = req.body;
+
+    console.log(python);
+
+    var user_id = req.userID;
+    const userUpdate = await USER.findByIdAndUpdate(user_id, {
+      education: [
+        {
+          institution_name: college_name,
+          branch: branch,
+          year: year,
+          cgpa: cgpa,
+          back_papers: backpapers,
+          sslc: [
+            {
+              phy: sscl_phy,
+              che: sscl_che,
+              maths: sscl_maths,
+              english: sslc_english,
+              sslc_cer: {
+                data: req.files.sslc_certificate[0] && buffer_sslc,
+                contentType:
+                  req.files.sslc_certificate[0] &&
+                  req.files.sslc_certificate[0].mimetype,
+              },
+            },
+          ],
+          plustwo: [
+            {
+              phy: plustwo_phy,
+              che: plustwo_che,
+              maths: plustwo_maths,
+              english: plustwo_english,
+              cs: plustwo_cs,
+              plustwo_cer: {
+                data: req.files.plustwo_certificate[0] && buffer_plustwo,
+                contentType:
+                  req.files.plustwo_certificate[0] &&
+                  req.files.plustwo_certificate[0].mimetype,
+              },
+            },
+          ],
+        },
+      ],
+      coding: [
+        {
+          nodev_desc: nodev_status,
+          dev_desc: dev_description,
+
+          dev_status: developer_status,
+
+          languages: [
+            python === "true"
+              ? {
+                  language_name: "python",
+                  language_level: python_level,
+                }
+              : {
+                  language_name: "null",
+                  language_level: "null",
+                },
+            c === "true"
+              ? {
+                  language_name: "c",
+                  language_level: c_level,
+                }
+              : {
+                  language_name: "null",
+                  language_level: "null",
+                },
+            js === "true"
+              ? {
+                  language_name: "js",
+                  language_level: js_level,
+                }
+              : {
+                  language_name: "null",
+                  language_level: "null",
+                },
+            cplus === "true"
+              ? {
+                  language_name: "c++",
+                  language_level: cplus_level,
+                }
+              : {
+                  language_name: "null",
+                  language_level: "null",
+                },
+            sql === "true"
+              ? {
+                  language_name: "sql",
+                  language_level: sql_level,
+                }
+              : {
+                  language_name: "null",
+                  language_level: "null",
+                },
+          ],
+          communication_languages: [
+            english === "true"
+              ? {
+                  language_name: "english",
+                }
+              : {
+                  language_name: "null",
+                },
+            hindi === "true"
+              ? {
+                  language_name: "hindi",
+                }
+              : {
+                  language_name: "null",
+                },
+            malayalam === "true"
+              ? {
+                  language_name: "malayalam",
+                }
+              : {
+                  language_name: "null",
+                },
+          ],
+
+          links: [
+            {
+              github: git,
+              linkedin: linkedin,
+            },
+          ],
+        },
+      ],
+    });
+    res.send(userUpdate);
+    console.log(req.body);
+    // console.log(userUpdate);
+  }
+);
 
 router.post("/get_stud", async (req, res) => {
   try {

@@ -43,7 +43,8 @@ const fileFilter = (req, file, cb, next) => {
     file.mimetype === "application/zip" ||
     file.mimetype === "" ||
     file.mimetype === "application/x-7z-compressed" ||
-    file.mimetype === "application/vnd.ms-excel"
+    file.mimetype === "application/vnd.ms-excel" ||
+    file.mimetype === "application/pdf"
   ) {
     cb(null, true);
     console.log("cb true");

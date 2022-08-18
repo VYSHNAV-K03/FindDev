@@ -17,9 +17,9 @@ function App() {
         <Route path="/login" exact element={<SignIn />} />
         <Route path="/register" exact element={<SignUp />} />
         <Route path="/logout" exact element={<Logout />} />
-        <Route path="/infoform" exact element={<DetailsForm />} />
+        {/* <Route path="/infoform" exact element={<DetailsForm />} /> */}
         <Route path="/profile" exact element={<Profilepage />} />
-        <Route path="/detailsform" exact element={<Form />} />
+        <Route path="/infoform" exact element={<Form />} />
 
         <Route
           path="/profile_admin_want"

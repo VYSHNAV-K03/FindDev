@@ -41,10 +41,6 @@ const userschema = new mongoose.Schema(
           type: String,
           default: "",
         },
-        course: {
-          type: String,
-          default: "",
-        },
         year: {
           type: Number,
         },
@@ -73,6 +69,10 @@ const userschema = new mongoose.Schema(
             english: {
               type: Number,
             },
+            sslc_cer: {
+              data: Buffer,
+              contentType: String,
+            },
           },
         ],
         plustwo: [
@@ -92,15 +92,24 @@ const userschema = new mongoose.Schema(
             cs: {
               type: Number,
             },
+            plustwo_cer: {
+              data: Buffer,
+              contentType: String,
+            },
           },
         ],
       },
     ],
     coding: [
       {
-        current_working_status: {
+        nodev_desc: {
           type: String,
-          default: "",
+        },
+        dev_desc: {
+          type: String,
+        },
+        dev_status: {
+          type: String,
         },
         languages: [
           {
@@ -120,32 +129,9 @@ const userschema = new mongoose.Schema(
               type: String,
               default: "",
             },
-            language_level: {
-              type: String,
-              default: "",
-            },
           },
         ],
-        development: [
-          {
-            developer: {
-              type: String,
-              default: "",
-            },
-          },
-        ],
-        hardware: [
-          {
-            hardware_field: {
-              type: String,
-              default: "",
-            },
-          },
-        ],
-        working_status: {
-          type: String,
-          default: "not working",
-        },
+
         links: [
           {
             github: {
@@ -158,7 +144,6 @@ const userschema = new mongoose.Schema(
             },
           },
         ],
-        frameworks: [],
       },
     ],
     college_admin: [
