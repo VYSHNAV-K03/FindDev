@@ -4,14 +4,61 @@ import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { apiUrl } from "../data/api";
 import profile1 from "../assets/profile_dummy/profile1.png";
+import nav_icon from "../assets/icons/nav_icon.png";
 import { Buffer } from "buffer";
 
 const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 20px;
-  background: blue;
+  padding: 25px 30px;
   position: relative;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+
+  position: relative;
+
+  .details_more {
+    display: block;
+    position: absolute;
+    top: 54px;
+    right: 30px;
+    width: 150px;
+    text-align: center;
+    z-index: 1;
+    transform: scaleY(${(props) => (props.details_more ? 1 : 0)});
+    transition: all 0.4s ease;
+    transform-origin: top;
+  }
+  .home,
+  .about,
+  .contact_us,
+  .login_status {
+    padding: 5px;
+    color: #ffff;
+    border-radius: 3px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    cursor: pointer;
+    :hover {
+      font-weight: 700;
+    }
+  }
+
+  .home {
+    background: rgba(74, 90, 150, 0.4);
+  }
+  .about {
+    background: #8d97bd;
+  }
+  .contact_us {
+    background: #b7bdd5;
+  }
+  .login_status {
+    background: #8d97bd;
+  }
   .loader {
     position: absolute;
     background: white;
@@ -31,61 +78,100 @@ const Container = styled.div`
     display: flex;
   }
   .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    display: flex;
+    font-size: 26px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    /* identical to box height */
+    color: #4a5a96;
+
     margin-right: auto;
   }
-  .login_status {
-    display: flex;
-    margin-right: 10px;
-    background: #fff;
-    border-radius: 30px;
-    padding: 5px 10px;
-    align-items: bottom;
-    justify-content: center;
+  .logo span {
+    font-weight: 700;
   }
-  .login_status li {
-    list-style: none;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin: auto;
+  .profile_container {
     display: flex;
     align-items: center;
-  }
-  .login_status li p {
-    display: flex;
-    align-items: center;
-    color: blue;
-    margin: auto;
   }
   .profile {
     display: flex;
-    margin-right: 100px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: black;
-  }
-  @media screen and (max-width: 940px) {
-    .profile {
-      margin-right: 10px;
-    }
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    margin-right: 10px;
   }
   .profile img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #fff;
+    border-radius: 10px;
+  }
+  .profile_name {
+    font-size: 20px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+
+    color: #3d56b2;
+    margin-right: 20px;
+  }
+  .more_icon {
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    transform: rotate(${(props) => (props.details_more ? "-180deg" : "0deg")});
+  }
+  .more_icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* .profile_container .more_icon:hover ~ .details_more {
+    transform: scaleY(1);
+  } */
+
+  @media screen and (max-width: 439px) {
+    padding: 15px 10px;
+    .logo {
+      font-size: 20px;
+    }
+    .profile {
+      display: flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      margin-right: 8px;
+    }
+    .profile_name {
+      font-size: 15px;
+      margin-right: 10px;
+    }
+    .more_icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .details_more {
+      right: 10px;
+    }
+    .home,
+    .about,
+    .contact_us,
+    .login_status {
+      font-size: 15px;
+    }
   }
 `;
 
 const Navbar = () => {
   const [login, setlogin] = useState(true);
   const [profileimg, setprofileimg] = useState();
+
+  const [detail_more, setdetail_more] = useState(false);
 
   const [loader, setloader] = useState(true);
 
@@ -103,11 +189,7 @@ const Navbar = () => {
       if (data.Role === 0) {
         navigate("/profile");
       }
-      // console.log(data);
 
-      // setprofilepath(data.profile);
-      // setsocialprofile(data.socialProfile);
-      // setuser(data);
       setprofileimg(data.profile && data.profile);
 
       setlogin(false);
@@ -119,19 +201,23 @@ const Navbar = () => {
       console.log("error", e);
       setlogin(true);
       setloader(false);
-      navigate("/login");
+      // navigate("/login");
     }
   };
 
-  // console.log(login);
-
   useEffect(() => {
     callNavbar();
+
+    document.body.addEventListener("click", (e) => {
+      if (e.path[0].tagName !== "IMG") {
+        setdetail_more(false);
+      }
+    });
   }, []);
 
   return (
     <>
-      <Container>
+      <Container details_more={detail_more}>
         {loader && (
           <div className="loader">
             <div className="loader_sub">
@@ -146,32 +232,10 @@ const Navbar = () => {
             </div>
           </div>
         )}
-        <div className="logo">OneTouch</div>
-        <div className="login_status">
-          {login ? (
-            <li>
-              <NavLink
-                to="/login"
-                className="register-toggle"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                <p>SignIn</p>
-              </NavLink>
-            </li>
-          ) : (
-            <li>
-              <NavLink
-                to="/logout"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                <p>Sign Out</p>
-              </NavLink>
-            </li>
-          )}
+        <div className="logo">
+          <span>One</span>Touch
         </div>
-        {login ? (
-          <></>
-        ) : (
+        <div className="profile_container">
           <div className="profile">
             <img
               src={
@@ -184,7 +248,39 @@ const Navbar = () => {
               alt="profile"
             />
           </div>
-        )}
+          <div className="profile_name">Profile Name</div>
+          <div className="more_icon">
+            <img
+              src={nav_icon}
+              alt=""
+              onClick={() => setdetail_more(!detail_more)}
+            />
+          </div>
+        </div>
+
+        {/* )} */}
+        <div className="details_more" id="details_more">
+          <div className="home">Home</div>
+          <div className="about">About</div>
+          <div className="contact_us">Contact Us</div>
+          <div className="login_status">
+            {login ? (
+              <NavLink
+                to="/login"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                SignIn
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/logout"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                Sign Out
+              </NavLink>
+            )}
+          </div>
+        </div>
       </Container>
     </>
   );

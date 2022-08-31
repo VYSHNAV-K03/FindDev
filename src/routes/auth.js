@@ -6,6 +6,7 @@ const fs = require("fs");
 const cookieParser = require("cookie-parser"); //this is used for getting req.cookies in middleware otherwise we dont get cookies in req in middleware
 const { upload } = require("../helpers/filehelper");
 const Authenticate = require("../middleware/authenticate");
+const wbm = require("wbm");
 
 router.use(cookieParser());
 
@@ -99,6 +100,16 @@ router.get("/signout", Authenticate, (req, res) => {
 //for getting data for frontend
 router.get("/getData", Authenticate, async (req, res) => {
   try {
+    // wbm
+    //   .start()
+    //   .then(async () => {
+    //     const phones = ["9048920962"];
+    //     const message = "Good Morning.";
+    //     await wbm.send(phones, message);
+    //     await wbm.end();
+    //   })
+    //   .catch((err) => console.log(err));
+
     res.status(200).send(req.rootUser);
   } catch (error) {
     res.status(400).send(error);

@@ -146,28 +146,12 @@ const userschema = new mongoose.Schema(
         ],
       },
     ],
-    college_admin: [
+    placement: [
       {
-        interview: [
-          {
-            attended: {
-              type: String,
-              default: "",
-            },
-            selected: {
-              type: String,
-              default: "all",
-            },
-          },
-        ],
-        placement: [
-          {
-            placed: {
-              type: String,
-              default: "",
-            },
-          },
-        ],
+        company_name: {
+          type: String,
+          default: "",
+        },
       },
     ],
 

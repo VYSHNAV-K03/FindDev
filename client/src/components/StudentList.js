@@ -9,89 +9,203 @@ import profile1 from "../assets/profile_dummy/profile1.png";
 import axios from "axios";
 import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
+import search_by_name from "../assets/icons/search_filter_name.png";
+import icon_right_blue from "../assets/icons/icon_right_blue.png";
 
 const Container = styled.div`
   position: relative;
-  .loader {
-    position: absolute;
-    background: white;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 70vh;
-    z-index: 10;
+  width: min(100vw, 1300px);
+  margin: auto;
+  .input_search_name {
+    height: 80px;
+    padding: 20px;
+
+    background: rgba(61, 86, 178, 0.04);
+    border-radius: 10px;
+
+    margin: 0 auto 50px auto;
+  }
+  .input_search_name_1 {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 5px;
+
     display: flex;
     align-items: center;
-    justify-content: center;
   }
-  .loader_sub {
-    width: 300px;
-    height: 100px;
-    margin: auto;
-    display: flex;
+  .search_name_icon {
+    width: 43px;
+    height: 41px;
+    margin-right: 5px;
   }
+  .search_name_icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .input_search_name_1 input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: rgba(61, 86, 178, 0.5);
+  }
+
   .studenteach {
-    padding: 20px 50px;
-    border: 1px solid blue;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+    padding: 5px;
   }
-
   .image {
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    border-radius: 10px;
   }
-
   .image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 10px;
+  }
+  .center_content {
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+  }
+  .first_row {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .name {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 22px;
+
+    margin-right: 10px;
+    /* identical to box height */
+
+    color: #000000;
+  }
+  .college_name {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+
+    color: #000000;
   }
 
-  .name {
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    color: blue;
+  .second_row {
+    display: flex;
   }
-  @media screen and (max-width: 450px) {
-    .studenteach {
-      padding: 20px 10px;
+  .year,
+  .branch,
+  .cgpa,
+  .backpaper,
+  .icon_right {
+    margin-right: 20px;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+
+    color: #4a5a96;
+  }
+  .last_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 137px;
+    height: 39px;
+
+    background: #4a5a96;
+    border-radius: 10px;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #ffffff;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 723px) {
+    .input_search_name {
+      max-width: 584px;
+      height: 60px;
+      padding: 10px;
+      margin: 0 auto 20px auto;
+    }
+    .search_name_icon {
+      width: 33px;
+      height: 31px;
+    }
+    .input_search_name_1 input {
+      font-size: 18px;
+      line-height: 14px;
     }
     .image {
-      margin-right: 5px;
+      width: 40px;
+      height: 40px;
+    }
+    .first_row {
+      margin-bottom: 5px;
     }
     .name {
-      font-size: 1rem;
+      font-size: 18px;
     }
-  }
-  .verified {
-    margin-left: auto;
-  }
-  .verify {
-    border: 2px solid green;
-    color: green;
-    border-radius: 20px;
-    padding: 2px 5px;
-  }
-  .parverify {
-    border: 2px solid orange;
-    color: orange;
-    border-radius: 20px;
-    padding: 2px 5px;
-  }
-  .notverify {
-    border: 2px solid red;
-    color: red;
-    border-radius: 20px;
-    padding: 2px 5px;
+    .college_name {
+      font-size: 15px;
+    }
+    .year,
+    .branch,
+    .cgpa,
+    .backpaper,
+    .icon_right {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+    .last_content {
+      width: 95px;
+      height: 33px;
+      font-size: 18px;
+    }
+    .icon_right {
+      width: 20px;
+      height: 20px;
+    }
+    .icon_right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 `;
 
 const StudentList = (props) => {
   const [data, setdata] = useState();
+
+  const [query, setquery] = useState("");
+
+  const [id_storage, setid_storage] = useState([]);
 
   const [nu_un, setnu_un] = useState(false);
 
@@ -107,7 +221,8 @@ const StudentList = (props) => {
       setloader(true);
 
       const res = await axios.post(apiUrl + `/student/get_stud`, {
-        id: props.id,
+        // id: props.id,
+        id: JSON.parse(localStorage.getItem("ids")),
         nu: nu_un,
       });
       setdata(res.data);
@@ -120,6 +235,9 @@ const StudentList = (props) => {
 
   // console.log(data);
   // console.log(nu_un);
+  // console.log(JSON.parse(localStorage.getItem("ids")));
+
+  // console.log(localStorage.ids);
 
   useEffect(() => {
     getStudentList();
@@ -132,6 +250,18 @@ const StudentList = (props) => {
 
   return (
     <Container>
+      <div className="input_search_name">
+        <div className="input_search_name_1">
+          <div className="search_name_icon">
+            <img src={search_by_name} alt="" />
+          </div>
+          <input
+            type="text"
+            onChange={(e) => setquery(e.target.value)}
+            placeholder="Search for user"
+          />
+        </div>
+      </div>
       {loader && (
         <div className="loader">
           <div className="loader_sub">
@@ -147,144 +277,58 @@ const StudentList = (props) => {
         </div>
       )}
       {data &&
-        data.map(
-          (element, index) =>
-            element.ver !== 1 &&
-            element.ver !== 0 && (
-              <div
-                className="studenteach"
-                key={index}
-                onClick={() =>
-                  navigate("/profile_admin_want", {
-                    state: { id: element._id },
-                  })
-                }
-              >
-                <div className="image">
-                  <img
-                    src={
-                      element.profile
-                        ? `data:${
-                            element.profile.contentType
-                          };base64, ${Buffer.from(
-                            element.profile.data.data
-                          ).toString("base64")}`
-                        : profile1
+        data
+          .filter((item) => item.name.toLowerCase().includes(query))
+          .map(
+            (element, index) =>
+              element.Role === 0 && (
+                <div className="studenteach" key={index}>
+                  <div className="image">
+                    <img
+                      src={
+                        element.profile
+                          ? `data:${
+                              element.profile.contentType
+                            };base64, ${Buffer.from(
+                              element.profile.data.data
+                            ).toString("base64")}`
+                          : profile1
+                      }
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="center_content">
+                    <div className="first_row">
+                      <div className="name">Emilia</div>
+                      <div className="college_name">
+                        College of Engineerig, Thalassery
+                      </div>
+                    </div>
+                    {JSON.parse(localStorage.getItem("filter")) === "btech" && (
+                      <div className="second_row">
+                        <div className="year">Year : 4</div>
+                        <div className="branch">Branch : CSE</div>
+                        <div className="cgpa">CGPA : 8.2</div>
+                        <div className="backpaper">Backpapers : 2</div>
+                        <div className="icon_right">
+                          <img src={icon_right_blue} alt="" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className="last_content"
+                    onClick={() =>
+                      navigate("/profile_admin_want", {
+                        state: { id: element._id },
+                      })
                     }
-                    alt="profile"
-                  />
+                  >
+                    Profile
+                  </div>
                 </div>
-                <div className="name">{element.name}</div>
-                <div className="verified">
-                  {element?.ver === 0 ? (
-                    <div className="notverify">
-                      <ReportProblemIcon /> Not verified
-                    </div>
-                  ) : element?.ver === 1 ? (
-                    <div className="parverify">
-                      <LoopIcon /> Partially verified
-                    </div>
-                  ) : (
-                    <div className="verify">
-                      <DoneIcon /> Verified
-                    </div>
-                  )}
-                </div>
-              </div>
-            )
-        )}
-      {data &&
-        data.map(
-          (element, index) =>
-            element.ver === 1 && (
-              <div
-                className="studenteach"
-                key={index}
-                onClick={() =>
-                  navigate("/profile_admin_want", {
-                    state: { id: element._id },
-                  })
-                }
-              >
-                <div className="image">
-                  <img
-                    src={
-                      element.profile
-                        ? `data:${
-                            element.profile.contentType
-                          };base64, ${Buffer.from(
-                            element.profile.data.data
-                          ).toString("base64")}`
-                        : profile1
-                    }
-                    alt="profile"
-                  />
-                </div>
-                <div className="name">{element.name}</div>
-                <div className="verified">
-                  {element?.ver === 0 ? (
-                    <div className="notverify">
-                      <ReportProblemIcon /> Not verified
-                    </div>
-                  ) : element?.ver === 1 ? (
-                    <div className="parverify">
-                      <LoopIcon /> Partially verified
-                    </div>
-                  ) : (
-                    <div className="verify">
-                      <DoneIcon /> Verified
-                    </div>
-                  )}
-                </div>
-              </div>
-            )
-        )}
-      {data &&
-        data.map(
-          (element, index) =>
-            element.ver === 0 && (
-              <div
-                className="studenteach"
-                key={index}
-                onClick={() =>
-                  navigate("/profile_admin_want", {
-                    state: { id: element._id },
-                  })
-                }
-              >
-                <div className="image">
-                  <img
-                    src={
-                      element.profile
-                        ? `data:${
-                            element.profile.contentType
-                          };base64, ${Buffer.from(
-                            element.profile.data.data
-                          ).toString("base64")}`
-                        : profile1
-                    }
-                    alt="profile"
-                  />
-                </div>
-                <div className="name">{element.name}</div>
-                <div className="verified">
-                  {element?.ver === 0 ? (
-                    <div className="notverify">
-                      <ReportProblemIcon /> Not verified
-                    </div>
-                  ) : element?.ver === 1 ? (
-                    <div className="parverify">
-                      <LoopIcon /> Partially verified
-                    </div>
-                  ) : (
-                    <div className="verify">
-                      <DoneIcon /> Verified
-                    </div>
-                  )}
-                </div>
-              </div>
-            )
-        )}
+              )
+          )}
     </Container>
   );
 };

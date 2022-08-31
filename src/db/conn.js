@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const DB = process.env.DB;
+const DB = process.env.COS_DB;
 
 mongoose
   .connect(DB)

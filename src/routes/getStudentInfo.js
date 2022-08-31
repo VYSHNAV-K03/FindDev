@@ -4,6 +4,7 @@ const Authenticate = require("../middleware/authenticate");
 const USER = require("../modelschemas/userschema");
 const router = express.Router();
 const fs = require("fs");
+const wbm = require("wbm");
 
 router.post(
   "/upload_stud",
@@ -211,8 +212,12 @@ router.post(
 
 router.post("/get_stud", async (req, res) => {
   try {
-    if (req.body.id) {
-      const user = await USER.find().where("_id").in(req.body.id).exec();
+    if (req.body.id && req.body.id !== "null" && req.body.id !== "undefined") {
+      const user = await USER.find()
+        .where("_id")
+        .in(req.body.id.map((item, i) => item))
+        .exec();
+
       res.send(user);
     } else {
       const user = await USER.find();
@@ -239,6 +244,7 @@ router.get("/get_stud_profile", Authenticate, async (req, res) => {
   console.log(id);
   try {
     const user = await USER.findById(id);
+
     res.send(user);
   } catch (error) {
     res.status(400).send(error);
@@ -252,18 +258,7 @@ router.post("/get_filter_stud", async (req, res) => {
     cplus,
     js,
     sql,
-    python_level,
-    c_level,
-    cplus_level,
-    js_level,
-    sql_level,
-    web_dev,
-    app_dev,
-    game_dev,
-    ai_dev,
-    iot,
-    cad,
-    robotics,
+    dev_tech,
     sslc_maths,
     sslc_phy,
     sslc_che,
@@ -275,9 +270,8 @@ router.post("/get_filter_stud", async (req, res) => {
     suppli,
     branch,
     english,
-    english_level,
     hindi,
-    hindi_level,
+    malayalam,
   } = req.body;
 
   console.log("filtering_students", req.body);
@@ -289,7 +283,6 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.languages": {
               $elemMatch: {
                 language_name: "python",
-                language_level: python_level,
               },
             },
           }
@@ -299,7 +292,7 @@ router.post("/get_filter_stud", async (req, res) => {
       c
         ? {
             "coding.languages": {
-              $elemMatch: { language_name: "c", language_level: c_level },
+              $elemMatch: { language_name: "c" },
             },
           }
         : {
@@ -308,7 +301,7 @@ router.post("/get_filter_stud", async (req, res) => {
       js
         ? {
             "coding.languages": {
-              $elemMatch: { language_name: "js", language_level: js_level },
+              $elemMatch: { language_name: "js" },
             },
           }
         : {
@@ -319,7 +312,6 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.languages": {
               $elemMatch: {
                 language_name: "sql",
-                language_level: sql_level,
               },
             },
           }
@@ -331,157 +323,90 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.languages": {
               $elemMatch: {
                 language_name: "c++",
-                language_level: cplus_level,
               },
             },
           }
         : {
             "coding.languages": { $elemMatch: { language_name: "wer" } },
           },
-      web_dev
+      dev_tech
         ? {
-            "coding.development": {
+            coding: {
               $elemMatch: {
-                developer: "Web Developer",
+                dev_status: dev_tech,
               },
             },
           }
         : {
-            "coding.development": {
+            coding: {
               $elemMatch: {
-                developer: "satheesh",
+                dev_status: "satheesh",
               },
             },
           },
 
-      app_dev
-        ? {
-            "coding.development": {
-              $elemMatch: {
-                developer: "App Developer",
-              },
-            },
-          }
-        : {
-            "coding.development": {
-              $elemMatch: {
-                developer: "satheesh",
-              },
-            },
-          },
-      game_dev
-        ? {
-            "coding.development": {
-              $elemMatch: {
-                developer: "Game Developer",
-              },
-            },
-          }
-        : {
-            "coding.development": {
-              $elemMatch: {
-                developer: "satheesh",
-              },
-            },
-          },
-      ai_dev
-        ? {
-            "coding.development": {
-              $elemMatch: {
-                developer: "AI Developer",
-              },
-            },
-          }
-        : {
-            "coding.development": {
-              $elemMatch: {
-                developer: "satheesh",
-              },
-            },
-          },
-
-      iot
-        ? {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "iot",
-              },
-            },
-          }
-        : {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "satheesh",
-              },
-            },
-          },
-      cad
-        ? {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "cad",
-              },
-            },
-          }
-        : {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "satheesh",
-              },
-            },
-          },
-      robotics
-        ? {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "robotics",
-              },
-            },
-          }
-        : {
-            "coding.hardware": {
-              $elemMatch: {
-                hardware_field: "satheesh",
-              },
-            },
-          },
-      sslc_maths < 100
+      sslc_maths
         ? {
             "education.sslc": { $elemMatch: { maths: { $gte: sslc_maths } } },
           }
-        : { "education.sslc": { $elemMatch: { maths: "0.1" } } },
-      sslc_che < 100
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+
+      sslc_che
         ? {
             "education.sslc": { $elemMatch: { che: { $gte: sslc_che } } },
           }
-        : { "education.sslc": { $elemMatch: { che: "0.1" } } },
-      sslc_phy < 100
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+      sslc_phy
         ? {
             "education.sslc": {
               $elemMatch: { phy: { $gte: sslc_phy } },
             },
           }
-        : { "education.sslc": { $elemMatch: { phy: "0.1" } } },
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
 
-      plustwo_maths < 100
+      plustwo_maths
         ? {
             "education.plustwo": {
               $elemMatch: { maths: { $gte: plustwo_maths } },
             },
           }
-        : { "education.plustwo": { $elemMatch: { maths: "0.1" } } },
-      plustwo_che < 100
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+      plustwo_che
         ? {
             "education.plustwo": { $elemMatch: { che: { $gte: plustwo_che } } },
           }
-        : { "education.plustwo": { $elemMatch: { che: "0.1" } } },
-      plustwo_phy < 100
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+      plustwo_phy
         ? {
             "education.plustwo": {
               $elemMatch: { phy: { $gte: plustwo_phy } },
             },
           }
-        : { "education.plustwo": { $elemMatch: { phy: "0.1" } } },
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
       year
         ? {
             education: {
@@ -490,10 +415,10 @@ router.post("/get_filter_stud", async (req, res) => {
           }
         : {
             education: {
-              $elemMatch: { year: 0 },
+              $elemMatch: { branch: "sumeshji" },
             },
           },
-      cgpa < 10
+      cgpa
         ? {
             education: {
               $elemMatch: { cgpa: { $gte: cgpa } },
@@ -501,7 +426,7 @@ router.post("/get_filter_stud", async (req, res) => {
           }
         : {
             education: {
-              $elemMatch: { cgpa: { $gte: "sumesh" } },
+              $elemMatch: { branch: "sumeshji" },
             },
           },
       suppli
@@ -512,18 +437,18 @@ router.post("/get_filter_stud", async (req, res) => {
           }
         : {
             education: {
-              $elemMatch: { back_papers: { $lte: "rajesh" } },
+              $elemMatch: { branch: "sumeshji" },
             },
           },
       branch
         ? {
             education: {
-              $elemMatch: { course: branch },
+              $elemMatch: { branch: branch },
             },
           }
         : {
             education: {
-              $elemMatch: { course: "sumeshji" },
+              $elemMatch: { branch: "sumeshji" },
             },
           },
 
@@ -532,7 +457,6 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.communication_languages": {
               $elemMatch: {
                 language_name: "english",
-                language_level: english_level,
               },
             },
           }
@@ -540,7 +464,6 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.communication_languages": {
               $elemMatch: {
                 language_name: "sumesh",
-                language_level: "rameh",
               },
             },
           },
@@ -550,7 +473,6 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.communication_languages": {
               $elemMatch: {
                 language_name: "hindi",
-                language_level: hindi_level,
               },
             },
           }
@@ -558,7 +480,21 @@ router.post("/get_filter_stud", async (req, res) => {
             "coding.communication_languages": {
               $elemMatch: {
                 language_name: "sumesh",
-                language_level: "rameh",
+              },
+            },
+          },
+      malayalam
+        ? {
+            "coding.communication_languages": {
+              $elemMatch: {
+                language_name: "malayalam",
+              },
+            },
+          }
+        : {
+            "coding.communication_languages": {
+              $elemMatch: {
+                language_name: "sumesh",
               },
             },
           },

@@ -106,7 +106,8 @@ const Container = styled.div`
     }
     .profile_btn,
     .skills_btn,
-    .certificate_btn {
+    .certificate_btn,
+    .interview_btn {
       background: #ff9900;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border-radius: 15px;
@@ -130,6 +131,9 @@ const Container = styled.div`
     }
     .skills_btn {
       margin-bottom: 30px;
+    }
+    .interview_btn {
+      margin-bottom: 20px;
     }
 
     .right {
@@ -160,8 +164,15 @@ const Container = styled.div`
     .user_name {
       display: flex;
       width: 300px;
-      overflow: scroll;
       margin-left: 5px;
+    }
+    @media screen and (max-width: 500px) {
+      .profile_name {
+        overflow: scroll;
+      }
+      .user_name {
+        overflow: scroll;
+      }
     }
     .current_status {
       margin-bottom: 10px;
@@ -240,7 +251,8 @@ const Container = styled.div`
       }
       .profile_btn,
       .skills_btn,
-      .certificate_btn {
+      .certificate_btn,
+      .interview_btn {
         width: 120px;
         height: 40px;
         font-size: 20px;
@@ -278,6 +290,9 @@ const Container = styled.div`
     .profile_buttons .skills_btn {
       /* margin-bottom: 0px;
       margin-right: 10px; */
+      margin: 20px 10px 20px 0;
+    }
+    .profile_buttons .interview_btn {
       margin: 20px 10px 20px 0;
     }
     .profile_container .right {
@@ -393,6 +408,22 @@ const Container = styled.div`
       width: 150px;
     }
   }
+  .interview_container {
+    padding: 50px;
+  }
+  .companies_select_title {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 46px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: 883px) {
+    .companies_select_title {
+      font-size: 28px;
+    }
+  }
 `;
 
 const Profilepage = () => {
@@ -430,7 +461,7 @@ const Profilepage = () => {
 
   useEffect(() => {
     callNavbar();
-  }, []);
+  }, [block]);
 
   return (
     <Container bg={bg1}>
@@ -481,7 +512,7 @@ const Profilepage = () => {
             Student of{" "}
             {data && data.education[0] && data.education[0].institution_name}
           </div>
-          <Approve
+          {/* <Approve
             color={
               data && data?.ver === 0
                 ? "red"
@@ -507,13 +538,16 @@ const Profilepage = () => {
                 ? "partially verfied"
                 : "verified"}
             </div>
-          </Approve>
+          </Approve> */}
           <div className="profile_buttons">
             <div className="profile_btn" onClick={() => setblock(1)}>
               Profile
             </div>
             <div className="skills_btn" onClick={() => setblock(2)}>
               Skills
+            </div>
+            <div className="interview_btn" onClick={() => setblock(4)}>
+              Interview
             </div>
             <div className="certificate_btn" onClick={() => setblock(3)}>
               Certificates
@@ -605,13 +639,19 @@ const Profilepage = () => {
                       item.language_name &&
                       item.language_name !== "null" && (
                         <li key={index}>
-                          {item.language_name} : {item.language_level}
+                          {item.language_name} :{" "}
+                          {item.language_level === "undefined"
+                            ? "beginner"
+                            : item.language_level}
                         </li>
                       )
                   )}
               </ul>
 
-              {data && data.coding[0] && data.coding[0].dev_status ? (
+              {data &&
+              data.coding[0] &&
+              data.coding[0].dev_status &&
+              data.coding[0].dev_status !== "undefined" ? (
                 <div className="second_skill">
                   He is an {"\t"}
                   {data && data.coding[0] && data.coding[0].dev_status}
@@ -649,6 +689,26 @@ const Profilepage = () => {
               <div className="udemy_certificate">
                 <div className="name_udemy">Udemy</div>
                 <div className="view">View</div>
+              </div>
+            </div>
+          )}
+          {block === 4 && (
+            <div className="interview_container">
+              <div className="companies_select_title">
+                Companies Selected For Interview:
+              </div>
+              <div className="companies_select">
+                <ul>
+                  {data &&
+                    data.placement[0] &&
+                    data.placement
+                      .map((item, i) => item.company_name)
+                      .filter(
+                        (value, index, array_ref) =>
+                          array_ref.indexOf(value) === index
+                      )
+                      .map((x, b) => <li key={b}>{x}</li>)}
+                </ul>
               </div>
             </div>
           )}

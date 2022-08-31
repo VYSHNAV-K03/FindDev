@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import code_bro from "../assets/form/Code typing-bro.svg";
 import appdevsvg from "../assets/form/App development-bro.svg";
@@ -6,6 +6,7 @@ import discussionsvg from "../assets/form/Discussion-amico.svg";
 import axios from "axios";
 import { apiUrl } from "../data/api";
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const Coc = styled.div`
   display: flex;
@@ -1158,7 +1159,7 @@ const Form = () => {
             withCredentials: true,
           }
         );
-        // navigate("/profile");
+        navigate("/profile");
         setbtnloader(false);
       } catch (error) {
         setbtnloader(false);
@@ -1166,6 +1167,26 @@ const Form = () => {
       }
     }
   };
+
+  const callNavbar = async () => {
+    try {
+      const res = await axios.get(apiUrl + `/getData`, {
+        withCredentials: true,
+      });
+
+      if (res.status !== 200) {
+        throw new Error(res.error);
+      }
+    } catch (e) {
+      navigate("/login");
+    }
+  };
+
+  // console.log(login);
+
+  useEffect(() => {
+    callNavbar();
+  }, []);
 
   return (
     <Container>
@@ -1733,9 +1754,13 @@ const Form = () => {
             <button className="submit_edu" onClick={() => setcomponent(3)}>
               Back
             </button>
-            <button className="done_edu" onClick={PostData}>
-              Submit
-            </button>
+            {btnloader ? (
+              <CircularProgress />
+            ) : (
+              <button className="done_edu" onClick={PostData}>
+                Submit
+              </button>
+            )}
           </div>
         </Edu>
       )}

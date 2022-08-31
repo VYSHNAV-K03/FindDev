@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Buffer } from "buffer";
 import { apiUrl } from "../data/api";
+import Navbar from "../components/Navbar";
 
 const Approve = styled.div`
   background: ${(props) => props.color};
@@ -48,217 +49,222 @@ const Container = styled.div`
     display: flex;
     margin: 20px auto 10px 30px;
   }
-  .profile_container {
-    width: min(95%, 1300px);
-    padding: 20px;
+  .profile_container_main {
+    height: calc(100vh - 95px);
     background-color: #fff;
     display: flex;
-    justify-content: space-around;
     margin: auto;
-    .left {
-      width: 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .image {
-      width: 140px;
-      height: 140px;
-      margin-bottom: 10px;
-    }
+  }
+  .left {
+    height: 100%;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.22);
+  }
+  .image {
+    width: 159px;
+    height: 159px;
+    margin: 20px 0 15px 0;
+  }
 
-    .image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid black;
+  .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .name {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    /* identical to box height */
+
+    color: #4a5a96;
+    margin-bottom: 5px;
+  }
+  .detail1 {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+
+    color: #000000;
+
+    margin-bottom: 40px;
+  }
+
+  .profile_btn,
+  .skills_btn,
+  .certificate_btn,
+  .interview_btn,
+  .Select_stud_btn,
+  .edu_btn {
+    border: 1px solid #4a5a96;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #4a5a96;
+
+    width: 130px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    :hover {
+      transform: scale(1.05);
+    }
+  }
+  .profile_btn {
+    margin: 20px 0;
+  }
+  .skills_btn {
+    margin-bottom: 20px;
+  }
+  .edu_btn {
+    margin-bottom: 20px;
+  }
+  .interview_btn {
+    margin-bottom: 20px;
+  }
+  .certificate_btn {
+    margin-bottom: 20px;
+  }
+
+  .right {
+    display: flex;
+    width: 100%;
+  }
+  .profile_container {
+    display: flex;
+    min-width: 900px;
+    margin: auto;
+    flex-direction: column;
+    font-size: 1.8rem;
+    font-family: "Montserrat";
+  }
+  .name_container {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  .profile_name {
+    display: flex;
+    width: 300px;
+    margin-left: 5px;
+  }
+
+  .email_container {
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .user_name {
+    display: flex;
+    width: 300px;
+    margin-left: 5px;
+  }
+
+  .current_status {
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .id_detail {
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .view {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 38px;
+    color: #ffffff;
+    margin-left: 10px;
+    background: #4a5a96;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    text-align: center;
+    width: 100px;
+    height: 35px;
+  }
+  .department_container {
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .language_container {
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .icon_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .linkedinimage,
+  .gitimage,
+  .twitterimage {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+  }
+  .linkedinimage img,
+  .gitimage img,
+  .twitterimage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .profile_name,
+  .user_name,
+  .status,
+  .department,
+  .language {
+    font-weight: bold;
+  }
+  @media screen and (max-width: 910px) {
+    .image {
+      width: 100px;
+      height: 100px;
     }
     .name {
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 600;
-      font-size: 30px;
-      line-height: 34px;
-      text-align: center;
-      color: #000000;
+      font-size: 25px;
     }
-    .detail1 {
-      font-family: "Inter";
-      font-style: normal;
-      line-height: 24px;
-      margin-bottom: 10px;
-    }
-
     .approve_container {
-      padding: 10px;
-      border-radius: 25px;
+      padding: 6px;
     }
     .approve {
-      color: #fff;
-      display: flex;
-      border-radius: 25px;
-    }
-
-    .tick_icon {
-      margin-right: 5px;
     }
     .profile_btn,
     .skills_btn,
-    .certificate_btn {
-      background: #ff9900;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 15px;
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 600;
-      font-size: 23px;
-      text-align: center;
-      line-height: 47px;
-      color: #ffffff;
-      width: 160px;
-      height: 50px;
-      cursor: pointer;
-      transition: all 0.1s ease-in-out;
-      :hover {
-        transform: scale(1.05);
-      }
+    .certificate_btn,
+    .interview_btn {
+      width: 120px;
+      height: 40px;
+      font-size: 20px;
+      line-height: 37px;
     }
-    .profile_btn {
-      margin: 30px 0;
-    }
-    .skills_btn {
-      margin-bottom: 30px;
-    }
-
     .right {
-      height: 700px;
-      /* background: url(${(props) => props.bg}); */
-      background-size: cover;
-      box-shadow: 5px 7px 24px 5px rgba(0, 0, 0, 0.11);
-      border-radius: 18px;
-      width: 80%;
-      display: flex;
+      height: 600px;
     }
     .profile_container {
-      display: flex;
-      margin: auto;
-      flex-direction: column;
-      font-size: 1.8rem;
-      font-family: "Inconsolata";
-      background: transparent;
-    }
-    .name_container {
-      display: flex;
-      margin-bottom: 10px;
-    }
-    .profile_name {
-      display: flex;
-      width: 300px;
-      overflow: scroll;
-      margin-left: 5px;
-    }
-    .email_container {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .user_name {
-      display: flex;
-      width: 300px;
-      overflow: scroll;
-      margin-left: 5px;
-    }
-    .current_status {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .id_detail {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .view {
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 38px;
-      color: #ffffff;
-      margin-left: 10px;
-      background: #47d065;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 15px;
-      text-align: center;
-      width: 100px;
-      height: 35px;
-    }
-    .department_container {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .language_container {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .icon_container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.5rem;
     }
     .linkedinimage,
     .gitimage,
     .twitterimage {
-      width: 60px;
-      height: 60px;
-      margin-right: 15px;
-    }
-    .linkedinimage img,
-    .gitimage img,
-    .twitterimage img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .profile_name,
-    .user_name,
-    .status,
-    .department,
-    .language {
-      font-weight: bold;
-    }
-    @media screen and (max-width: 910px) {
-      .image {
-        width: 100px;
-        height: 100px;
-      }
-      .name {
-        font-size: 25px;
-      }
-      .approve_container {
-        padding: 6px;
-      }
-      .approve {
-      }
-      .profile_btn,
-      .skills_btn,
-      .certificate_btn {
-        width: 120px;
-        height: 40px;
-        font-size: 20px;
-        line-height: 37px;
-      }
-      .right {
-        height: 600px;
-      }
-      .profile_container {
-        font-size: 1.5rem;
-      }
-      .linkedinimage,
-      .gitimage,
-      .twitterimage {
-        width: 50px;
-        height: 50px;
-      }
+      width: 50px;
+      height: 50px;
     }
   }
   @media screen and (max-width: 694px) {
@@ -279,6 +285,9 @@ const Container = styled.div`
     .profile_buttons .skills_btn {
       /* margin-bottom: 0px;
       margin-right: 10px; */
+      margin: 20px 10px 20px 0;
+    }
+    .profile_buttons .interview_btn {
       margin: 20px 10px 20px 0;
     }
     .profile_container .right {
@@ -394,6 +403,26 @@ const Container = styled.div`
       width: 150px;
     }
   }
+  .interview_container {
+    padding: 50px;
+  }
+  .companies_select_title {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 46px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: 883px) {
+    .companies_select_title {
+      font-size: 28px;
+    }
+  }
+  .placement_select_container {
+    padding: 50px;
+    background: coral;
+  }
 `;
 
 const Profilepage_admin_want = () => {
@@ -401,7 +430,7 @@ const Profilepage_admin_want = () => {
 
   const [data, setdata] = useState();
 
-  const [loader, setloader] = useState(true);
+  const [loader, setloader] = useState(false);
 
   const navigate = useNavigate();
 
@@ -411,7 +440,7 @@ const Profilepage_admin_want = () => {
   const id = location.state.id;
   const getDataProfile = async () => {
     try {
-      setloader(true);
+      // setloader(true);
 
       const res = await axios.post(
         apiUrl + `/student/get_stud_admin_want`,
@@ -424,10 +453,10 @@ const Profilepage_admin_want = () => {
       setdata(res.data);
 
       console.log(res.data);
-      setloader(false);
+      // setloader(false);
     } catch (error) {
       console.log(error);
-      setloader(false);
+      // setloader(false);
     }
   };
 
@@ -447,25 +476,27 @@ const Profilepage_admin_want = () => {
 
   useEffect(() => {
     getDataProfile();
-  }, []);
+  }, [block]);
 
   return (
-    <Container bg={bg1}>
-      {loader && (
-        <div className="loader">
-          <div className="loader_sub">
-            <div className="d-flex align-items-center">
-              <strong>Loading...</strong>
-              <div
-                className="spinner-border ms-auto"
-                role="status"
-                aria-hidden="true"
-              ></div>
+    <div className="main">
+      <Navbar />
+      <Container bg={bg1}>
+        {loader && (
+          <div className="loader">
+            <div className="loader_sub">
+              <div className="d-flex align-items-center">
+                <strong>Loading...</strong>
+                <div
+                  className="spinner-border ms-auto"
+                  role="status"
+                  aria-hidden="true"
+                ></div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <div className="button_container">
+        )}
+        {/* <div className="button_container">
         <button
           className="btn btn-outline-primary signout"
           onClick={() => navigate("/")}
@@ -478,224 +509,210 @@ const Profilepage_admin_want = () => {
         >
           Sign Out
         </button>
-      </div>
-      <div className="profile_container">
-        <div className="left">
-          <button
-            className="btn btn-outline-primary signout"
-            onClick={SendMail}
-          >
-            select this student
-          </button>
-          <div className="image">
-            <img
-              src={
-                data && data.profile
-                  ? `data:${data.profile.contentType};base64, ${Buffer.from(
-                      data.profile.data.data
-                    ).toString("base64")}`
-                  : profile
-              }
-              alt="profile"
-            />
-          </div>
-          <div className="name">{data && data.name}</div>
-          <div className="detail1">
-            Student of{" "}
-            {data && data.education[0] && data.education[0].institution_name}
-          </div>
-          <Approve
-            color={
-              data && data?.ver === 0
-                ? "red"
-                : data?.ver === 1
-                ? "orange"
-                : "#47d065"
-            }
-            className="approve_container"
-          >
-            <div className="approve">
-              <div className="tick_icon">
-                {data && data?.ver === 0 ? (
-                  <CancelIcon />
-                ) : data?.ver === 1 ? (
-                  <LoopIcon />
-                ) : (
-                  <CheckCircleIcon />
-                )}
+      </div> */}
+        <div className="profile_container_main">
+          <div className="left">
+            <div className="image">
+              <img
+                src={
+                  data && data.profile
+                    ? `data:${data.profile.contentType};base64, ${Buffer.from(
+                        data.profile.data.data
+                      ).toString("base64")}`
+                    : profile
+                }
+                alt="profile"
+              />
+            </div>
+            <div className="name">{data && data.name}</div>
+            <div className="detail1">
+              {data && data.education[0] && data.education[0].institution_name}
+            </div>
+
+            <div className="profile_buttons">
+              <div className="profile_btn" onClick={() => setblock(1)}>
+                Profile
               </div>
-              {data && data?.ver === 0
-                ? "Not verified"
-                : data?.ver === 1
-                ? "partially verfied"
-                : "verified"}
-            </div>
-          </Approve>
-          <div className="profile_buttons">
-            <div className="profile_btn" onClick={() => setblock(1)}>
-              Profile
-            </div>
-            <div className="skills_btn" onClick={() => setblock(2)}>
-              Skills
-            </div>
-            <div className="certificate_btn" onClick={() => setblock(3)}>
-              Certificates
+              <div className="skills_btn" onClick={() => setblock(2)}>
+                Skills
+              </div>
+              <div className="edu_btn" onClick={() => setblock(6)}>
+                Education
+              </div>
+              <div className="interview_btn" onClick={() => setblock(4)}>
+                Placement
+              </div>
+              <div className="certificate_btn" onClick={() => setblock(3)}>
+                Certificates
+              </div>
+              <div className="Select_stud_btn" onClick={() => setblock(5)}>
+                Select Student
+              </div>
             </div>
           </div>
-        </div>
-        <div className="right">
-          {block === 1 && (
-            <div className="profile_container">
-              <div className="name_container">
-                Name : <div className="profile_name">{data && data.name}</div>
-              </div>
-              <div className="email_container">
-                Email : <p className="user_name">{data && data.email}</p>
-              </div>
-              <div className="current_status">
-                Current status :{" "}
-                <div className="status">
-                  Student @{" "}
-                  {data &&
-                    data.education[0] &&
-                    data.education[0].institution_name}
+          <div className="right">
+            {block === 1 && (
+              <div className="profile_container">
+                <div className="name_container">
+                  Name : <div className="profile_name">{data && data.name}</div>
                 </div>
-              </div>
-              <div className="id_detail">
-                Id proof <div className="view">View</div>
-              </div>
-              <div className="department_container">
-                Dep :
-                <div className="department">
-                  {data && data.education[0] && data.education[0].course}
+                <div className="email_container">
+                  Email : <p className="user_name">{data && data.email}</p>
                 </div>
-              </div>
-              <div className="language_container">
-                Languages :{" "}
-                {data &&
-                data.coding[0] &&
-                data.coding[0].communication_languages[0] &&
-                data.coding[0].communication_languages[0].language_name ? (
-                  <div className="language">
+                <div className="current_status">
+                  Current status :{" "}
+                  <div className="status">
+                    Student @{" "}
                     {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[0] &&
-                      data.coding[0].communication_languages[0]
-                        .language_name}{" "}
-                    :{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[0] &&
-                      data.coding[0].communication_languages[0].language_level}
-                    ,{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[1] &&
-                      data.coding[0].communication_languages[1]
-                        .language_name}{" "}
-                    :{" "}
-                    {data &&
-                      data.coding[0] &&
-                      data.coding[0].communication_languages[1] &&
-                      data.coding[0].communication_languages[1].language_level}
+                      data.education[0] &&
+                      data.education[0].institution_name}
                   </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="icon_container">
-                <a
-                  href={
-                    data &&
+                </div>
+                <div className="id_detail">
+                  Id proof :<div className="view">View</div>
+                </div>
+                <div className="department_container">
+                  Dep :
+                  <div className="department">
+                    {data && data.education[0] && data.education[0].branch}
+                  </div>
+                </div>
+                <div className="language_container">
+                  Languages :{" "}
+                  {data &&
                     data.coding[0] &&
-                    data.coding[0].links[0] &&
-                    data.coding[0].links[0].linkedin
-                  }
-                  target="_blank"
-                  className="linkedinimage"
-                >
-                  <img src={linkedin} alt="" />
-                </a>
-                <div className="gitimage">
+                    data.coding[0].communication_languages &&
+                    data.coding[0].communication_languages.map(
+                      (item, index) =>
+                        item.language_name &&
+                        item.language_name !== "null" && (
+                          <li key={index}>{item.language_name}</li>
+                        )
+                    )}
+                </div>
+                <div className="icon_container">
                   <a
                     href={
                       data &&
                       data.coding[0] &&
                       data.coding[0].links[0] &&
-                      data.coding[0].links[0].github
+                      data.coding[0].links[0].linkedin
                     }
                     target="_blank"
                     className="linkedinimage"
                   >
-                    <img src={git} alt="" />
+                    <img src={linkedin} alt="" />
                   </a>
-                </div>
-                <div className="twitterimage">
-                  <img src={twitter} alt="" />
+                  <div className="gitimage">
+                    <a
+                      href={
+                        data &&
+                        data.coding[0] &&
+                        data.coding[0].links[0] &&
+                        data.coding[0].links[0].github
+                      }
+                      target="_blank"
+                      className="linkedinimage"
+                    >
+                      <img src={git} alt="" />
+                    </a>
+                  </div>
+                  <div className="twitterimage">
+                    <img src={twitter} alt="" />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          {block === 2 && (
-            <div className="skills_container">
-              <div className="known_languages">Languages:</div>
-              <ul>
-                {data &&
-                  data.coding[0] &&
-                  data.coding[0].languages &&
-                  data.coding[0].languages.map(
-                    (item, index) =>
-                      item.language_name && (
-                        <li key={index}>
-                          {item.language_name} : {item.language_level}
-                        </li>
-                      )
-                  )}
-              </ul>
-              {data &&
-              data.coding[0] &&
-              data.coding[0].development[0] &&
-              data.coding[0].development[0].developer ? (
-                <div className="second_skill">
-                  He is an{"\t"}
+            )}
+            {block === 2 && (
+              <div className="skills_container">
+                <div className="known_languages">Languages:</div>
+                <ul>
                   {data &&
                     data.coding[0] &&
-                    data.coding[0].development[0] &&
-                    data.coding[0].development[0].developer}
-                </div>
-              ) : (
-                <div className="second_skill">Not a Developer Now</div>
-              )}
+                    data.coding[0].languages &&
+                    data.coding[0].languages.map(
+                      (item, index) =>
+                        item.language_name &&
+                        item.language_name !== "null" && (
+                          <li key={index}>
+                            {item.language_name} :{" "}
+                            {item.language_level === "undefined"
+                              ? "beginner"
+                              : item.language_level}
+                          </li>
+                        )
+                    )}
+                </ul>
+                {data &&
+                data.coding[0] &&
+                data.coding[0].dev_status &&
+                data.coding[0].dev_status !== "undefined" ? (
+                  <div className="second_skill">
+                    He is an {"\t"}
+                    {data && data.coding[0] && data.coding[0].dev_status}
+                  </div>
+                ) : (
+                  <div className="second_skill">He is not a developer</div>
+                )}
 
-              <div className="current_status_skill">
-                Current Status : student &{" "}
-                {data && data.coding[0] && data.coding[0].working_status}
+                <div className="current_status_skill">
+                  Current Status : student{" "}
+                  {data &&
+                    data.coding[0] &&
+                    data.coding[0].dev_desc !== "undefined" &&
+                    "&"}
+                  {data &&
+                    data.coding[0] &&
+                    data.coding[0].dev_desc !== "undefined" &&
+                    data.coding[0].dev_desc}
+                </div>
               </div>
-            </div>
-          )}
-          {block === 3 && (
-            <div className="certificates_container">
-              <div className="college_id_certificate">
-                <div className="name_id">College Id</div>
-                <div className="view">View</div>
+            )}
+            {block === 3 && (
+              <div className="certificates_container">
+                <div className="college_id_certificate">
+                  <div className="name_id">College Id</div>
+                  <div className="view">View</div>
+                </div>
+                <div className="sslc_certificate">
+                  <div className="name_sslc">SSLC Certificate</div>
+                  <div className="view">View</div>
+                </div>
+                <div className="plustwo_certificate">
+                  <div className="name_plustwo">+2 Certificate</div>
+                  <div className="view">View</div>
+                </div>
+                <div className="udemy_certificate">
+                  <div className="name_udemy">Udemy</div>
+                  <div className="view">View</div>
+                </div>
               </div>
-              <div className="sslc_certificate">
-                <div className="name_sslc">SSLC Certificate</div>
-                <div className="view">View</div>
+            )}
+            {block === 4 && (
+              <div className="interview_container">
+                <div className="companies_select_title">
+                  Companies Selected For Interview:
+                </div>
+                <div className="companies_select">
+                  <ul>
+                    {data &&
+                      data.placement[0] &&
+                      data.placement
+                        .map((item, i) => item.company_name)
+                        .filter(
+                          (value, index, array_ref) =>
+                            array_ref.indexOf(value) === index
+                        )
+                        .map((x, b) => <li key={b}>{x}</li>)}
+                  </ul>
+                </div>
               </div>
-              <div className="plustwo_certificate">
-                <div className="name_plustwo">+2 Certificate</div>
-                <div className="view">View</div>
-              </div>
-              <div className="udemy_certificate">
-                <div className="name_udemy">Udemy</div>
-                <div className="view">View</div>
-              </div>
-            </div>
-          )}
+            )}
+            {block === 5 && <div className="placement_select_container"></div>}
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
