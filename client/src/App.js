@@ -10,6 +10,9 @@ import Profilepage_admin_want from "./pages/Profilepage_admin_want";
 import Form from "./pages/Form";
 import Landing from "./pages/Landing";
 import ProfilePageHish from "./pages/ProfilePageHish";
+import Rsvp1 from "./pages/Rsvp1";
+import SignIn_Rsvp from "./pages/Login-Rsvp";
+import Tutorial from "./pages/Tutorial";
 
 function App() {
   return (
@@ -31,6 +34,9 @@ function App() {
           exact
           element={<Profilepage_admin_want />}
         />
+        <Route path="/rsvp1" exact element={<Rsvp1 />} />
+        <Route path="/login_rsvp" exact element={<SignIn_Rsvp />} />
+        <Route path="/tutorial" exact element={<Tutorial />} />
       </Routes>
     </>
   );

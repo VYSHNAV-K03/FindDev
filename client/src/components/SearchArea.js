@@ -12,14 +12,43 @@ import logo_skill from "../assets/icons/Ellipse 1.png";
 import logo_edu from "../assets/icons/Ellipse 2.png";
 import logo_comm from "../assets/icons/Ellipse 3.png";
 import right_arrow from "../assets/icons/right_arrow.png";
+import { useDispatch } from "react-redux";
+import { local_storage_clear } from "../actions";
 
 const Container = styled.div`
-  min-height: 180px;
-  padding: 10px;
+  padding: 50px 0 50px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  .clear_search_filter {
+    position: absolute;
+    right: 15vw;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 137px;
+    height: 39px;
+
+    background: #4a5a96;
+    border-radius: 10px;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #ffffff;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 1130px) {
+    .clear_search_filter {
+      right: 5vw;
+    }
+  }
   .searchbyfilter_btn {
     background: #3d56b2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -418,7 +447,12 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 723px) {
-    min-height: 100px;
+    padding: 15px 5px 50px 5px;
+    .clear_search_filter {
+      font-size: 15px;
+      width: 107px;
+      height: 29px;
+    }
     .searchbyfilter_btn {
       width: 354px;
       height: 50px;
@@ -558,6 +592,8 @@ const SearchArea = () => {
 
   const [popup, setpopup] = useState(false);
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const [data, setdata] = useState();
@@ -692,14 +728,19 @@ const SearchArea = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(dev_tech);
-    console.log(english);
-    console.log(hindi);
-  }, [malayalam, english, dev_tech]);
+  useEffect(() => {}, []);
 
   return (
     <Container>
+      <div
+        className="clear_search_filter"
+        onClick={() => {
+          localStorage.removeItem("ids");
+          dispatch(local_storage_clear());
+        }}
+      >
+        Clear Filters
+      </div>
       <div className="searchbyfilter_btn">
         <div className="filter_icon_btn" onClick={() => setfilter_hish(1)}>
           <img src={filter_icon} alt="" />

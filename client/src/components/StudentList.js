@@ -11,6 +11,8 @@ import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
 import search_by_name from "../assets/icons/search_filter_name.png";
 import icon_right_blue from "../assets/icons/icon_right_blue.png";
+import { useDispatch, useSelector } from "react-redux";
+import { local_storage_off } from "../actions";
 
 const Container = styled.div`
   position: relative;
@@ -213,6 +215,10 @@ const StudentList = (props) => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const localstate = useSelector((state) => state.changeLocalStorage);
+
   console.log(props.id);
   // props.id ? setnu_un(true) : setnu_un(false);
 
@@ -227,6 +233,7 @@ const StudentList = (props) => {
       });
       setdata(res.data);
       setloader(false);
+      dispatch(local_storage_off());
     } catch (error) {
       console.log(error);
       setloader(false);
@@ -238,15 +245,17 @@ const StudentList = (props) => {
   // console.log(JSON.parse(localStorage.getItem("ids")));
 
   // console.log(localStorage.ids);
+  console.log(localstate);
 
   useEffect(() => {
     getStudentList();
+
     if (props.id) {
       setnu_un(true);
     } else {
       setnu_un(false);
     }
-  }, [props.id]);
+  }, [localstate, localStorage.ids]);
 
   return (
     <Container>

@@ -128,7 +128,6 @@ const DetailsForm = () => {
       formData.append("python", python);
       formData.append("python", python);
 
-
       const res = await axios.post(
         apiUrl + `/student/upload_stud`,
         {

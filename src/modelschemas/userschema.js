@@ -152,6 +152,38 @@ const userschema = new mongoose.Schema(
           type: String,
           default: "",
         },
+        level_of_placement: {
+          type: Number,
+        },
+        current_status: {
+          type: Number,
+        },
+        response: {
+          type: Number,
+        },
+      },
+    ],
+    notifications: [
+      {
+        company_name: {
+          type: String,
+          default: "",
+        },
+        level_of_placement: {
+          type: Number,
+        },
+        date: {
+          type: Date,
+        },
+        time: {
+          type: String,
+        },
+        type_exam: {
+          type: Number,
+        },
+        mode: {
+          type: Number,
+        },
       },
     ],
 

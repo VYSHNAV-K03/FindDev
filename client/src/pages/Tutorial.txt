@@ -1,0 +1,52 @@
+userschema we want 
+
+placement :[
+    {
+        company_name:infosys,
+        level_of_placement:0,
+        current_status:send/not,         // 1/0  
+        response:accept/reject/pending,  // 1/2/0
+        content:[                        //it will send to mail not required in db
+            {
+                date:11/3/22,
+                time:9:00am,
+                place:
+            }
+        ]
+    }
+]
+notification:[   //notification page 
+    {
+        company_name,
+        level_of_placement
+        date:nd,
+        required:array,
+        description,
+        type,
+        mode,
+    }
+]
+
+///finished
+
+sendmail wrt response
+
+interval section check whether student accept or reject
+
+if reject no remainder  
+
+
+if company send mail -> user reject:response :2 -> in database there is company_name 
+
+filter section -> selected students -> show selection details : company_name,level_of_placement,response
+
+
+
+
+//steps task
+
+1. notification and mail send setup
+2. notification page -> accept/reject
+3. doyou is select -> pending page -> next page
+4. filter selected students
+5. show filter details : btech, coding, placement, communication
