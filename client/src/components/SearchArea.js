@@ -11,6 +11,7 @@ import down_icon from "../assets/icons/search_down_icon.png";
 import logo_skill from "../assets/icons/Ellipse 1.png";
 import logo_edu from "../assets/icons/Ellipse 2.png";
 import logo_comm from "../assets/icons/Ellipse 3.png";
+import logo_placement from "../assets/icons/placement_logo_filter.png";
 import right_arrow from "../assets/icons/right_arrow.png";
 import { useDispatch } from "react-redux";
 import { local_storage_clear } from "../actions";
@@ -627,6 +628,9 @@ const SearchArea = () => {
   const [suppli, setsuppli] = useState();
   const [branch, setbranch] = useState();
 
+  const [level_placement, setlevel_placement] = useState();
+  const [response, setresponse] = useState();
+
   const [english, setenglish] = useState(false);
   const [hindi, sethindi] = useState(false);
   const [malayalam, setmalayalam] = useState(false);
@@ -661,6 +665,8 @@ const SearchArea = () => {
           cgpa,
           suppli,
           branch,
+          level_placement,
+          response,
         },
         {
           withCredentials: true,
@@ -720,6 +726,8 @@ const SearchArea = () => {
       setbranch();
       setenglish(false);
       sethindi(false);
+      setlevel_placement();
+      setresponse();
 
       setbtnloader(false);
     } catch (error) {
@@ -799,6 +807,15 @@ const SearchArea = () => {
                 <img src={logo_comm} alt="" />
               </div>
               <div className="titile_communication">Communication</div>
+              <div className="icon_comm">
+                <img src={right_arrow} alt="" />
+              </div>
+            </div>
+            <div className="educationbased" onClick={() => setfilter_hish(10)}>
+              <div className="logo_communication">
+                <img src={logo_placement} alt="" />
+              </div>
+              <div className="titile_communication">Placement</div>
               <div className="icon_comm">
                 <img src={right_arrow} alt="" />
               </div>
@@ -1187,299 +1204,64 @@ const SearchArea = () => {
             </div>
           </div>
         )}
+        {filter_hish === 10 && (
+          <div className="education_sslc_filter_select">
+            <div
+              className="sslc_title_filter7"
+              onClick={() => {
+                setfilter_hish(1);
+                setlevel_placement();
+                setresponse();
+              }}
+            >
+              Placement
+            </div>
+            <div className="sslc_filter7">
+              <div className="filter7_phy">
+                <label htmlFor="year_btech">Level</label>
+                <select
+                  name="year"
+                  id="year_btech"
+                  onChange={(e) => setlevel_placement(e.target.value)}
+                >
+                  <option value=""></option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>{" "}
+              </div>
+              <div className="filter7_che">
+                <label htmlFor="branch_btech">Response</label>
+                <select
+                  name="branch"
+                  id="branch_btech"
+                  onChange={(e) => setresponse(e.target.value)}
+                >
+                  <option value=""></option>
+                  <option value="p">Pending</option>
+                  <option value="a">Accept</option>
+                  <option value="r">Reject</option>
+                </select>{" "}
+              </div>{" "}
+              <button
+                className="submit_communication"
+                onClick={() => {
+                  PostData();
+                  localStorage.setItem("filter", JSON.stringify("placement"));
+                }}
+              >
+                {btnloader ? "loading" : "Submit"}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </Container>
   );
 };
 
 export default SearchArea;
-
-// {popup && (
-//   <div className="popup" onSubmit={PostData}>
-//     <div className="close" onClick={() => setpopup(false)}>
-//       <CloseIcon />
-//     </div>
-
-//     <select
-//       className="form-select filter_contents"
-//       aria-label="sumesh"
-//       onChange={(e) => setfilter_content(e.target.value)}
-//     >
-//       <option defaultValue>Filter</option>
-//       <option value="skill">Skill based</option>
-//       <option value="education">Education</option>
-//       <option value="communication">communication </option>
-//     </select>
-//     {filter_content === "skill" ? (
-//       <select
-//         className="form-select filter_contents"
-//         aria-label="ramesh"
-//         onChange={(e) => setfilter_skill(e.target.value)}
-//       >
-//         <option defaultValue>Filter</option>
-//         <option value="coding">coding languages</option>
-//         <option value="dev">development</option>
-//         <option value="hardware">Hardware</option>
-//       </select>
-//     ) : filter_content === "education" ? (
-//       <select
-//         className="form-select filter_contents"
-//         aria-label="satheesh"
-//         onChange={(e) => setfilter_education(e.target.value)}
-//       >
-//         <option defaultValue>Filter</option>
-//         <option value="sslc">sslc</option>
-//         <option value="plustwo">plustwo</option>
-//         <option value="btech">btech</option>
-//       </select>
-//     ) : filter_content === "communication" ? (
-//       <div className="communication_language_div">
-//         <input
-//           type="checkbox"
-//           id="english"
-//           name="communication_language_name"
-//           onClick={() => setenglish(!english)}
-//         />
-//         <label htmlFor="english">English</label>
-
-//         <br />
-//         <input
-//           type="checkbox"
-//           id="hindi"
-//           name="communication_language_name"
-//           onClick={() => sethindi(!hindi)}
-//         />
-//         <label htmlFor="hindi">Hindi</label>
-//         <br />
-//         <input
-//           type="checkbox"
-//           id="malayalam"
-//           name="communication_language_name"
-//           onClick={() => setmalayalam(!malayalam)}
-//         />
-//         <label htmlFor="malayalam">malayalam</label>
-//       </div>
-//     ) : (
-//       <></>
-//     )}
-
-//     {filter_content === "skill" && filter_skill === "coding" && (
-//       <div className="coding_language_div">
-//         <br />
-//         {/* python */}
-//         <input
-//           type="checkbox"
-//           id="python"
-//           name="coding_language_name"
-//           onClick={() => setpython(!python)}
-//         />
-//         <label htmlFor="python">Python</label>
-//         <br />
-//         {/* c */}
-//         <input
-//           type="checkbox"
-//           id="c"
-//           name="coding_language_name"
-//           value="c"
-//           onClick={() => setc(!c)}
-//         />
-//         <label htmlFor="c">C</label>
-
-//         <br />
-//         {/* c++ */}
-//         <input
-//           type="checkbox"
-//           id="c++"
-//           name="coding_language_name"
-//           value="c++"
-//           onClick={() => setcplus(!cplus)}
-//         />
-//         <label htmlFor="c++">C++</label>
-
-//         <br />
-//         {/* js */}
-//         <input
-//           type="checkbox"
-//           id="js"
-//           name="coding_language_name"
-//           value="js"
-//           onClick={() => setjs(!js)}
-//         />
-//         <label htmlFor="js">Javascript</label>
-
-//         <br />
-//         {/* sql */}
-//         <input
-//           type="checkbox"
-//           id="sql"
-//           name="coding_language_name"
-//           value="sql"
-//           onClick={() => setsql(!sql)}
-//         />
-//         <label htmlFor="sql">SQL</label>
-//       </div>
-//     )}
-
-//     {filter_content === "skill" && filter_skill === "dev" && (
-//       <div className="development_div">
-//         <input
-//           type="checkbox"
-//           id="web developer"
-//           name="development_name"
-//           style={{ marginRight: "5px" }}
-//           onClick={() => setdev_tech("Web Developer")}
-//         />
-//         <label htmlFor="web developer">Web Developer</label>
-//         <br />
-//         <input
-//           type="checkbox"
-//           id="app developer"
-//           name="development_name"
-//           style={{ marginRight: "5px" }}
-//           onClick={() => setdev_tech("App Developer")}
-//         />
-//         <label htmlFor="app developer">App Developer</label> <br />
-//         <input
-//           type="checkbox"
-//           id="game developer"
-//           name="development_name"
-//           style={{ marginRight: "5px" }}
-//           onClick={() => setdev_tech("Game Developer")}
-//         />
-//         <label htmlFor="game developer">Game Developer</label>
-//         <br />
-//         <input
-//           type="checkbox"
-//           id="ai developer"
-//           name="development_name"
-//           style={{ marginRight: "5px" }}
-//           onClick={() => setdev_tech("AI Developer")}
-//         />
-//         <label htmlFor="ai developer">AI Developer</label>
-//       </div>
-//     )}
-
-//     {filter_content === "education" && filter_education === "sslc" && (
-//       <div className="sslc_content">
-//         Physics :{" "}
-//         <input
-//           type="number"
-//           name="physics"
-//           id="physics"
-//           placeholder="percentage"
-//           onChange={(e) => setsslc_phy(e.target.value)}
-//         />{" "}
-//         <br />
-//         Maths :{" "}
-//         <input
-//           type="number"
-//           name="maths"
-//           id="maths"
-//           placeholder="percentage"
-//           onChange={(e) => setsslc_maths(e.target.value)}
-//         />{" "}
-//         <br />
-//         Chemistry :{" "}
-//         <input
-//           type="number"
-//           name="chemistry"
-//           id="chemistry"
-//           placeholder="percentage"
-//           onChange={(e) => setsslc_che(e.target.value)}
-//         />
-//       </div>
-//     )}
-
-//     {filter_content === "education" && filter_education === "plustwo" && (
-//       <div className="sslc_content">
-//         Physics :{" "}
-//         <input
-//           type="number"
-//           name="physics"
-//           id="physics"
-//           placeholder="percentage"
-//           onChange={(e) => setplustwo_phy(e.target.value)}
-//         />{" "}
-//         <br />
-//         Maths :{" "}
-//         <input
-//           type="number"
-//           name="maths"
-//           id="maths"
-//           placeholder="percentage"
-//           onChange={(e) => setplustwo_maths(e.target.value)}
-//         />{" "}
-//         <br />
-//         Chemistry :{" "}
-//         <input
-//           type="number"
-//           name="chemistry"
-//           id="chemistry"
-//           placeholder="percentage"
-//           onChange={(e) => setplustwo_che(e.target.value)}
-//         />
-//       </div>
-//     )}
-
-//     {filter_content === "education" && filter_education === "btech" && (
-//       <div className="sslc_content">
-//         <br />
-//         <label>Year : </label>
-//         <select
-//           name="year"
-//           style={{ marginLeft: "10px", marginBottom: "10px" }}
-//           onChange={(e) => setyear(e.target.value)}
-//         >
-//           <option value=""></option>
-//           <option value="1">1</option>
-//           <option value="2">2</option>
-//           <option value="3">3</option>
-//           <option value="4">4</option>
-//         </select>
-//         <br />
-//         <label htmlFor="branch">Branch : </label>
-//         <select
-//           name="branch"
-//           style={{ marginLeft: "10px", marginBottom: "10px" }}
-//           onChange={(e) => setbranch(e.target.value)}
-//         >
-//           <option value=""></option>
-//           <option value="CSE">CSE</option>
-//           <option value="MECH">MECH</option>
-//           <option value="IT">IT</option>
-//           <option value="EC">ECE</option>
-//           <option value="EEE">EEE</option>
-//           <option value="CIVIL">CIVIL</option>
-//         </select>
-//         <br />
-//         CGPA :{" "}
-//         <input
-//           type="number"
-//           name="cgpa"
-//           id="cgpa"
-//           placeholder="till current semester"
-//           onChange={(e) => setcgpa(e.target.value)}
-//         />{" "}
-//         <br />
-//         Back Papers :{" "}
-//         <input
-//           type="number"
-//           name="back_paper"
-//           id="back_paper"
-//           placeholder="maximum backpapers"
-//           onChange={(e) => setsuppli(e.target.value)}
-//         />
-//       </div>
-//     )}
-
-//     {filter_content && filter_content !== "Filter" && (
-//       <button
-//         className="btn btn-outline-success submit_btn"
-//         type="submit"
-//         onClick={PostData}
-//       >
-//         Submit
-//       </button>
-//     )}
-//   </div>
-// )}

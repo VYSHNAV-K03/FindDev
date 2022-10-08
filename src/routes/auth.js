@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser"); //this is used for getting req.co
 const { upload } = require("../helpers/filehelper");
 const Authenticate = require("../middleware/authenticate");
 const wbm = require("wbm");
+const { emitWarning } = require("process");
 
 router.use(cookieParser());
 
@@ -113,6 +114,17 @@ router.get("/getData", Authenticate, async (req, res) => {
     res.status(200).send(req.rootUser);
   } catch (error) {
     res.status(400).send(error);
+  }
+});
+
+router.post("/getstudent_notification", Authenticate, async (req, res) => {
+  try {
+    const id = req.body.id;
+    const user = await USER.findOne({ _id: id });
+    console.log(user);
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(400).send("user not found");
   }
 });
 

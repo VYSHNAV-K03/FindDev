@@ -29,24 +29,9 @@ notification:[   //notification page
 
 ///finished
 
-sendmail wrt response
-
-interval section check whether student accept or reject
-
-if reject no remainder  
-
-
-if company send mail -> user reject:response :2 -> in database there is company_name 
-
-filter section -> selected students -> show selection details : company_name,level_of_placement,response
-
-
-
 
 //steps task
 
-1. notification and mail send setup
-2. notification page -> accept/reject
-3. doyou is select -> pending page -> next page
-4. filter selected students
+1. notification expires when student not responded
+2. remainder setup
 5. show filter details : btech, coding, placement, communication

@@ -4,6 +4,7 @@ import image1 from "../assets/studentprofileimages/chikkubhai.png";
 import DoneIcon from "@mui/icons-material/Done";
 import LoopIcon from "@mui/icons-material/Loop";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import loader_logo from "../assets/loader/onetouch_logo.png";
 import { apiUrl } from "../data/api";
 import profile1 from "../assets/profile_dummy/profile1.png";
 import axios from "axios";
@@ -13,11 +14,89 @@ import search_by_name from "../assets/icons/search_filter_name.png";
 import icon_right_blue from "../assets/icons/icon_right_blue.png";
 import { useDispatch, useSelector } from "react-redux";
 import { local_storage_off } from "../actions";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   position: relative;
   width: min(100vw, 1300px);
   margin: auto;
+ 
+  .loader{
+    position: absolute;
+    width:300px;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin:0 auto;
+  }
+  .loader_image{
+    width:200px;
+    height:200px;
+
+  }
+  .loader_image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .loader_line_container{
+    width:300px;
+    height:10px;
+
+    background: rgba(0, 0, 0, 0.34);
+border-radius: 5px;
+position: relative;
+
+  }
+  .line_loader{
+    position: absolute;
+    background: #4A5A96;
+border-radius: 5px;
+
+top:0;
+bottom:0;
+left:0;
+width:${(props) => (props.loader ? "250px" : "300px")};
+animation:loader 5s ease ;
+  }
+
+  @keyframes loader{
+    from{
+      width:0px;
+    }
+    to{
+      width:${(props) => (props.loader ? "250px" : "300px")};
+    }
+  }
+  @media screen and (max-width:700px){
+    .loader_image{
+    width:130px;
+    height:130px;
+
+  }
+  .loader_line_container{
+    width:150px;
+    height:8px;
+  }
+  .line_loader{
+width:${(props) => (props.loader ? "120px" : "150px")};
+
+  }
+
+  @keyframes loader{
+    from{
+      width:0px;
+    }
+    to{
+      width:${(props) => (props.loader ? "120px" : "150px")};
+    }
+  }
+  }
+
   .input_search_name {
     height: 80px;
     padding: 20px;
@@ -87,6 +166,7 @@ const Container = styled.div`
   }
   .first_row {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 10px;
   }
   .name {
@@ -112,13 +192,15 @@ const Container = styled.div`
 
   .second_row {
     display: flex;
+    flex-wrap: wrap;
   }
   .year,
   .branch,
   .cgpa,
   .backpaper,
   .icon_right {
-    margin-right: 20px;
+    margin-right: 25px;
+    margin-bottom: 10px
 
     font-family: "Montserrat";
     font-style: normal;
@@ -165,8 +247,8 @@ const Container = styled.div`
       line-height: 14px;
     }
     .image {
-      width: 40px;
-      height: 40px;
+      min-width: 50px;
+      min-height: 50px;
     }
     .first_row {
       margin-bottom: 5px;
@@ -186,9 +268,9 @@ const Container = styled.div`
       font-size: 14px;
     }
     .last_content {
-      width: 95px;
-      height: 33px;
-      font-size: 18px;
+      min-width: 95px;
+      min-height: 33px;
+      font-size: 16px;
     }
     .icon_right {
       width: 20px;
@@ -211,7 +293,9 @@ const StudentList = (props) => {
 
   const [nu_un, setnu_un] = useState(false);
 
-  const [loader, setloader] = useState(true);
+  const [loader, setloader] = useState(false);
+
+  const [name, setname] = useState("");
 
   const navigate = useNavigate();
 
@@ -240,6 +324,21 @@ const StudentList = (props) => {
     }
   };
 
+  const callNavbar = async () => {
+    try {
+      const res = await axios.get(apiUrl + `/getData`, {
+        withCredentials: true,
+      });
+
+      const data = res.data;
+
+      setname(data.name);
+    } catch (e) {
+      console.log("error", e);
+      // navigate("/login");
+    }
+  };
+
   // console.log(data);
   // console.log(nu_un);
   // console.log(JSON.parse(localStorage.getItem("ids")));
@@ -249,16 +348,17 @@ const StudentList = (props) => {
 
   useEffect(() => {
     getStudentList();
-
     if (props.id) {
       setnu_un(true);
     } else {
       setnu_un(false);
     }
+    callNavbar();
+    console.log(name);
   }, [localstate, localStorage.ids]);
 
   return (
-    <Container>
+    <Container loader={loader}>
       <div className="input_search_name">
         <div className="input_search_name_1">
           <div className="search_name_icon">
@@ -271,21 +371,17 @@ const StudentList = (props) => {
           />
         </div>
       </div>
-      {loader && (
+      {loader ? (
         <div className="loader">
-          <div className="loader_sub">
-            <div className="d-flex align-items-center">
-              <strong>Loading...</strong>
-              <div
-                className="spinner-border ms-auto"
-                role="status"
-                aria-hidden="true"
-              ></div>
-            </div>
+          <div className="loader_image">
+            <img src={loader_logo} alt="" />
+          </div>
+          <div className="loader_line_container">
+            <div className="line_loader"></div>
           </div>
         </div>
-      )}
-      {data &&
+      ) : (
+        data &&
         data
           .filter((item) => item.name.toLowerCase().includes(query))
           .map(
@@ -308,20 +404,112 @@ const StudentList = (props) => {
                   </div>
                   <div className="center_content">
                     <div className="first_row">
-                      <div className="name">Emilia</div>
+                      <div className="name">{element.name}</div>
                       <div className="college_name">
                         College of Engineerig, Thalassery
                       </div>
                     </div>
                     {JSON.parse(localStorage.getItem("filter")) === "btech" && (
+                      <>
+                        {element.education[0] && (
+                          <div className="second_row">
+                            <div className="year">
+                              Year : {element.education[0].year}
+                            </div>
+                            <div className="branch">
+                              Branch : {element.education[0].branch}
+                            </div>
+                            <div className="cgpa">
+                              CGPA : {element.education[0].cgpa}
+                            </div>
+                            <div className="backpaper">
+                              Backpapers : {element.education[0].back_papers}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {JSON.parse(localStorage.getItem("filter")) ===
+                      "placement" &&
+                      element.placement &&
+                      element.placement
+                        .filter((ele) => ele.company_name === name)
+                        .map((place) => (
+                          <div className="second_row" key={place._id}>
+                            <div className="year">
+                              Level : {place.level_of_placement}
+                            </div>
+                            <div className="branch">
+                              Response :{" "}
+                              {place.response === 1
+                                ? "accept"
+                                : place.response === 2
+                                ? "reject"
+                                : "pending"}
+                            </div>
+                          </div>
+                        ))}
+                    {JSON.parse(localStorage.getItem("filter")) ===
+                      "coding" && (
                       <div className="second_row">
-                        <div className="year">Year : 4</div>
-                        <div className="branch">Branch : CSE</div>
-                        <div className="cgpa">CGPA : 8.2</div>
-                        <div className="backpaper">Backpapers : 2</div>
-                        <div className="icon_right">
+                        {element.coding[0] &&
+                          element.coding[0].languages &&
+                          element.coding[0].languages
+                            .filter((cod) => cod.language_name !== "null")
+                            .map((item) => (
+                              <div className="year">
+                                {item.language_name} :{" "}
+                                {item.language_level === "undefined"
+                                  ? "beginner"
+                                  : item.language_level}
+                              </div>
+                            ))}
+
+                        {/* <div className="icon_right">
                           <img src={icon_right_blue} alt="" />
-                        </div>
+                        </div> */}
+                      </div>
+                    )}
+                    {JSON.parse(localStorage.getItem("filter")) === "sslc" &&
+                      element.education &&
+                      element.education.map((sslc) =>
+                        sslc.sslc.map((sslc_each) => (
+                          <div className="second_row">
+                            <div className="year">Maths :{sslc_each.maths}</div>
+                            <div className="branch">
+                              Physics :{sslc_each.phy}
+                            </div>
+                            <div className="branch">
+                              Chemistry :{sslc_each.che}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    {JSON.parse(localStorage.getItem("filter")) === "plustwo" &&
+                      element.education &&
+                      element.education.map((sslc) =>
+                        sslc.plustwo.map((sslc_each) => (
+                          <div className="second_row">
+                            <div className="year">Maths :{sslc_each.maths}</div>
+                            <div className="branch">
+                              Physics :{sslc_each.phy}
+                            </div>
+                            <div className="branch">
+                              Chemistry :{sslc_each.che}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    {JSON.parse(localStorage.getItem("filter")) ===
+                      "communication" && (
+                      <div className="second_row">
+                        {element.coding[0] &&
+                          element.coding[0].communication_languages &&
+                          element.coding[0].communication_languages
+                            .filter((lang) => lang.language_name !== "null")
+                            .map((item) => (
+                              <div className="year">{item.language_name}</div>
+                            ))}
                       </div>
                     )}
                   </div>
@@ -337,7 +525,8 @@ const StudentList = (props) => {
                   </div>
                 </div>
               )
-          )}
+          )
+      )}
     </Container>
   );
 };

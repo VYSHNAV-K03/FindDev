@@ -13,6 +13,8 @@ import ProfilePageHish from "./pages/ProfilePageHish";
 import Rsvp1 from "./pages/Rsvp1";
 import SignIn_Rsvp from "./pages/Login-Rsvp";
 import Tutorial from "./pages/Tutorial";
+import Notification from "./pages/Notification";
+import Notification_each from "./components/Notification_each";
 
 function App() {
   return (
@@ -37,6 +39,12 @@ function App() {
         <Route path="/rsvp1" exact element={<Rsvp1 />} />
         <Route path="/login_rsvp" exact element={<SignIn_Rsvp />} />
         <Route path="/tutorial" exact element={<Tutorial />} />
+        <Route path="/notification" exact element={<Notification />} />
+        <Route
+          path="/notification_each"
+          exact
+          element={<Notification_each />}
+        />
       </Routes>
     </>
   );

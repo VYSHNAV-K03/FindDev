@@ -126,7 +126,8 @@ const date = new Date(
 );
 console.log("date check", date);
 
-const dateNew = new Date("2022-09-25" + "T11:34:00.000Z");
+const dateNew = new Date();
 console.log(dateNew);
+console.log(dateNew.toLocaleString());
 
-console.log(date - dateNew);
+// console.log(date - dateNew);

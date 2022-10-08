@@ -35,7 +35,7 @@ const Home = () => {
   // console.log(location.state && location.state.id);
   return (
     <Container>
-      <Navbar />
+      <Navbar role={true} />
       {role === 1 ? <SearchArea /> : <SearchAreaCollege />}
       <StudentList id={location.state && location.state.id} />
     </Container>

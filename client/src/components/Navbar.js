@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { apiUrl } from "../data/api";
 import profile1 from "../assets/profile_dummy/profile1.png";
 import nav_icon from "../assets/icons/nav_icon.png";
+import noti_nav from "../assets/icons/noti_nav.png";
+
 import { Buffer } from "buffer";
 
 const Container = styled.div`
@@ -20,11 +22,11 @@ const Container = styled.div`
   .details_more {
     display: block;
     position: absolute;
-    top: 54px;
+    top: 64px;
     right: 30px;
     width: 150px;
     text-align: center;
-    z-index: 1;
+    z-index: 200;
     transform: scaleY(${(props) => (props.details_more ? 1 : 0)});
     transition: all 0.4s ease;
     transform-origin: top;
@@ -48,7 +50,9 @@ const Container = styled.div`
   }
 
   .home {
-    background: rgba(74, 90, 150, 0.4);
+    /* background: rgba(74, 90, 150, 0.85); */
+    background: #b7bdd5;
+
   }
   .about {
     background: #8d97bd;
@@ -87,6 +91,7 @@ const Container = styled.div`
     color: #4a5a96;
 
     margin-right: auto;
+    cursor: pointer;
   }
   .logo span {
     font-weight: 700;
@@ -124,6 +129,10 @@ const Container = styled.div`
     cursor: pointer;
     transition: all 0.4s ease;
     transform: rotate(${(props) => (props.details_more ? "-180deg" : "0deg")});
+  }
+  .noti {
+    margin-right: 20px;
+    transform: none;
   }
   .more_icon img {
     width: 100%;
@@ -167,9 +176,11 @@ const Container = styled.div`
   }
 `;
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [login, setlogin] = useState(true);
   const [profileimg, setprofileimg] = useState();
+
+  const [name, setname] = useState("profile_name");
 
   const [detail_more, setdetail_more] = useState(false);
 
@@ -185,10 +196,13 @@ const Navbar = () => {
       });
 
       const data = res.data;
-
-      if (data.Role === 0) {
-        navigate("/profile");
+      if (props.role) {
+        if (data.Role === 0) {
+          navigate("/profile");
+        }
       }
+
+      setname(data.name);
 
       setprofileimg(data.profile && data.profile);
 
@@ -232,10 +246,17 @@ const Navbar = () => {
             </div>
           </div>
         )}
-        <div className="logo">
+        <div className="logo" onClick={() => navigate("/")}>
           <span>One</span>Touch
         </div>
         <div className="profile_container">
+          <div className="more_icon noti">
+            <img
+              src={noti_nav}
+              alt=""
+              onClick={() => navigate("/notification")}
+            />
+          </div>
           <div className="profile">
             <img
               src={
@@ -248,7 +269,7 @@ const Navbar = () => {
               alt="profile"
             />
           </div>
-          <div className="profile_name">Profile Name</div>
+          <div className="profile_name">{name}</div>
           <div className="more_icon">
             <img
               src={nav_icon}
@@ -260,7 +281,9 @@ const Navbar = () => {
 
         {/* )} */}
         <div className="details_more" id="details_more">
-          <div className="home">Home</div>
+          <div className="home" onClick={() => navigate("/")}>
+            Home
+          </div>
           <div className="about">About</div>
           <div className="contact_us">Contact Us</div>
           <div className="login_status">

@@ -251,7 +251,7 @@ router.get("/get_stud_profile", Authenticate, async (req, res) => {
   }
 });
 
-router.post("/get_filter_stud", async (req, res) => {
+router.post("/get_filter_stud", Authenticate, async (req, res) => {
   const {
     python,
     c,
@@ -272,6 +272,8 @@ router.post("/get_filter_stud", async (req, res) => {
     english,
     hindi,
     malayalam,
+    level_placement,
+    response,
   } = req.body;
 
   console.log("filtering_students", req.body);
@@ -444,6 +446,36 @@ router.post("/get_filter_stud", async (req, res) => {
         ? {
             education: {
               $elemMatch: { branch: branch },
+            },
+          }
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+
+      level_placement
+        ? {
+            placement: {
+              $elemMatch: {
+                company_name: req.rootUser.name,
+                level_of_placement: level_placement,
+              },
+            },
+          }
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+
+      response && response !== ""
+        ? {
+            placement: {
+              $elemMatch: {
+                company_name: req.rootUser.name,
+                response: response === "p" ? 0 : response === "a" ? 1 : 2,
+              },
             },
           }
         : {

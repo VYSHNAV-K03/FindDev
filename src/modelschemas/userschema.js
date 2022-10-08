@@ -173,17 +173,27 @@ const userschema = new mongoose.Schema(
           type: Number,
         },
         date: {
-          type: Date,
-        },
-        time: {
           type: String,
         },
         type_exam: {
-          type: Number,
+          type: String,
         },
         mode: {
-          type: Number,
+          type: String,
         },
+        requirements: [
+          {
+            laptop: {
+              type: Boolean,
+            },
+            internet: {
+              type: Boolean,
+            },
+            more: {
+              type: String,
+            },
+          },
+        ],
       },
     ],
 
