@@ -233,6 +233,7 @@ const Notification_each = () => {
   const [loader_btn, setloader_btn] = useState(false);
 
   const [name, setname] = useState();
+  const [company_email, setcompany_email] = useState();
   const [response, setresponse] = useState(false);
   const [already_response, setalready_response] = useState();
 
@@ -243,6 +244,9 @@ const Notification_each = () => {
       const res = await axios.get(apiUrl + `/getData`, {
         withCredentials: true,
       });
+
+      setcompany_email(res.data.email);
+
       setnotification(
         res.data.notifications.filter(
           (element) => element._id === location.state.id
@@ -260,7 +264,7 @@ const Notification_each = () => {
     }
   };
 
-  const sendResponse = async (not_id) => {
+  const sendResponse = async (not_id, company_id) => {
     try {
       setloader_btn(true);
       const res = await axios.post(
@@ -269,6 +273,7 @@ const Notification_each = () => {
           name,
           response,
           not_id,
+          company_id,
         },
         { withCredentials: true }
       );
@@ -391,7 +396,7 @@ const Notification_each = () => {
                 ) : (
                   <button
                     className="confirm"
-                    onClick={() => sendResponse(item._id)}
+                    onClick={() => sendResponse(item._id, item.company_id)}
                   >
                     Confirm
                   </button>

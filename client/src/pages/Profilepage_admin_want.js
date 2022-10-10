@@ -577,6 +577,12 @@ const Container = styled.div`
     border: none;
     outline: none;
   }
+  .progress_notify {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   .exam_level_lemd {
     display: flex;
     margin-bottom: 30px;
@@ -960,7 +966,7 @@ const Profilepage_admin_want = () => {
   const [yes_no, setyes_no] = useState();
 
   const [loader, setloader] = useState(false);
-  const [loader_addbtn, setloader_addbtn] = React.useState(false);
+  const [loader_addbtn, setloader_addbtn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -1060,16 +1066,21 @@ const Profilepage_admin_want = () => {
     } else {
       const date_new = new Date(date_exam).toLocaleString();
       try {
+        setloader_addbtn(true);
+
         const res = await axios.post(
           apiUrl + `/mailsend/sendmail`,
           { id, date_new, requirements, level_exam, exam_type, exam_mode },
           { withCredentials: true }
         );
+        setloader_addbtn(false);
+
         console.log(res.data);
         window.alert(res.data);
         getDataProfile();
       } catch (error) {
         console.log(error);
+        setloader_addbtn(false);
       }
     }
   };
@@ -1528,9 +1539,8 @@ const Profilepage_admin_want = () => {
                             </div>
                             {loader_addbtn ? (
                               <CircularProgress
-                                style={{
-                                  display: "flex",
-                                }}
+                                className="progress_notify"
+                                style={{ background: "transparent" }}
                               />
                             ) : (
                               <button

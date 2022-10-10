@@ -211,7 +211,7 @@ const Navbar = (props) => {
     } catch (e) {
       console.log("error", e);
       setlogin(true);
-      // navigate("/login");
+      navigate("/login");
     }
   };
 

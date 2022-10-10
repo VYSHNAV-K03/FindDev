@@ -177,6 +177,7 @@ const userschema = new mongoose.Schema(
           type: String,
           default: "",
         },
+
         level_of_placement: {
           type: Number,
         },

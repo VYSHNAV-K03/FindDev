@@ -209,6 +209,18 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
         },
       }
     );
+    const user_company = await USER.findById({ _id: req.body.company_id });
+    console.log(user_company.email);
+    transporter.sendMail({
+      from: "vyshnavk891@gmail.com",
+      to: user_company.email,
+      subject: "student response",
+      html: `
+      <h2>${req.rootUser.name} ${
+        req.body.response ? "accepted" : "rejected"
+      } the proposal</h2>
+      `,
+    });
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send("send_stud_response error", error);

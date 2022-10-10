@@ -7,6 +7,7 @@ import axios from "axios";
 import { apiUrl } from "../data/api";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import Navbar from "../components/Navbar";
 
 const Coc = styled.div`
   display: flex;
@@ -1189,631 +1190,641 @@ const Form = () => {
   }, []);
 
   return (
-    <Container>
-      {component === 0 && (
-        <Coc>
-          <div className="left_coc">
-            <div className="logo_coc">
-              <img src={code_bro} alt="" />
+    <>
+      <Navbar />
+      <Container>
+        {component === 0 && (
+          <Coc>
+            <div className="left_coc">
+              <div className="logo_coc">
+                <img src={code_bro} alt="" />
+              </div>
+              <div className="buttons_coc">
+                <button
+                  className="submit_btn_coc"
+                  onClick={() => setcomponent(1)}
+                >
+                  Back
+                </button>
+                <button
+                  className="done_btn_coc"
+                  onClick={() => setcomponent(3)}
+                >
+                  Next
+                </button>
+              </div>
             </div>
-            <div className="buttons_coc">
-              <button
-                className="submit_btn_coc"
-                onClick={() => setcomponent(1)}
-              >
+            <div className="right_coc">
+              <div className="title_coc">Coding Languages</div>
+              <div className="la_level_coc">
+                <label className="la_title_coc" htmlFor="python">
+                  Python
+                  <input
+                    type="checkbox"
+                    name=""
+                    id="python"
+                    onClick={() => setpython(!python)}
+                    checked={python === true}
+                    readOnly
+                  />
+                </label>
+                {python && (
+                  <div className="le_coc">
+                    <div
+                      className="level beginner_coc"
+                      style={
+                        python_level === "beginner"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setpython_level("beginner")}
+                    >
+                      Beginner
+                    </div>
+                    <div
+                      className="level intermediate_coc"
+                      style={
+                        python_level === "intermediate"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setpython_level("intermediate")}
+                    >
+                      Intermediate
+                    </div>
+                    <div
+                      className="level advanced_coc"
+                      style={
+                        python_level === "advanced"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setpython_level("advanced")}
+                    >
+                      Advanced
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="la_level_coc">
+                <label className="la_title_coc" htmlFor="c">
+                  C
+                  <input
+                    type="checkbox"
+                    name=""
+                    id="c"
+                    onClick={() => setc(!c)}
+                    checked={c === true}
+                    readOnly
+                  />
+                </label>
+                {c && (
+                  <div className="le_coc">
+                    <div
+                      className="level beginner_coc"
+                      style={
+                        c_level === "beginner"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setc_level("beginner")}
+                    >
+                      Beginner
+                    </div>
+                    <div
+                      className="level intermediate_coc"
+                      style={
+                        c_level === "intermediate"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setc_level("intermediate")}
+                    >
+                      Intermediate
+                    </div>
+                    <div
+                      className="level advanced_coc"
+                      style={
+                        c_level === "advanced"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setc_level("advanced")}
+                    >
+                      Advanced
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="la_level_coc">
+                <label className="la_title_coc" htmlFor="cplus">
+                  C++
+                  <input
+                    type="checkbox"
+                    name=""
+                    id="cplus"
+                    onClick={() => setcplus(!cplus)}
+                    checked={cplus === true}
+                    readOnly
+                  />
+                </label>
+                {cplus && (
+                  <div className="le_coc">
+                    <div
+                      className="level beginner_coc"
+                      style={
+                        cplus_level === "beginner"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setcplus_level("beginner")}
+                    >
+                      Beginner
+                    </div>
+                    <div
+                      className="level intermediate_coc"
+                      style={
+                        cplus_level === "intermediate"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setcplus_level("intermediate")}
+                    >
+                      Intermediate
+                    </div>
+                    <div
+                      className="level advanced_coc"
+                      style={
+                        cplus_level === "advanced"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setcplus_level("advanced")}
+                    >
+                      Advanced
+                    </div>
+                  </div>
+                )}
+              </div>{" "}
+              <div className="la_level_coc">
+                <label className="la_title_coc" htmlFor="js">
+                  Javascript
+                  <input
+                    type="checkbox"
+                    name=""
+                    id="js"
+                    onClick={() => setjs(!js)}
+                    checked={js === true}
+                    readOnly
+                  />
+                </label>
+                {js && (
+                  <div className="le_coc">
+                    <div
+                      className="level beginner_coc"
+                      style={
+                        js_level === "beginner"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setjs_level("beginner")}
+                    >
+                      Beginner
+                    </div>
+                    <div
+                      className="level intermediate_coc"
+                      style={
+                        js_level === "intermediate"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setjs_level("intermediate")}
+                    >
+                      Intermediate
+                    </div>
+                    <div
+                      className="level advanced_coc"
+                      style={
+                        js_level === "advanced"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setjs_level("advanced")}
+                    >
+                      Advanced
+                    </div>
+                  </div>
+                )}
+              </div>{" "}
+              <div className="la_level_coc">
+                <label className="la_title_coc" htmlFor="sql">
+                  SQL
+                  <input
+                    type="checkbox"
+                    name=""
+                    id="sql"
+                    onClick={() => setsql(!sql)}
+                    checked={sql === true}
+                    readOnly
+                  />
+                </label>
+                {sql && (
+                  <div className="le_coc">
+                    <div
+                      className="level beginner_coc"
+                      style={
+                        sql_level === "beginner"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setsql_level("beginner")}
+                    >
+                      Beginner
+                    </div>
+                    <div
+                      className="level intermediate_coc"
+                      style={
+                        sql_level === "intermediate"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setsql_level("intermediate")}
+                    >
+                      Intermediate
+                    </div>
+                    <div
+                      className="level advanced_coc"
+                      style={
+                        sql_level === "advanced"
+                          ? { backgroundColor: "#001aff", color: "#ffffff" }
+                          : { backgroundColor: "#ffffff", color: "#001aff" }
+                      }
+                      onClick={() => setsql_level("advanced")}
+                    >
+                      Advanced
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Coc>
+        )}
+        {component === 1 && (
+          <Don>
+            <div className="title_don">Are you a developer....?</div>
+            <div className="logo_don">
+              <img src={appdevsvg} alt="" />
+            </div>
+            <div className="buttons_don">
+              <button className="yes_btn_don" onClick={() => setcomponent(5)}>
+                Yes
+              </button>
+              <button className="no_btn_don" onClick={() => setcomponent(2)}>
+                No
+              </button>
+            </div>
+          </Don>
+        )}
+        {component === 2 && (
+          <Wsta>
+            <div className="desc_wsta">
+              Okey..! Then please let us know about your working status
+            </div>
+            <div className="text_button_wsta">
+              <div className="text_wsta">Type Here</div>
+              <textarea
+                name=""
+                id=""
+                cols="30"
+                rows="10"
+                className="ta_wsta"
+                onChange={(e) => setnodev_status(e.target.value)}
+                defaultValue={nodev_status}
+              ></textarea>
+              <div className="buttons_wsta">
+                <button className="submit_wsta" onClick={() => setcomponent(1)}>
+                  Back
+                </button>
+                <button className="done_wsta" onClick={() => setcomponent(0)}>
+                  Next
+                </button>
+              </div>
+            </div>
+          </Wsta>
+        )}
+        {component === 3 && (
+          <Cs>
+            <div className="logo_cs">
+              <img src={discussionsvg} alt="" />
+            </div>
+            <div className="title_cs">Communication skill</div>
+            <div className="lang_cs">
+              <div className="english_cs">
+                <label htmlFor="english">English</label>
+                <input
+                  type="checkbox"
+                  name=""
+                  className="input_en_cs"
+                  id="english"
+                  onClick={() => setenglish(!english)}
+                  checked={english === true}
+                  readOnly
+                />
+              </div>
+              <div className="english_cs">
+                <label htmlFor="hindi">Hindi</label>
+                <input
+                  type="checkbox"
+                  name=""
+                  className="input_en_cs"
+                  id="hindi"
+                  onClick={() => sethindi(!hindi)}
+                  checked={hindi === true}
+                  readOnly
+                />
+              </div>{" "}
+              <div className="english_cs">
+                <label htmlFor="malayalam">Malayalam</label>
+                <input
+                  type="checkbox"
+                  name=""
+                  className="input_en_cs"
+                  id="malayalam"
+                  onClick={() => setmalayalam(!malayalam)}
+                  checked={malayalam === true}
+                  readOnly
+                />
+              </div>
+            </div>
+            <div className="links_cs">
+              <div className="git_cs">
+                <div className="title_git_cs">Github </div>
+                <input
+                  type="text"
+                  placeholder="  paste here"
+                  onChange={(e) => setgit(e.target.value)}
+                  value={git}
+                />
+              </div>
+              <div className="linkd_cs">
+                <div className="title_linked_cs">Linkedin</div>
+                <input
+                  type="text"
+                  placeholder="  paste here"
+                  onChange={(e) => setlinkedin(e.target.value)}
+                  value={linkedin}
+                />
+              </div>
+            </div>
+            <div className="buttons_cs">
+              <button className="submit_cs" onClick={() => setcomponent(0)}>
                 Back
               </button>
-              <button className="done_btn_coc" onClick={() => setcomponent(3)}>
+              <button className="done_cs" onClick={() => setcomponent(4)}>
                 Next
               </button>
             </div>
-          </div>
-          <div className="right_coc">
-            <div className="title_coc">Coding Languages</div>
-            <div className="la_level_coc">
-              <label className="la_title_coc" htmlFor="python">
-                Python
+          </Cs>
+        )}
+        {component === 4 && (
+          <Edu>
+            <div className="title_edu">Educational details</div>
+            <div className="btech_edu">
+              <div className="co_name_btech">
+                <div className="name_btech">College name</div>
                 <input
-                  type="checkbox"
-                  name=""
-                  id="python"
-                  onClick={() => setpython(!python)}
-                  checked={python === true}
-                  readOnly
+                  type="text"
+                  className="inpconame_btech"
+                  onChange={(e) => setcollege_name(e.target.value)}
+                  value={college_name}
                 />
-              </label>
-              {python && (
-                <div className="le_coc">
-                  <div
-                    className="level beginner_coc"
-                    style={
-                      python_level === "beginner"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setpython_level("beginner")}
-                  >
-                    Beginner
-                  </div>
-                  <div
-                    className="level intermediate_coc"
-                    style={
-                      python_level === "intermediate"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setpython_level("intermediate")}
-                  >
-                    Intermediate
-                  </div>
-                  <div
-                    className="level advanced_coc"
-                    style={
-                      python_level === "advanced"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setpython_level("advanced")}
-                  >
-                    Advanced
-                  </div>
-                </div>
-              )}
+              </div>
+              <div className="co_name_btech">
+                <div className="name_btech">Branch</div>
+                <select
+                  name="branch"
+                  className="inpbranch_btech"
+                  onChange={(e) => setbranch(e.target.value)}
+                  defaultValue={branch}
+                >
+                  <option value=""></option>
+                  <option value="CSE">CSE</option>
+                  <option value="MECH">MECH</option>
+                  <option value="IT">IT</option>
+                  <option value="EC">ECE</option>
+                  <option value="EEE">EEE</option>
+                  <option value="CIVIL">CIVIL</option>
+                </select>
+              </div>{" "}
+              <div className="co_name_btech">
+                <div className="name_btech">Year</div>
+                <select
+                  name="year"
+                  className="inpyear_btech"
+                  onChange={(e) => setyear(e.target.value)}
+                  defaultValue={year}
+                >
+                  <option value=""></option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>{" "}
+              </div>{" "}
+              <div className="co_name_btech">
+                <div className="name_btech">CGPA</div>
+                <input
+                  type="Number"
+                  className="inpcgpa_btech"
+                  onChange={(e) => setcgpa(e.target.value)}
+                  value={cgpa}
+                />
+              </div>
+              <div className="co_name_btech">
+                <div className="name_btech">No of back papers</div>
+                <input
+                  type="Number"
+                  className="inpcgpa_btech"
+                  onChange={(e) => setbackpapers(e.target.value)}
+                  value={backpapers}
+                />
+              </div>
             </div>
-            <div className="la_level_coc">
-              <label className="la_title_coc" htmlFor="c">
-                C
-                <input
-                  type="checkbox"
-                  name=""
-                  id="c"
-                  onClick={() => setc(!c)}
-                  checked={c === true}
-                  readOnly
-                />
-              </label>
-              {c && (
-                <div className="le_coc">
-                  <div
-                    className="level beginner_coc"
-                    style={
-                      c_level === "beginner"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setc_level("beginner")}
-                  >
-                    Beginner
-                  </div>
-                  <div
-                    className="level intermediate_coc"
-                    style={
-                      c_level === "intermediate"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setc_level("intermediate")}
-                  >
-                    Intermediate
-                  </div>
-                  <div
-                    className="level advanced_coc"
-                    style={
-                      c_level === "advanced"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setc_level("advanced")}
-                  >
-                    Advanced
-                  </div>
-                </div>
-              )}
+            <div className="title_sslc">SSLC</div>
+            <div className="desc_sslc">
+              Please enter the marks in percentage
             </div>
-            <div className="la_level_coc">
-              <label className="la_title_coc" htmlFor="cplus">
-                C++
+            <div className="sslc_edu">
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Maths</div>
                 <input
-                  type="checkbox"
-                  name=""
-                  id="cplus"
-                  onClick={() => setcplus(!cplus)}
-                  checked={cplus === true}
-                  readOnly
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setsscl_maths(e.target.value)}
+                  value={sscl_maths}
                 />
-              </label>
-              {cplus && (
-                <div className="le_coc">
-                  <div
-                    className="level beginner_coc"
-                    style={
-                      cplus_level === "beginner"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setcplus_level("beginner")}
-                  >
-                    Beginner
-                  </div>
-                  <div
-                    className="level intermediate_coc"
-                    style={
-                      cplus_level === "intermediate"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setcplus_level("intermediate")}
-                  >
-                    Intermediate
-                  </div>
-                  <div
-                    className="level advanced_coc"
-                    style={
-                      cplus_level === "advanced"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setcplus_level("advanced")}
-                  >
-                    Advanced
-                  </div>
-                </div>
-              )}
-            </div>{" "}
-            <div className="la_level_coc">
-              <label className="la_title_coc" htmlFor="js">
-                Javascript
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Physics</div>
                 <input
-                  type="checkbox"
-                  name=""
-                  id="js"
-                  onClick={() => setjs(!js)}
-                  checked={js === true}
-                  readOnly
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setsscl_phy(e.target.value)}
+                  value={sscl_phy}
                 />
-              </label>
-              {js && (
-                <div className="le_coc">
-                  <div
-                    className="level beginner_coc"
-                    style={
-                      js_level === "beginner"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setjs_level("beginner")}
-                  >
-                    Beginner
-                  </div>
-                  <div
-                    className="level intermediate_coc"
-                    style={
-                      js_level === "intermediate"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setjs_level("intermediate")}
-                  >
-                    Intermediate
-                  </div>
-                  <div
-                    className="level advanced_coc"
-                    style={
-                      js_level === "advanced"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setjs_level("advanced")}
-                  >
-                    Advanced
-                  </div>
-                </div>
-              )}
-            </div>{" "}
-            <div className="la_level_coc">
-              <label className="la_title_coc" htmlFor="sql">
-                SQL
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Chemistry</div>
                 <input
-                  type="checkbox"
-                  name=""
-                  id="sql"
-                  onClick={() => setsql(!sql)}
-                  checked={sql === true}
-                  readOnly
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setsscl_che(e.target.value)}
+                  value={sscl_che}
                 />
-              </label>
-              {sql && (
-                <div className="le_coc">
-                  <div
-                    className="level beginner_coc"
-                    style={
-                      sql_level === "beginner"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setsql_level("beginner")}
-                  >
-                    Beginner
-                  </div>
-                  <div
-                    className="level intermediate_coc"
-                    style={
-                      sql_level === "intermediate"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setsql_level("intermediate")}
-                  >
-                    Intermediate
-                  </div>
-                  <div
-                    className="level advanced_coc"
-                    style={
-                      sql_level === "advanced"
-                        ? { backgroundColor: "#001aff", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#001aff" }
-                    }
-                    onClick={() => setsql_level("advanced")}
-                  >
-                    Advanced
-                  </div>
-                </div>
-              )}
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">English</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setsscl_english(e.target.value)}
+                  value={sslc_english}
+                />
+              </div>
+              <div className="file_section_sslc">
+                <input
+                  type="file"
+                  name="sslc_certificate"
+                  id=""
+                  onChange={(e) => setsslc_certificate(e.target.files[0])}
+                />
+              </div>
             </div>
-          </div>
-        </Coc>
-      )}
-      {component === 1 && (
-        <Don>
-          <div className="title_don">Are you a developer....?</div>
-          <div className="logo_don">
-            <img src={appdevsvg} alt="" />
-          </div>
-          <div className="buttons_don">
-            <button className="yes_btn_don" onClick={() => setcomponent(5)}>
-              Yes
-            </button>
-            <button className="no_btn_don" onClick={() => setcomponent(2)}>
-              No
-            </button>
-          </div>
-        </Don>
-      )}
-      {component === 2 && (
-        <Wsta>
-          <div className="desc_wsta">
-            Okey..! Then please let us know about your working status
-          </div>
-          <div className="text_button_wsta">
-            <div className="text_wsta">Type Here</div>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              className="ta_wsta"
-              onChange={(e) => setnodev_status(e.target.value)}
-              defaultValue={nodev_status}
-            ></textarea>
-            <div className="buttons_wsta">
-              <button className="submit_wsta" onClick={() => setcomponent(1)}>
+            <div className="title_sslc">12th</div>
+            <div className="desc_sslc">
+              Please enter the marks in percentage
+            </div>
+            <div className="sslc_edu">
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Maths</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setplustwo_maths(e.target.value)}
+                  value={plustwo_maths}
+                />
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Physics</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setplustwo_phy(e.target.value)}
+                  value={plustwo_phy}
+                />
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Chemistry</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setplustwo_che(e.target.value)}
+                  value={plustwo_che}
+                />
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">English</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setplustwo_english(e.target.value)}
+                  value={plustwo_english}
+                />
+              </div>
+              <div className="maths_section_sslc">
+                <div className="mathsname_sslc">Computer science</div>
+                <input
+                  type="Number"
+                  className="input_maths_sslc"
+                  onChange={(e) => setplustwo_cs(e.target.value)}
+                  value={plustwo_cs}
+                />
+                <div className="hint_plustwo">Set 0 if not...!</div>
+              </div>
+              <div className="file_section_sslc">
+                <input
+                  type="file"
+                  name="plustwo_certificate"
+                  id=""
+                  onChange={(e) => setplustwo_certificate(e.target.files[0])}
+                />
+              </div>
+            </div>
+            <div className="buttons_edu">
+              <button className="submit_edu" onClick={() => setcomponent(3)}>
                 Back
               </button>
-              <button className="done_wsta" onClick={() => setcomponent(0)}>
-                Next
-              </button>
+              {btnloader ? (
+                <CircularProgress />
+              ) : (
+                <button className="done_edu" onClick={PostData}>
+                  Submit
+                </button>
+              )}
             </div>
-          </div>
-        </Wsta>
-      )}
-      {component === 3 && (
-        <Cs>
-          <div className="logo_cs">
-            <img src={discussionsvg} alt="" />
-          </div>
-          <div className="title_cs">Communication skill</div>
-          <div className="lang_cs">
-            <div className="english_cs">
-              <label htmlFor="english">English</label>
-              <input
-                type="checkbox"
-                name=""
-                className="input_en_cs"
-                id="english"
-                onClick={() => setenglish(!english)}
-                checked={english === true}
-                readOnly
-              />
+          </Edu>
+        )}
+        {component === 5 && (
+          <Devy>
+            <div className="logo_devy">
+              <img src={appdevsvg} alt="" />
             </div>
-            <div className="english_cs">
-              <label htmlFor="hindi">Hindi</label>
-              <input
-                type="checkbox"
-                name=""
-                className="input_en_cs"
-                id="hindi"
-                onClick={() => sethindi(!hindi)}
-                checked={hindi === true}
-                readOnly
-              />
-            </div>{" "}
-            <div className="english_cs">
-              <label htmlFor="malayalam">Malayalam</label>
-              <input
-                type="checkbox"
-                name=""
-                className="input_en_cs"
-                id="malayalam"
-                onClick={() => setmalayalam(!malayalam)}
-                checked={malayalam === true}
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="links_cs">
-            <div className="git_cs">
-              <div className="title_git_cs">Github </div>
-              <input
-                type="text"
-                placeholder="  paste here"
-                onChange={(e) => setgit(e.target.value)}
-                value={git}
-              />
-            </div>
-            <div className="linkd_cs">
-              <div className="title_linked_cs">Linkedin</div>
-              <input
-                type="text"
-                placeholder="  paste here"
-                onChange={(e) => setlinkedin(e.target.value)}
-                value={linkedin}
-              />
-            </div>
-          </div>
-          <div className="buttons_cs">
-            <button className="submit_cs" onClick={() => setcomponent(0)}>
-              Back
-            </button>
-            <button className="done_cs" onClick={() => setcomponent(4)}>
-              Next
-            </button>
-          </div>
-        </Cs>
-      )}
-      {component === 4 && (
-        <Edu>
-          <div className="title_edu">Educational details</div>
-          <div className="btech_edu">
-            <div className="co_name_btech">
-              <div className="name_btech">College name</div>
-              <input
-                type="text"
-                className="inpconame_btech"
-                onChange={(e) => setcollege_name(e.target.value)}
-                value={college_name}
-              />
-            </div>
-            <div className="co_name_btech">
-              <div className="name_btech">Branch</div>
+            <div className="title_devy">Are you a developer....?</div>
+            <div className="devanddomain_devy">
+              <div className="devtitle_devy">Developer</div>
               <select
-                name="branch"
-                className="inpbranch_btech"
-                onChange={(e) => setbranch(e.target.value)}
-                defaultValue={branch}
+                name=""
+                id=""
+                className="devlist_devy"
+                onChange={(e) => setdeveloper_status(e.target.value)}
+                defaultValue={developer_status}
               >
-                <option value=""></option>
-                <option value="CSE">CSE</option>
-                <option value="MECH">MECH</option>
-                <option value="IT">IT</option>
-                <option value="EC">ECE</option>
-                <option value="EEE">EEE</option>
-                <option value="CIVIL">CIVIL</option>
+                <option value="" disabled defaultValue selected>
+                  Select your domain{" "}
+                </option>
+                <option value="App Developer">App Developer</option>
+                <option value="Web Developer">Web Developer</option>
+                <option value="AI Developer">AI Developer</option>
+                <option value="Game Developer">Game Developer</option>
               </select>
-            </div>{" "}
-            <div className="co_name_btech">
-              <div className="name_btech">Year</div>
-              <select
-                name="year"
-                className="inpyear_btech"
-                onChange={(e) => setyear(e.target.value)}
-                defaultValue={year}
-              >
-                <option value=""></option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>{" "}
-            </div>{" "}
-            <div className="co_name_btech">
-              <div className="name_btech">CGPA</div>
-              <input
-                type="Number"
-                className="inpcgpa_btech"
-                onChange={(e) => setcgpa(e.target.value)}
-                value={cgpa}
-              />
             </div>
-            <div className="co_name_btech">
-              <div className="name_btech">No of back papers</div>
-              <input
-                type="Number"
-                className="inpcgpa_btech"
-                onChange={(e) => setbackpapers(e.target.value)}
-                value={backpapers}
-              />
-            </div>
-          </div>
-          <div className="title_sslc">SSLC</div>
-          <div className="desc_sslc">Please enter the marks in percentage</div>
-          <div className="sslc_edu">
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Maths</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setsscl_maths(e.target.value)}
-                value={sscl_maths}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Physics</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setsscl_phy(e.target.value)}
-                value={sscl_phy}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Chemistry</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setsscl_che(e.target.value)}
-                value={sscl_che}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">English</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setsscl_english(e.target.value)}
-                value={sslc_english}
-              />
-            </div>
-            <div className="file_section_sslc">
-              <input
-                type="file"
-                name="sslc_certificate"
+            <div className="none_devy">
+              <div className="nonedesc_devy">
+                if non of them are mentioned then please enter below about your
+                domain and working status
+              </div>
+              <textarea
+                name=""
                 id=""
-                onChange={(e) => setsslc_certificate(e.target.files[0])}
-              />
+                cols="30"
+                rows="10"
+                className="nonetextarea_devy"
+                onChange={(e) => setdev_description(e.target.value)}
+                defaultValue={dev_description}
+              ></textarea>
             </div>
-          </div>
-          <div className="title_sslc">12th</div>
-          <div className="desc_sslc">Please enter the marks in percentage</div>
-          <div className="sslc_edu">
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Maths</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setplustwo_maths(e.target.value)}
-                value={plustwo_maths}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Physics</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setplustwo_phy(e.target.value)}
-                value={plustwo_phy}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Chemistry</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setplustwo_che(e.target.value)}
-                value={plustwo_che}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">English</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setplustwo_english(e.target.value)}
-                value={plustwo_english}
-              />
-            </div>
-            <div className="maths_section_sslc">
-              <div className="mathsname_sslc">Computer science</div>
-              <input
-                type="Number"
-                className="input_maths_sslc"
-                onChange={(e) => setplustwo_cs(e.target.value)}
-                value={plustwo_cs}
-              />
-              <div className="hint_plustwo">Set 0 if not...!</div>
-            </div>
-            <div className="file_section_sslc">
-              <input
-                type="file"
-                name="plustwo_certificate"
-                id=""
-                onChange={(e) => setplustwo_certificate(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="buttons_edu">
-            <button className="submit_edu" onClick={() => setcomponent(3)}>
-              Back
-            </button>
-            {btnloader ? (
-              <CircularProgress />
-            ) : (
-              <button className="done_edu" onClick={PostData}>
-                Submit
+            <div className="buttons_devy">
+              <button className="back_devy" onClick={() => setcomponent(1)}>
+                Back
               </button>
-            )}
-          </div>
-        </Edu>
-      )}
-      {component === 5 && (
-        <Devy>
-          <div className="logo_devy">
-            <img src={appdevsvg} alt="" />
-          </div>
-          <div className="title_devy">Are you a developer....?</div>
-          <div className="devanddomain_devy">
-            <div className="devtitle_devy">Developer</div>
-            <select
-              name=""
-              id=""
-              className="devlist_devy"
-              onChange={(e) => setdeveloper_status(e.target.value)}
-              defaultValue={developer_status}
-            >
-              <option value="" disabled defaultValue selected>
-                Select your domain{" "}
-              </option>
-              <option value="App Developer">App Developer</option>
-              <option value="Web Developer">Web Developer</option>
-              <option value="AI Developer">AI Developer</option>
-              <option value="Game Developer">Game Developer</option>
-            </select>
-          </div>
-          <div className="none_devy">
-            <div className="nonedesc_devy">
-              if non of them are mentioned then please enter below about your
-              domain and working status
+              <button className="next_devy" onClick={() => setcomponent(0)}>
+                Next
+              </button>
             </div>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              className="nonetextarea_devy"
-              onChange={(e) => setdev_description(e.target.value)}
-              defaultValue={dev_description}
-            ></textarea>
-          </div>
-          <div className="buttons_devy">
-            <button className="back_devy" onClick={() => setcomponent(1)}>
-              Back
-            </button>
-            <button className="next_devy" onClick={() => setcomponent(0)}>
-              Next
-            </button>
-          </div>
-        </Devy>
-      )}
-    </Container>
+          </Devy>
+        )}
+      </Container>
+    </>
   );
 };
 

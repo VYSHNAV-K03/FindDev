@@ -12,7 +12,40 @@ import Navbar from "../components/Navbar";
 
 const Container = styled.div`
   position: relative;
+  .update_details {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #4a5a96;
+    border: 1px solid #4a5a96;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    width: 150px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    :hover {
+      transform: scale(1.05);
+      background: #4a5a96;
+      color: white;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .update_details {
+      font-size: 15px;
+      width: 120px;
+      height: 28px;
+    }
+  }
   .loader {
     position: absolute;
     left: 0;
@@ -975,6 +1008,10 @@ const Profilepage = () => {
 
       setdata(res.data);
 
+      if (!res.data.education[0]) {
+        navigate("/infoform");
+      }
+
       if (res.status !== 200) {
         throw new Error(res.error);
       }
@@ -1005,6 +1042,12 @@ const Profilepage = () => {
           </div>
         ) : (
           <div className="profile_container_main">
+            <div
+              className="update_details"
+              onClick={() => navigate("/infoform")}
+            >
+              Update Profile
+            </div>
             <div className="left">
               <div className="image">
                 <img
