@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import profile from "../assets/profile_dummy/profile1.png";
 import bg1 from "../assets/profilepage/bg1.svg";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import LoopIcon from "@mui/icons-material/Loop";
-import CancelIcon from "@mui/icons-material/Cancel";
-import git from "../assets/profilepage/git.png";
-import linkedin from "../assets/profilepage/linkedin.png";
-import twitter from "../assets/profilepage/twitter.png";
+import loader_logo from "../assets/loader/onetouch_logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Buffer } from "buffer";
@@ -16,30 +11,80 @@ import Navbar from "../components/Navbar";
 import DateTimePicker from "react-datetime-picker";
 import { CircularProgress } from "@mui/material";
 
-const Approve = styled.div`
-  background: ${(props) => props.color};
-`;
-
 const Container = styled.div`
   position: relative;
+
   .loader {
     position: absolute;
-    background: white;
-    top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 100;
+    right: 0;
+
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-  }
-  .loader_sub {
-    width: 300px;
-    height: 100px;
+
     margin: auto;
-    display: flex;
   }
+  .loader_image {
+    width: 200px;
+    height: 200px;
+  }
+  .loader_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .loader_line_container {
+    width: 300px;
+    height: 10px;
+
+    background: rgba(0, 0, 0, 0.34);
+    border-radius: 5px;
+    position: relative;
+  }
+  .line_loader {
+    position: absolute;
+    background: #4a5a96;
+    border-radius: 5px;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: ${(props) => (props.loader ? "250px" : "300px")};
+    animation: loader 5s ease;
+  }
+
+  @keyframes loader {
+    from {
+      width: 0px;
+    }
+    to {
+      width: ${(props) => (props.loader ? "250px" : "300px")};
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .loader_image {
+      width: 130px;
+      height: 130px;
+    }
+    .loader_line_container {
+      width: 150px;
+      height: 8px;
+    }
+    .line_loader {
+      width: ${(props) => (props.loader ? "120px" : "150px")};
+    }
+
+    @keyframes loader {
+      from {
+        width: 0px;
+      }
+      to {
+        width: ${(props) => (props.loader ? "120px" : "150px")};
+      }
+    }
+  }
+
   .button_container {
     display: flex;
   }
@@ -193,6 +238,7 @@ const Container = styled.div`
     line-height: 29px;
 
     color: #000000;
+    margin-right: 20px;
   }
   .view {
     width: 120px;
@@ -941,6 +987,8 @@ const Profilepage_admin_want = () => {
 
   const getDataProfile = async () => {
     try {
+      setloader(true);
+
       const res = await axios.post(
         apiUrl + `/student/get_stud_admin_want`,
         { id },
@@ -954,10 +1002,12 @@ const Profilepage_admin_want = () => {
       console.log(
         res.data.placement.filter((item) => item.company_name === "TCS")
       );
+      setloader(false);
 
       console.log(res.data);
     } catch (error) {
       console.log(error);
+      setloader(false);
     }
   };
 
@@ -1027,557 +1077,548 @@ const Profilepage_admin_want = () => {
   useEffect(() => {
     getDataProfile();
     callNavbar();
-    // console.log(yes_no);
-    // console.log(date_exam);
-    console.log(requirements);
-    console.log(level_exam);
-    console.log(exam_type);
-    console.log(exam_mode);
-  }, [
-    block,
-    yes_no,
-    date_exam,
-    requirements,
-    level_exam,
-    exam_type,
-    exam_mode,
-  ]);
+  }, []);
 
   return (
     <div className="main">
       <Navbar />
-      <Container bg={bg1} block={block}>
-        {loader && (
+      <Container bg={bg1} block={block} loader={loader}>
+        {loader ? (
           <div className="loader">
-            <div className="loader_sub">
-              <div className="d-flex align-items-center">
-                <strong>Loading...</strong>
-                <div
-                  className="spinner-border ms-auto"
-                  role="status"
-                  aria-hidden="true"
-                ></div>
-              </div>
+            <div className="loader_image">
+              <img src={loader_logo} alt="" />
+            </div>
+            <div className="loader_line_container">
+              <div className="line_loader"></div>
             </div>
           </div>
-        )}
-
-        <div className="profile_container_main">
-          <div className="left">
-            <div className="image">
-              <img
-                src={
-                  data && data.profile
-                    ? `data:${data.profile.contentType};base64, ${Buffer.from(
-                        data.profile.data.data
-                      ).toString("base64")}`
-                    : profile
-                }
-                alt="profile"
-              />
-            </div>
-            <div className="name">{data && data.name}</div>
-            <div className="detail1">
-              {data && data.education[0] && data.education[0].institution_name}
-            </div>
-
-            <div className="profile_buttons">
-              <div className="profile_btn" onClick={() => setblock(1)}>
-                Profile
+        ) : (
+          <div className="profile_container_main">
+            <div className="left">
+              <div className="image">
+                <img
+                  src={
+                    data && data.profile
+                      ? `data:${data.profile.contentType};base64, ${Buffer.from(
+                          data.profile.data.data
+                        ).toString("base64")}`
+                      : profile
+                  }
+                  alt="profile"
+                />
               </div>
-              <div className="skills_btn" onClick={() => setblock(2)}>
-                Skills
-              </div>
-              <div className="edu_btn" onClick={() => setblock(6)}>
-                Education
-              </div>
-              <div className="interview_btn" onClick={() => setblock(4)}>
-                Placement
-              </div>
-              <div className="certificate_btn" onClick={() => setblock(3)}>
-                Certificates
-              </div>
-              <div className="Select_stud_btn" onClick={() => setblock(5)}>
-                Select Student
-              </div>
-            </div>
-          </div>
-          <div className="right">
-            {block === 1 && (
-              <div className="profile_container">
-                <div className="email_container style_profile_elements_bold">
-                  <div className="width_profile_elements">Email</div>
-                  <div className="user_name style_profile_elements_light">
-                    {data && data.email}
-                  </div>
-                </div>
-                <div className="current_status style_profile_elements_bold">
-                  <div className="width_profile_elements">Current status</div>
-                  <div className="status style_profile_elements_light">
-                    Student @
-                    {data &&
-                      data.education[0] &&
-                      data.education[0].institution_name}
-                  </div>
-                </div>
-                <div className="id_detail style_profile_elements_bold">
-                  <div className="width_profile_elements">ID proof</div>
-                  <div
-                    className="view"
-                    onClick={() => window.alert("id card is not uploaded")}
-                  >
-                    View
-                  </div>
-                </div>
-                <div className="department_container style_profile_elements_bold">
-                  <div className="width_profile_elements">Department</div>
-                  <div className="department style_profile_elements_light">
-                    {data && data.education[0] && data.education[0].branch}
-                  </div>
-                </div>
-                <div className="language_container style_profile_elements_bold">
-                  <div className="width_profile_elements">Languages</div>
-                  {data &&
-                    data.coding[0] &&
-                    data.coding[0].communication_languages &&
-                    data.coding[0].communication_languages.map(
-                      (item, index) =>
-                        item.language_name &&
-                        item.language_name !== "null" && (
-                          <li
-                            key={index}
-                            className="style_profile_elements_light"
-                          >
-                            {item.language_name}
-                          </li>
-                        )
-                    )}
-                </div>
-              </div>
-            )}
-            {block === 2 && (
-              <div className="skills_container">
-                <div className="known_languages">Languages:</div>
-                <ul>
-                  {data &&
-                    data.coding[0] &&
-                    data.coding[0].languages &&
-                    data.coding[0].languages.map(
-                      (item, index) =>
-                        item.language_name &&
-                        item.language_name !== "null" && (
-                          <li key={index}>
-                            {item.language_name} :{" "}
-                            {item.language_level === "undefined"
-                              ? "beginner"
-                              : item.language_level}
-                          </li>
-                        )
-                    )}
-                </ul>
+              <div className="name">{data && data.name}</div>
+              <div className="detail1">
                 {data &&
-                data.coding[0] &&
-                data.coding[0].dev_status &&
-                data.coding[0].dev_status !== "undefined" ? (
-                  <div className="second_skill">
-                    He is an {"\t"}
-                    {data && data.coding[0] && data.coding[0].dev_status}
-                  </div>
-                ) : (
-                  <div className="second_skill">He is not a developer</div>
-                )}
+                  data.education[0] &&
+                  data.education[0].institution_name}
+              </div>
 
-                <div className="current_status_skill">
-                  Current Status : student{" "}
-                  {data &&
-                    data.coding[0] &&
-                    data.coding[0].dev_desc !== "undefined" &&
-                    "&"}
-                  {data &&
-                    data.coding[0] &&
-                    data.coding[0].dev_desc !== "undefined" &&
-                    data.coding[0].dev_desc}
+              <div className="profile_buttons">
+                <div className="profile_btn" onClick={() => setblock(1)}>
+                  Profile
+                </div>
+                <div className="skills_btn" onClick={() => setblock(2)}>
+                  Skills
+                </div>
+                <div className="edu_btn" onClick={() => setblock(6)}>
+                  Education
+                </div>
+                <div className="interview_btn" onClick={() => setblock(4)}>
+                  Placement
+                </div>
+                <div className="certificate_btn" onClick={() => setblock(3)}>
+                  Certificates
+                </div>
+                <div className="Select_stud_btn" onClick={() => setblock(5)}>
+                  Select Student
                 </div>
               </div>
-            )}
-            {block === 3 && (
-              <div className="certificates_container">
-                <div className="college_id_certificate">
-                  <div className="name_id">College Id</div>
-                  <div className="view">View</div>
+            </div>
+            <div className="right">
+              {block === 1 && (
+                <div className="profile_container">
+                  <div className="email_container style_profile_elements_bold">
+                    <div className="width_profile_elements">Email</div>
+                    <div className="user_name style_profile_elements_light">
+                      {data && data.email}
+                    </div>
+                  </div>
+                  <div className="current_status style_profile_elements_bold">
+                    <div className="width_profile_elements">Current status</div>
+                    <div className="status style_profile_elements_light">
+                      Student @
+                      {data &&
+                        data.education[0] &&
+                        data.education[0].institution_name}
+                    </div>
+                  </div>
+                  <div className="id_detail style_profile_elements_bold">
+                    <div className="width_profile_elements">ID proof</div>
+                    <div
+                      className="view"
+                      onClick={() => window.alert("id card is not uploaded")}
+                    >
+                      View
+                    </div>
+                  </div>
+                  <div className="department_container style_profile_elements_bold">
+                    <div className="width_profile_elements">Department</div>
+                    <div className="department style_profile_elements_light">
+                      {data && data.education[0] && data.education[0].branch}
+                    </div>
+                  </div>
+                  <div className="language_container style_profile_elements_bold">
+                    <div className="width_profile_elements">Languages</div>
+                    {data &&
+                      data.coding[0] &&
+                      data.coding[0].communication_languages &&
+                      data.coding[0].communication_languages.map(
+                        (item, index) =>
+                          item.language_name &&
+                          item.language_name !== "null" && (
+                            <div
+                              key={index}
+                              className="style_profile_elements_light"
+                            >
+                              {item.language_name}
+                            </div>
+                          )
+                      )}
+                  </div>
                 </div>
-                <div className="sslc_certificate">
-                  <div className="name_sslc">SSLC Certificate</div>
-                  <div className="view">View</div>
-                </div>
-                <div className="plustwo_certificate">
-                  <div className="name_plustwo">+2 Certificate</div>
-                  <div className="view">View</div>
-                </div>
-                <div className="udemy_certificate">
-                  <div className="name_udemy">Udemy</div>
-                  <div className="view">View</div>
-                </div>
-              </div>
-            )}
-            {block === 4 && (
-              <div className="interview_container">
-                <div className="companies_select_title">
-                  Companies Selected For Interview:
-                </div>
-                <div className="companies_select">
+              )}
+              {block === 2 && (
+                <div className="skills_container">
+                  <div className="known_languages">Languages:</div>
                   <ul>
                     {data &&
-                      data.placement[0] &&
-                      data.placement
-                        .map(
-                          (item, i) => item.company_name
-                          // <div className="item">
-                          //   <div className="cname">{item.company_name}</div>
-                          //   <div className="clevel">{item.level_of_placement}</div>
-                          // </div>
-                        )
-
-                        .filter(
-                          (value, index, array_ref) =>
-                            array_ref.indexOf(value) === index
-                        )
-                        .map((x, b) => <li key={b}>{x}</li>)}
+                      data.coding[0] &&
+                      data.coding[0].languages &&
+                      data.coding[0].languages.map(
+                        (item, index) =>
+                          item.language_name &&
+                          item.language_name !== "null" && (
+                            <li key={index}>
+                              {item.language_name} :{" "}
+                              {item.language_level === "undefined"
+                                ? "beginner"
+                                : item.language_level}
+                            </li>
+                          )
+                      )}
                   </ul>
-                </div>
-              </div>
-            )}
-            {block === 6 && (
-              <div className="educ_main_container">
-                {data && data.education[0] && (
-                  <div className="education_details_container">
-                    <div className="btech_details">
-                      <div className="title_btech">B. Tech</div>
-                      <div className="element_detail">
-                        <div className="title_element">Year</div>
-                        <div className="content_btech">
-                          {" "}
-                          {data.education[0].year}
-                        </div>
-                      </div>
-                      <div className="element_detail">
-                        <div className="title_element">CGPA</div>
-                        <div className="content_btech">
-                          {" "}
-                          {data.education[0].cgpa}
-                        </div>
-                      </div>{" "}
-                      <div className="element_detail">
-                        <div className="title_element">Backpapers</div>
-                        <div className="content_btech">
-                          {" "}
-                          {data.education[0].back_papers}
-                        </div>
-                      </div>
+                  {data &&
+                  data.coding[0] &&
+                  data.coding[0].dev_status &&
+                  data.coding[0].dev_status !== "undefined" ? (
+                    <div className="second_skill">
+                      He is an {"\t"}
+                      {data && data.coding[0] && data.coding[0].dev_status}
                     </div>
-                    {data && data.education[0] && data.education[0].sslc[0] && (
-                      <div className="btech_details sslc">
-                        <div className="view">view</div>
-                        <div className="title_btech">High School</div>
-                        <div className="element_detail">
-                          <div className="title_element">Mathematics</div>
-                          <div className="content_btech">
-                            {data.education[0].sslc[0].maths}%
-                          </div>
-                        </div>
-                        <div className="element_detail">
-                          <div className="title_element">Physics</div>
-                          <div className="content_btech">
-                            {data.education[0].sslc[0].phy}%
-                          </div>
-                        </div>{" "}
-                        <div className="element_detail">
-                          <div className="title_element">Chemistry</div>
-                          <div className="content_btech">
-                            {data.education[0].sslc[0].che}%
-                          </div>
-                        </div>
-                        <div className="element_detail">
-                          <div className="title_element">English</div>
-                          <div className="content_btech">
-                            {data.education[0].sslc[0].english}%
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {data && data.education[0] && data.education[0].plustwo[0] && (
-                      <div className="btech_details plustwo">
-                        <div className="view">view</div>
-                        <div className="title_btech">Higher Secondary</div>
-                        <div className="element_detail">
-                          <div className="title_element">Mathematics</div>
-                          <div className="content_btech">
-                            {data.education[0].plustwo[0].maths}%
-                          </div>
-                        </div>
-                        <div className="element_detail">
-                          <div className="title_element">Physics</div>
-                          <div className="content_btech">
-                            {data.education[0].plustwo[0].phy}%
-                          </div>
-                        </div>{" "}
-                        <div className="element_detail">
-                          <div className="title_element">Chemistry</div>
-                          <div className="content_btech">
-                            {data.education[0].plustwo[0].che}%
-                          </div>
-                        </div>
-                        <div className="element_detail">
-                          <div className="title_element">English</div>
-                          <div className="content_btech">
-                            {data.education[0].plustwo[0].english}%
-                          </div>
-                        </div>
-                        <div className="element_detail">
-                          <div className="title_element">Computer Science</div>
-                          <div className="content_btech">
-                            {data.education[0].plustwo[0].cs
-                              ? data.education[0].plustwo[0].cs
-                              : "0"}
-                            %
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                  ) : (
+                    <div className="second_skill">He is not a developer</div>
+                  )}
+
+                  <div className="current_status_skill">
+                    Current Status : student{" "}
+                    {data &&
+                      data.coding[0] &&
+                      data.coding[0].dev_desc !== "undefined" &&
+                      "&"}
+                    {data &&
+                      data.coding[0] &&
+                      data.coding[0].dev_desc !== "undefined" &&
+                      data.coding[0].dev_desc}
                   </div>
-                )}
-              </div>
-            )}
-            {block === 5 && (
-              <div className="placement_select_container">
-                {data &&
-                data.placement.filter(
-                  (element) => element.company_name === rootUserName
-                )[0] ? (
-                  data.placement
-                    .filter((element) => element.company_name === rootUserName)
-                    .map((item) =>
-                      item.response === 0 ? (
-                        <div className="pending_response">
-                          Mail send successfully . please wait for his response
+                </div>
+              )}
+              {block === 3 && (
+                <div className="certificates_container">
+                  <div className="college_id_certificate">
+                    <div className="name_id">College Id</div>
+                    <div className="view">View</div>
+                  </div>
+                  <div className="sslc_certificate">
+                    <div className="name_sslc">SSLC Certificate</div>
+                    <div className="view">View</div>
+                  </div>
+                  <div className="plustwo_certificate">
+                    <div className="name_plustwo">+2 Certificate</div>
+                    <div className="view">View</div>
+                  </div>
+                  <div className="udemy_certificate">
+                    <div className="name_udemy">Udemy</div>
+                    <div className="view">View</div>
+                  </div>
+                </div>
+              )}
+              {block === 4 && (
+                <div className="interview_container">
+                  <div className="companies_select_title">
+                    Companies Selected For Interview:
+                  </div>
+                  <div className="companies_select">
+                    <ul>
+                      {data &&
+                        data.placement[0] &&
+                        data.placement
+                          .map(
+                            (item, i) => item.company_name
+                            // <div className="item">
+                            //   <div className="cname">{item.company_name}</div>
+                            //   <div className="clevel">{item.level_of_placement}</div>
+                            // </div>
+                          )
+
+                          .filter(
+                            (value, index, array_ref) =>
+                              array_ref.indexOf(value) === index
+                          )
+                          .map((x, b) => <li key={b}>{x}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {block === 6 && (
+                <div className="educ_main_container">
+                  {data && data.education[0] && (
+                    <div className="education_details_container">
+                      <div className="btech_details">
+                        <div className="title_btech">B. Tech</div>
+                        <div className="element_detail">
+                          <div className="title_element">Year</div>
+                          <div className="content_btech">
+                            {" "}
+                            {data.education[0].year}
+                          </div>
                         </div>
-                      ) : item.response === 1 ? (
-                        <div className="level_exam_more_detail">
-                          <div className="exam_level_lemd">
-                            <div className="title_exam_level_lemd">
-                              Exam Level
-                            </div>
-                            <select
-                              name="exam_level"
-                              id="exam_level"
-                              defaultValue={level_exam}
-                              onChange={(e) => setlevel_exam(e.target.value)}
-                            >
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                              <option value="6">6</option>
-                            </select>
+                        <div className="element_detail">
+                          <div className="title_element">CGPA</div>
+                          <div className="content_btech">
+                            {" "}
+                            {data.education[0].cgpa}
                           </div>
-                          <div className="exam_date_lemd">
-                            <div className="title_examdate_lemd">Date</div>
-                            <DateTimePicker
-                              className="date_time_picker"
-                              value={date_exam}
-                              onChange={setdate_exam}
-                              minDate={new Date()}
-                              minutePlaceholder="mm"
-                              hourPlaceholder="hh"
-                              dayPlaceholder="DD"
-                              monthPlaceholder="MM"
-                              yearPlaceholder="YYYY"
-                            />
+                        </div>{" "}
+                        <div className="element_detail">
+                          <div className="title_element">Backpapers</div>
+                          <div className="content_btech">
+                            {" "}
+                            {data.education[0].back_papers}
                           </div>
-                          <div className="requirements_lemd">
-                            <div className="title_require_lemd">
-                              Requirements
+                        </div>
+                      </div>
+                      {data && data.education[0] && data.education[0].sslc[0] && (
+                        <div className="btech_details sslc">
+                          <div className="view">view</div>
+                          <div className="title_btech">High School</div>
+                          <div className="element_detail">
+                            <div className="title_element">Mathematics</div>
+                            <div className="content_btech">
+                              {data.education[0].sslc[0].maths}%
                             </div>
-                            <div className="requirement_each_lemd">
-                              <input
-                                type="checkbox"
-                                name="laptop"
-                                id="laptop"
-                                checked={requirements.laptop === true}
-                                onChange={(e) =>
-                                  setrequirements({
-                                    laptop: !requirements.laptop,
-                                    internet: requirements.internet,
-                                    description: requirements.description,
-                                  })
-                                }
+                          </div>
+                          <div className="element_detail">
+                            <div className="title_element">Physics</div>
+                            <div className="content_btech">
+                              {data.education[0].sslc[0].phy}%
+                            </div>
+                          </div>{" "}
+                          <div className="element_detail">
+                            <div className="title_element">Chemistry</div>
+                            <div className="content_btech">
+                              {data.education[0].sslc[0].che}%
+                            </div>
+                          </div>
+                          <div className="element_detail">
+                            <div className="title_element">English</div>
+                            <div className="content_btech">
+                              {data.education[0].sslc[0].english}%
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {data &&
+                        data.education[0] &&
+                        data.education[0].plustwo[0] && (
+                          <div className="btech_details plustwo">
+                            <div className="view">view</div>
+                            <div className="title_btech">Higher Secondary</div>
+                            <div className="element_detail">
+                              <div className="title_element">Mathematics</div>
+                              <div className="content_btech">
+                                {data.education[0].plustwo[0].maths}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">Physics</div>
+                              <div className="content_btech">
+                                {data.education[0].plustwo[0].phy}%
+                              </div>
+                            </div>{" "}
+                            <div className="element_detail">
+                              <div className="title_element">Chemistry</div>
+                              <div className="content_btech">
+                                {data.education[0].plustwo[0].che}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">English</div>
+                              <div className="content_btech">
+                                {data.education[0].plustwo[0].english}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">
+                                Computer Science
+                              </div>
+                              <div className="content_btech">
+                                {data.education[0].plustwo[0].cs
+                                  ? data.education[0].plustwo[0].cs
+                                  : "0"}
+                                %
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  )}
+                </div>
+              )}
+              {block === 5 && (
+                <div className="placement_select_container">
+                  {data &&
+                  data.placement.filter(
+                    (element) => element.company_name === rootUserName
+                  )[0] ? (
+                    data.placement
+                      .filter(
+                        (element) => element.company_name === rootUserName
+                      )
+                      .map((item) =>
+                        item.response === 0 ? (
+                          <div className="pending_response">
+                            Mail send successfully . please wait for his
+                            response
+                          </div>
+                        ) : item.response === 1 ? (
+                          <div className="level_exam_more_detail">
+                            <div className="exam_level_lemd">
+                              <div className="title_exam_level_lemd">
+                                Exam Level
+                              </div>
+                              <select
+                                name="exam_level"
+                                id="exam_level"
+                                defaultValue={level_exam}
+                                onChange={(e) => setlevel_exam(e.target.value)}
+                              >
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                              </select>
+                            </div>
+                            <div className="exam_date_lemd">
+                              <div className="title_examdate_lemd">Date</div>
+                              <DateTimePicker
+                                className="date_time_picker"
+                                value={date_exam}
+                                onChange={setdate_exam}
+                                minDate={new Date()}
+                                minutePlaceholder="mm"
+                                hourPlaceholder="hh"
+                                dayPlaceholder="DD"
+                                monthPlaceholder="MM"
+                                yearPlaceholder="YYYY"
                               />
-                              <label htmlFor="laptop">Laptop</label>
-                              <input
-                                type="checkbox"
-                                name="internet"
-                                id="internet"
-                                checked={requirements.internet === true}
+                            </div>
+                            <div className="requirements_lemd">
+                              <div className="title_require_lemd">
+                                Requirements
+                              </div>
+                              <div className="requirement_each_lemd">
+                                <input
+                                  type="checkbox"
+                                  name="laptop"
+                                  id="laptop"
+                                  checked={requirements.laptop === true}
+                                  onChange={(e) =>
+                                    setrequirements({
+                                      laptop: !requirements.laptop,
+                                      internet: requirements.internet,
+                                      description: requirements.description,
+                                    })
+                                  }
+                                />
+                                <label htmlFor="laptop">Laptop</label>
+                                <input
+                                  type="checkbox"
+                                  name="internet"
+                                  id="internet"
+                                  checked={requirements.internet === true}
+                                  onChange={(e) =>
+                                    setrequirements({
+                                      laptop: requirements.laptop,
+                                      internet: !requirements.internet,
+                                      description: requirements.description,
+                                    })
+                                  }
+                                />
+                                <label htmlFor="internet">Internet</label>
+                              </div>
+                            </div>
+                            <div className="description_requirement_lemd">
+                              <textarea
+                                name=""
+                                id=""
+                                placeholder="More.."
                                 onChange={(e) =>
                                   setrequirements({
                                     laptop: requirements.laptop,
-                                    internet: !requirements.internet,
-                                    description: requirements.description,
+                                    internet: requirements.internet,
+                                    description: e.target.value,
                                   })
                                 }
-                              />
-                              <label htmlFor="internet">Internet</label>
+                              ></textarea>
                             </div>
+                            <div className="exam_type_lemd">
+                              <div className="title_examtype">Exam Type</div>
+                              <div className="examtype_each_lemd">
+                                <input
+                                  type="radio"
+                                  name="written"
+                                  id="written"
+                                  checked={exam_type === "written"}
+                                  onChange={(e) => setexam_type("written")}
+                                />
+                                <label htmlFor="written">Written</label>
+                                <input
+                                  type="radio"
+                                  name="interview"
+                                  id="interview"
+                                  checked={exam_type === "interview"}
+                                  onChange={(e) => setexam_type("interview")}
+                                />
+                                <label htmlFor="interview">Interview</label>
+                              </div>
+                            </div>
+                            <div className="exam_mode_lemd">
+                              <div className="title_exammode">Exam Mode</div>
+                              <div className="exammode_each_lemd">
+                                <input
+                                  type="radio"
+                                  name="online"
+                                  id="online"
+                                  checked={exam_mode === "online"}
+                                  onChange={(e) => setexam_mode("online")}
+                                />
+                                <label htmlFor="online">Online</label>
+                                <input
+                                  type="radio"
+                                  name="Offline"
+                                  id="Offline"
+                                  checked={exam_mode === "offline"}
+                                  onChange={(e) => setexam_mode("offline")}
+                                />
+                                <label htmlFor="Offline">Offline</label>
+                              </div>
+                            </div>
+                            {loader_addbtn ? (
+                              <CircularProgress
+                                style={{
+                                  display: "flex",
+                                }}
+                              />
+                            ) : (
+                              <button
+                                className="notify"
+                                onClick={SendMail_Exam_Level}
+                              >
+                                Notify
+                              </button>
+                            )}
                           </div>
-                          <div className="description_requirement_lemd">
-                            <textarea
-                              name=""
-                              id=""
-                              placeholder="More.."
-                              onChange={(e) =>
-                                setrequirements({
-                                  laptop: requirements.laptop,
-                                  internet: requirements.internet,
-                                  description: e.target.value,
-                                })
-                              }
-                            ></textarea>
-                          </div>
-                          <div className="exam_type_lemd">
-                            <div className="title_examtype">Exam Type</div>
-                            <div className="examtype_each_lemd">
+                        ) : (
+                          <div className="doyou">
+                            <div className="text_doyou">
+                              Do you want to select this student?{" "}
+                            </div>
+                            <div className="yes_no_doyou">
                               <input
                                 type="radio"
-                                name="written"
-                                id="written"
-                                checked={exam_type === "written"}
-                                onChange={(e) => setexam_type("written")}
+                                name="yesorno"
+                                id="Yes"
+                                checked={yes_no === true}
+                                onChange={() => setyes_no(true)}
                               />
-                              <label htmlFor="written">Written</label>
+                              <label htmlFor="Yes">Yes</label>
                               <input
                                 type="radio"
-                                name="interview"
-                                id="interview"
-                                checked={exam_type === "interview"}
-                                onChange={(e) => setexam_type("interview")}
+                                name="yesorno"
+                                id="No"
+                                checked={yes_no === false}
+                                onChange={() => setyes_no(false)}
                               />
-                              <label htmlFor="interview">Interview</label>
+                              <label htmlFor="No">No</label>
                             </div>
-                          </div>
-                          <div className="exam_mode_lemd">
-                            <div className="title_exammode">Exam Mode</div>
-                            <div className="exammode_each_lemd">
-                              <input
-                                type="radio"
-                                name="online"
-                                id="online"
-                                checked={exam_mode === "online"}
-                                onChange={(e) => setexam_mode("online")}
+                            {loader_addbtn ? (
+                              <CircularProgress
+                                style={{
+                                  display: "flex",
+                                }}
                               />
-                              <label htmlFor="online">Online</label>
-                              <input
-                                type="radio"
-                                name="Offline"
-                                id="Offline"
-                                checked={exam_mode === "offline"}
-                                onChange={(e) => setexam_mode("offline")}
-                              />
-                              <label htmlFor="Offline">Offline</label>
-                            </div>
+                            ) : (
+                              <div className="confirm_doyou" onClick={SendMail}>
+                                Confirm
+                              </div>
+                            )}
                           </div>
-                          {loader_addbtn ? (
-                            <CircularProgress
-                              style={{
-                                display: "flex",
-                              }}
-                            />
-                          ) : (
-                            <button
-                              className="notify"
-                              onClick={SendMail_Exam_Level}
-                            >
-                              Notify
-                            </button>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="doyou">
-                          <div className="text_doyou">
-                            Do you want to select this student?{" "}
-                          </div>
-                          <div className="yes_no_doyou">
-                            <input
-                              type="radio"
-                              name="yesorno"
-                              id="Yes"
-                              checked={yes_no === true}
-                              onChange={() => setyes_no(true)}
-                            />
-                            <label htmlFor="Yes">Yes</label>
-                            <input
-                              type="radio"
-                              name="yesorno"
-                              id="No"
-                              checked={yes_no === false}
-                              onChange={() => setyes_no(false)}
-                            />
-                            <label htmlFor="No">No</label>
-                          </div>
-                          {loader_addbtn ? (
-                            <CircularProgress
-                              style={{
-                                display: "flex",
-                              }}
-                            />
-                          ) : (
-                            <div className="confirm_doyou" onClick={SendMail}>
-                              Confirm
-                            </div>
-                          )}
-                        </div>
+                        )
                       )
-                    )
-                ) : (
-                  <div className="doyou">
-                    <div className="text_doyou">
-                      Do you want to select this student?{" "}
-                    </div>
-                    <div className="yes_no_doyou">
-                      <input
-                        type="radio"
-                        name="yesorno"
-                        id="Yes"
-                        checked={yes_no === true}
-                        onChange={() => setyes_no(true)}
-                      />
-                      <label htmlFor="Yes">Yes</label>
-                      <input
-                        type="radio"
-                        name="yesorno"
-                        id="No"
-                        checked={yes_no === false}
-                        onChange={() => setyes_no(false)}
-                      />
-                      <label htmlFor="No">No</label>
-                    </div>
-                    {loader_addbtn ? (
-                      <CircularProgress
-                        style={{
-                          display: "flex",
-                        }}
-                      />
-                    ) : (
-                      <div className="confirm_doyou" onClick={SendMail}>
-                        Confirm
+                  ) : (
+                    <div className="doyou">
+                      <div className="text_doyou">
+                        Do you want to select this student?{" "}
                       </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+                      <div className="yes_no_doyou">
+                        <input
+                          type="radio"
+                          name="yesorno"
+                          id="Yes"
+                          checked={yes_no === true}
+                          onChange={() => setyes_no(true)}
+                        />
+                        <label htmlFor="Yes">Yes</label>
+                        <input
+                          type="radio"
+                          name="yesorno"
+                          id="No"
+                          checked={yes_no === false}
+                          onChange={() => setyes_no(false)}
+                        />
+                        <label htmlFor="No">No</label>
+                      </div>
+                      {loader_addbtn ? (
+                        <CircularProgress
+                          style={{
+                            display: "flex",
+                          }}
+                        />
+                      ) : (
+                        <div className="confirm_doyou" onClick={SendMail}>
+                          Confirm
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </Container>
     </div>
   );

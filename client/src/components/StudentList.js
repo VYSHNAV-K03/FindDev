@@ -48,20 +48,20 @@ const Container = styled.div`
     height:10px;
 
     background: rgba(0, 0, 0, 0.34);
-border-radius: 5px;
-position: relative;
+    border-radius: 5px;
+    position: relative;
 
   }
   .line_loader{
     position: absolute;
     background: #4A5A96;
-border-radius: 5px;
+    border-radius: 5px;
 
-top:0;
-bottom:0;
-left:0;
-width:${(props) => (props.loader ? "250px" : "300px")};
-animation:loader 5s ease ;
+    top:0;
+    bottom:0;
+    left:0;
+    width:${(props) => (props.loader ? "250px" : "300px")};
+    animation:loader 5s ease ;
   }
 
   @keyframes loader{

@@ -52,7 +52,6 @@ const Container = styled.div`
   .home {
     /* background: rgba(74, 90, 150, 0.85); */
     background: #b7bdd5;
-
   }
   .about {
     background: #8d97bd;
@@ -190,7 +189,6 @@ const Navbar = (props) => {
 
   const callNavbar = async () => {
     try {
-      setloader(true);
       const res = await axios.get(apiUrl + `/getData`, {
         withCredentials: true,
       });
@@ -210,11 +208,9 @@ const Navbar = (props) => {
       if (res.status !== 200) {
         throw new Error(res.error);
       }
-      setloader(false);
     } catch (e) {
       console.log("error", e);
       setlogin(true);
-      setloader(false);
       // navigate("/login");
     }
   };
@@ -232,20 +228,6 @@ const Navbar = (props) => {
   return (
     <>
       <Container details_more={detail_more}>
-        {loader && (
-          <div className="loader">
-            <div className="loader_sub">
-              <div className="d-flex align-items-center">
-                <strong>Loading...</strong>
-                <div
-                  className="spinner-border ms-auto"
-                  role="status"
-                  aria-hidden="true"
-                ></div>
-              </div>
-            </div>
-          </div>
-        )}
         <div className="logo" onClick={() => navigate("/")}>
           <span>One</span>Touch
         </div>

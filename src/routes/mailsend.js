@@ -4,8 +4,6 @@ const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 const Authenticate = require("../middleware/authenticate");
 const USER = require("../modelschemas/userschema");
-const wbm = require("wbm");
-const { Client } = require("whatsapp-web.js");
 
 const transporter = nodemailer.createTransport(
   sendGridTransport({
@@ -40,11 +38,13 @@ router.post("/sendmail", Authenticate, async (req, res) => {
           response: 0,
         });
 
-        const new_interval = setInterval(() => {
+        const new_interval = setInterval(async () => {
           console.log("new ramesh");
-          user.placement
+          const new_user = await USER.findById(req.body.id);
+          new_user.placement
             .filter((item) => item.company_name === req.rootUser.name)
             .map(async (element) => {
+              console.log("new ramesh response", element.response);
               if (element.response === 0) {
                 await USER.findOneAndUpdate(
                   {
@@ -62,18 +62,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
               }
             });
           clearInterval(new_interval);
-        }, 60000);
-
-        // transporter.sendMail({
-        //   from: "vyshnavk891@gmail.com",
-        //   to: user.email,
-        //   subject: "selected for placement",
-        //   html: `
-        //       <p>${req.rootUser.name} select you </p>
-        //       <p>pls click <a href="http://localhost:3000/rsvp1">link</a> to submit or cancel the proposal</p>
-
-        //       `,
-        // });
+        }, 120000);
 
         await user.save();
       } else {
@@ -108,13 +97,16 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
         const user_after_update = await USER.findById(req.body.id);
         if (user_after_update) {
-          const My_interval = setInterval(() => {
-            console.log("interval ramesh");
+          const My_interval = setInterval(async () => {
+            const isOn = await user_after_update.isOn;
+            const user_after_update_done = await USER.findById(req.body.id);
 
-            user_after_update.placement
+            console.log("interval ramesh");
+            user_after_update_done.placement
               .filter((sumesh) => sumesh.company_name === req.rootUser.name)
               .map(async (ramesh) => {
                 console.log("rameshresponse", ramesh.response);
+
                 if (ramesh.response === 0) {
                   await USER.findOneAndUpdate(
                     {
@@ -132,42 +124,14 @@ router.post("/sendmail", Authenticate, async (req, res) => {
                 }
               });
             clearInterval(My_interval);
-          }, 60000);
+          }, 120000);
         }
-        // transporter.sendMail({
-        //   from: "vyshnavk891@gmail.com",
-        //   to: user.email,
-        //   subject: "selected for placement",
-        //   html: `
-        //       <p>${req.rootUser.name} select you as their employee</p>
-        //       <p>pls click <a href="http://localhost:3000/rsvp1">link</a> to submit or cancel the proposal</p>
-
-        //       `,
-        // });
-        // if (date) {
-        // setInterval(() => {
-        //   const date = new Date();
-        //   if (
-        //     new Date("2022-09-23T17:40:00.058Z") - date < 240000 &&
-        //     new Date("2022-09-23T17:40:00.058Z") - date > 0
-        //   ) {
-        //     transporter.sendMail({
-        //       from: "vyshnavk891@gmail.com",
-        //       to: user.email,
-        //       subject: "selected for placement",
-        //       html: `
-        //     <p>${req.rootUser.name} select you as their employee</p>
-        //     <p>pls click <a href="http://localhost:3000/rsvp1">link</a> to submit or cancel the proposal</p>
-        //     `,
-        //     });
-        //   }
-        // }, 60000);
-        // }
       }
       if (req.body.date_new) {
         console.log("hareesh");
         user.notifications.push({
           company_name: req.rootUser.name,
+          company_id: req.userID,
           level_of_placement: req.body.level_exam,
           date: req.body.date_new,
           type_exam: req.body.exam_type,
@@ -186,28 +150,36 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
         user.notifications.push({
           company_name: req.rootUser.name,
+          company_id: req.userID,
           level_of_placement: "0",
         });
         await user.save();
       }
-      // setInterval(() => {
-      //   const date = new Date();
-      //   if (
-      //     new Date("2022-09-23T17:40:00.058Z") - date < 240000 &&
-      //     new Date("2022-09-23T17:40:00.058Z") - date > 0
-      //   ) {
-      //     transporter.sendMail({
-      //       from: "vyshnavk891@gmail.com",
-      //       to: user.email,
-      //       subject: "selected for placement",
-      //       html: `
-      //     <p>${req.rootUser.name} select you as their employee</p>
-      //     <p>pls click <a href="http://localhost:3000/rsvp1">link</a> to submit or cancel the proposal</p>
 
-      //     `,
-      //     });
-      //   }
-      // }, 60000);
+      transporter.sendMail({
+        from: "vyshnavk891@gmail.com",
+        to: user.email,
+        subject: "selected for placement",
+        html: `
+            <h3>${req.rootUser.name} select you as their employee</h3>
+            <h3>pls click <a href="https://onetouch-vectorux.herokuapp.com/notification">link</a> or check notificaions page in onetouch website to submit or cancel the proposal</h3>
+
+            `,
+      });
+      const reminder = setInterval(() => {
+        transporter.sendMail({
+          from: "vyshnavk891@gmail.com",
+          to: user.email,
+          subject: "selected for placement",
+          html: `
+          <h2>This is a remainder</h2>
+          <h3>If you already responded never mind</h3>
+          <h3>${req.rootUser.name} select you as their employee</h3>
+          <h3>pls click <a href="https://onetouch-vectorux.herokuapp.com/notification">link</a> or check notificaions page in onetouch website to submit or cancel the proposal</h3>
+          `,
+        });
+        clearInterval(reminder);
+      }, 120000);
 
       res.status(200).send("mail send successfully");
     } else {
@@ -226,6 +198,14 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
       {
         $set: {
           "placement.$.response": req.body.response ? "1" : "2",
+        },
+      }
+    );
+    await USER.findOneAndUpdate(
+      { _id: req.userID, "notifications._id": req.body.not_id },
+      {
+        $set: {
+          "notifications.$.response": true,
         },
       }
     );

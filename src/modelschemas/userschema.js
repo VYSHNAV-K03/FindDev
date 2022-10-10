@@ -165,7 +165,15 @@ const userschema = new mongoose.Schema(
     ],
     notifications: [
       {
+        response: {
+          type: Boolean,
+          default: false,
+        },
         company_name: {
+          type: String,
+          default: "",
+        },
+        company_id: {
           type: String,
           default: "",
         },
@@ -194,6 +202,16 @@ const userschema = new mongoose.Schema(
             },
           },
         ],
+      },
+    ],
+    notifications_admin: [
+      {
+        name: {
+          type: String,
+        },
+        response: {
+          type: Number,
+        },
       },
     ],
 
