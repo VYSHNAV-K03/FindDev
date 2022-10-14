@@ -599,6 +599,8 @@ const SearchArea = () => {
 
   const [data, setdata] = useState();
 
+  const [role, setrole] = useState();
+
   const [btnloader, setbtnloader] = useState(false);
 
   const [python, setpython] = useState(false);
@@ -630,6 +632,8 @@ const SearchArea = () => {
 
   const [level_placement, setlevel_placement] = useState();
   const [response, setresponse] = useState();
+
+  const [compa_name, setcompa_name] = useState();
 
   const [english, setenglish] = useState(false);
   const [hindi, sethindi] = useState(false);
@@ -667,6 +671,7 @@ const SearchArea = () => {
           branch,
           level_placement,
           response,
+          compa_name,
         },
         {
           withCredentials: true,
@@ -701,6 +706,7 @@ const SearchArea = () => {
             })
         )
       );
+      localStorage.setItem("company_name", JSON.stringify(compa_name));
 
       setpopup(false);
       setpython(false);
@@ -728,15 +734,38 @@ const SearchArea = () => {
       sethindi(false);
       setlevel_placement();
       setresponse();
+      setcompa_name();
 
       setbtnloader(false);
+
+      setfilter_hish(0);
     } catch (error) {
       console.log(error);
       setbtnloader(false);
     }
   };
 
-  useEffect(() => {}, []);
+  const callNavbar = async () => {
+    try {
+      const res = await axios.get(apiUrl + `/getData`, {
+        withCredentials: true,
+      });
+
+      const data = res.data;
+
+      setrole(res.data.Role);
+
+      if (res.status !== 200) {
+        throw new Error(res.error);
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  useEffect(() => {
+    callNavbar();
+  }, []);
 
   return (
     <Container>
@@ -744,6 +773,7 @@ const SearchArea = () => {
         className="clear_search_filter"
         onClick={() => {
           localStorage.removeItem("ids");
+          localStorage.removeItem("company_name");
           dispatch(local_storage_clear());
         }}
       >
@@ -811,15 +841,34 @@ const SearchArea = () => {
                 <img src={right_arrow} alt="" />
               </div>
             </div>
-            <div className="educationbased" onClick={() => setfilter_hish(10)}>
-              <div className="logo_communication">
-                <img src={logo_placement} alt="" />
+            {role === 1 && (
+              <div
+                className="educationbased"
+                onClick={() => setfilter_hish(10)}
+              >
+                <div className="logo_communication">
+                  <img src={logo_placement} alt="" />
+                </div>
+                <div className="titile_communication">Placement</div>
+                <div className="icon_comm">
+                  <img src={right_arrow} alt="" />
+                </div>
               </div>
-              <div className="titile_communication">Placement</div>
-              <div className="icon_comm">
-                <img src={right_arrow} alt="" />
+            )}
+            {role === 2 && (
+              <div
+                className="educationbased"
+                onClick={() => setfilter_hish(11)}
+              >
+                <div className="logo_communication">
+                  <img src={logo_placement} alt="" />
+                </div>
+                <div className="titile_communication">Placement</div>
+                <div className="icon_comm">
+                  <img src={right_arrow} alt="" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
         {filter_hish === 2 && (
@@ -1252,6 +1301,46 @@ const SearchArea = () => {
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("placement"));
+                }}
+              >
+                {btnloader ? "loading" : "Submit"}
+              </button>
+            </div>
+          </div>
+        )}
+        {filter_hish === 11 && (
+          <div className="education_sslc_filter_select">
+            <div
+              className="sslc_title_filter7"
+              onClick={() => {
+                setfilter_hish(1);
+                setcompa_name();
+              }}
+            >
+              Placement
+            </div>
+            <div className="sslc_filter7">
+              <div className="filter7_che">
+                <label htmlFor="branch_btech">company</label>
+                <select
+                  name="branch"
+                  id="branch_btech"
+                  onChange={(e) => setcompa_name(e.target.value)}
+                >
+                  <option value=""></option>
+                  <option value="infosys">Infosys</option>
+                  <option value="TCS">TCS</option>
+                  <option value="wipro">Wipro</option>
+                </select>{" "}
+              </div>{" "}
+              <button
+                className="submit_communication"
+                onClick={() => {
+                  PostData();
+                  localStorage.setItem(
+                    "filter",
+                    JSON.stringify("placement_company")
+                  );
                 }}
               >
                 {btnloader ? "loading" : "Submit"}

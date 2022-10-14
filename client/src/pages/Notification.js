@@ -82,8 +82,10 @@ const Container = styled.div`
 `;
 
 const ItemEach = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding: 20px 50px;
-
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 400;
@@ -101,6 +103,16 @@ const ItemEach = styled.div`
   span {
     font-weight: 600;
   }
+  @media screen and (max-width: 775px) {
+    .date {
+      font-size: 15px;
+    }
+  }
+  @media screen and (max-width: 631px) {
+    .date {
+      order: -1;
+    }
+  }
 `;
 
 const Notification = () => {
@@ -108,7 +120,11 @@ const Notification = () => {
 
   const [notifications, setnotifications] = useState();
 
+  const [notifications_admin, setnotifications_admin] = useState();
+
   const [loader, setloader] = useState(false);
+
+  const [role, setrole] = useState();
 
   const navigate = useNavigate();
 
@@ -122,8 +138,12 @@ const Notification = () => {
 
       const data = res.data;
 
-      setnotifications(data.notifications && data.notifications);
+      setrole(res.data.Role);
 
+      setnotifications(data.notifications && data.notifications);
+      setnotifications_admin(
+        data.notifications_admin && data.notifications_admin
+      );
       if (res.status !== 200) {
         throw new Error(res.error);
       }
@@ -154,7 +174,7 @@ const Notification = () => {
               <div className="line_loader"></div>
             </div>
           </div>
-        ) : (
+        ) : role === 0 ? (
           notifications &&
           notifications.reverse().map((notification, index) => (
             <ItemEach
@@ -168,7 +188,33 @@ const Notification = () => {
                 })
               }
             >
-              You have an update from <span>{notification.company_name}</span>
+              <div className="content">
+                You have an update from <span>{notification.company_name}</span>
+              </div>
+              <div className="date">{notification.send_date}</div>
+            </ItemEach>
+          ))
+        ) : (
+          notifications_admin &&
+          notifications_admin.reverse().map((notification_ad, index) => (
+            <ItemEach
+              back={index % 2 === 0 ? false : true}
+              // response={notification.response}
+              response={false}
+              className="item_each"
+              key={notification_ad._id}
+              // onClick={() =>
+              //   navigate("/notification_each", {
+              //     state: { id: notification._id },
+              //   })
+              // }
+            >
+              <div className="content">
+                {notification_ad.name}{" "}
+                {notification_ad.response ? "accepted" : "rejected"} your
+                proposal
+              </div>
+              <div className="date">{notification_ad.send_date}</div>
             </ItemEach>
           ))
         )}

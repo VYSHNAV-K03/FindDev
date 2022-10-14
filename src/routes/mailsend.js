@@ -24,14 +24,18 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
     if (user) {
       var c = 0;
+      console.log("user id", req.rootUser._id.toString());
+
       user.placement.map((item) => {
-        if (item.company_name === req.rootUser.name) {
+        console.log(item.company_id);
+        if (item.company_id === req.userID.toString()) {
           c++;
         }
       });
       if (c === 0) {
         console.log("new");
         user.placement.push({
+          company_id: req.userID,
           company_name: req.rootUser.name,
           level_of_placement: 0, //it will get from body
           current_status: 1,
@@ -42,14 +46,14 @@ router.post("/sendmail", Authenticate, async (req, res) => {
           console.log("new ramesh");
           const new_user = await USER.findById(req.body.id);
           new_user.placement
-            .filter((item) => item.company_name === req.rootUser.name)
+            .filter((item) => item.company_id === req.userID)
             .map(async (element) => {
               console.log("new ramesh response", element.response);
               if (element.response === 0) {
                 await USER.findOneAndUpdate(
                   {
                     _id: req.body.id,
-                    "placement.company_name": req.rootUser.name,
+                    "placement.company_id": req.userID,
                   },
                   {
                     $set: {
@@ -70,7 +74,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
         if (req.body.date_new) {
           console.log("suemsh");
           await USER.findOneAndUpdate(
-            { _id: req.body.id, "placement.company_name": req.rootUser.name },
+            { _id: req.body.id, "placement.company_id": req.userID },
             {
               $set: {
                 "placement.$.level_of_placement": req.body.level_exam,
@@ -83,7 +87,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
           console.log("ramesh");
 
           await USER.findOneAndUpdate(
-            { _id: req.body.id, "placement.company_name": req.rootUser.name },
+            { _id: req.body.id, "placement.company_id": req.userID },
             {
               $set: {
                 "placement.$.level_of_placement": "0",
@@ -103,7 +107,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
             console.log("interval ramesh");
             user_after_update_done.placement
-              .filter((sumesh) => sumesh.company_name === req.rootUser.name)
+              .filter((sumesh) => sumesh.company_id === req.userID)
               .map(async (ramesh) => {
                 console.log("rameshresponse", ramesh.response);
 
@@ -111,7 +115,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
                   await USER.findOneAndUpdate(
                     {
                       _id: req.body.id,
-                      "placement.company_name": req.rootUser.name,
+                      "placement.company_id": req.userID,
                     },
                     {
                       $set: {
@@ -132,10 +136,13 @@ router.post("/sendmail", Authenticate, async (req, res) => {
         user.notifications.push({
           company_name: req.rootUser.name,
           company_id: req.userID,
+          role: req.rootUser.Role,
           level_of_placement: req.body.level_exam,
           date: req.body.date_new,
           type_exam: req.body.exam_type,
           mode: req.body.exam_mode,
+          send_date: new Date().toLocaleString(),
+
           requirements: [
             {
               laptop: req.body.requirements.laptop,
@@ -152,6 +159,8 @@ router.post("/sendmail", Authenticate, async (req, res) => {
           company_name: req.rootUser.name,
           company_id: req.userID,
           level_of_placement: "0",
+          role: req.rootUser.Role,
+          send_date: new Date().toLocaleString(),
         });
         await user.save();
       }
@@ -194,7 +203,10 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
   console.log(req.body);
   try {
     const user = await USER.findOneAndUpdate(
-      { _id: req.userID, "placement.company_name": req.body.name },
+      {
+        _id: req.userID.toString(),
+        "placement.company_id": req.body.company_id,
+      },
       {
         $set: {
           "placement.$.response": req.body.response ? "1" : "2",
@@ -202,14 +214,25 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
       }
     );
     await USER.findOneAndUpdate(
-      { _id: req.userID, "notifications._id": req.body.not_id },
+      { _id: req.userID.toString(), "notifications._id": req.body.not_id },
       {
         $set: {
           "notifications.$.response": true,
         },
       }
     );
+
     const user_company = await USER.findById({ _id: req.body.company_id });
+
+    user_company.notifications_admin.push({
+      user_id: req.userID.toString(),
+      name: req.rootUser.name,
+      response: req.body.response,
+      role: req.rootUser.Role,
+      send_date: new Date().toLocaleString(),
+    });
+    await user_company.save();
+
     console.log(user_company.email);
     transporter.sendMail({
       from: "vyshnavk891@gmail.com",
@@ -224,6 +247,36 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send("send_stud_response error", error);
+  }
+});
+
+router.post("/sendmail_basic", Authenticate, async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const user = await USER.findById({
+      _id: req.body.id,
+    });
+    user.notifications.push({
+      company_id: req.userID,
+      company_name: req.rootUser.name,
+      subject: req.body.subject,
+      role: req.rootUser.Role,
+      send_date: new Date().toLocaleString(),
+    });
+    await user.save();
+
+    transporter.sendMail({
+      from: "vyshnavk891@gmail.com",
+      to: user.email,
+      subject:`You have an notification from ${req.rootUser.name}`,
+      html: `
+      <h2>${req.body.subject}</h2>
+      `,
+    });
+    res.status(200).send("Mail send successfully");
+  } catch (error) {
+    res.status(400).send("send mail error", error);
   }
 });
 

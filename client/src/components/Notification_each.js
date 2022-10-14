@@ -115,6 +115,7 @@ const Container = styled.div`
     color: #000000;
   }
   .date_content {
+    max-width:700px;
     font-family: "Montserrat";
     font-style: normal;
     font-weight: 400;
@@ -229,11 +230,14 @@ const Notification_each = () => {
 
   const [notification, setnotification] = useState([]);
 
+  const navigate = useNavigate();
+
   const [loader, setloader] = useState(false);
   const [loader_btn, setloader_btn] = useState(false);
 
   const [name, setname] = useState();
   const [company_email, setcompany_email] = useState();
+  const [role, setrole] = useState();
   const [response, setresponse] = useState(false);
   const [already_response, setalready_response] = useState();
 
@@ -246,7 +250,7 @@ const Notification_each = () => {
       });
 
       setcompany_email(res.data.email);
-
+      setrole(res.data.Role);
       setnotification(
         res.data.notifications.filter(
           (element) => element._id === location.state.id
@@ -279,6 +283,7 @@ const Notification_each = () => {
       );
       window.alert("send response successfully");
       setloader_btn(false);
+      navigate("/notification");
     } catch (error) {
       console.log("send response frontend", error);
       setloader_btn(false);
@@ -307,33 +312,35 @@ const Notification_each = () => {
           <Container key={item._id} loader={loader}>
             <div className="title">{item.company_name}</div>
             <div className="details">
-              {item.date && (
+              {item.role === 1 && item.date && (
                 <div className="date">
                   <div className="date_title">Date</div>
                   <div className="date_content">{item.date}</div>
                 </div>
               )}
-              {item.level_of_placement ? (
+              {item.role === 1 && item.level_of_placement ? (
                 <div className="date">
                   <div className="date_title">Level</div>
                   <div className="date_content">{item.level_of_placement}</div>
                 </div>
               ) : (
-                <div className="date_title">You Selected For placement</div>
+                item.role === 1 && (
+                  <div className="date_title">You Selected For placement</div>
+                )
               )}
-              {item.type_exam && (
+              {item.role === 1 && item.type_exam && (
                 <div className="date">
                   <div className="date_title">Exam Type</div>
                   <div className="date_content">{item.type_exam}</div>
                 </div>
               )}
-              {item.mode && (
+              {item.role === 1 && item.mode && (
                 <div className="date">
                   <div className="date_title">Exam Mode</div>
                   <div className="date_content">{item.mode}</div>
                 </div>
               )}
-              {item.requirements[0] && (
+              {item.role === 1 && item.requirements[0] && (
                 <div className="date">
                   <div className="date_title">Requirements</div>
                   <div className="date_content">
@@ -352,7 +359,7 @@ const Notification_each = () => {
                   </div>
                 </div>
               )}
-              {item.requirements[0] && (
+              {item.role === 1 && item.requirements[0] && (
                 <div className="date">
                   <div className="date_title">More</div>
                   <div className="date_content">
@@ -363,45 +370,54 @@ const Notification_each = () => {
                   </div>
                 </div>
               )}
-
-              <div className="question">
-                <div className="question_title">Do you want to accept?</div>
-                <div className="input_accept_reject">
-                  <input
-                    type="radio"
-                    name="response"
-                    id="accept"
-                    checked={response === true}
-                    onChange={() => setresponse(true)}
-                  />
-                  <label htmlFor="accept">Yes</label>
-                  <input
-                    type="radio"
-                    name="response"
-                    id="reject"
-                    checked={response === false}
-                    onChange={() => setresponse(false)}
-                  />
-                  <label htmlFor="reject">No</label>
+              {item.role === 1 && (
+                <div className="question">
+                  <div className="question_title">Do you want to accept?</div>
+                  <div className="input_accept_reject">
+                    <input
+                      type="radio"
+                      name="response"
+                      id="accept"
+                      checked={response === true}
+                      onChange={() => setresponse(true)}
+                    />
+                    <label htmlFor="accept">Yes</label>
+                    <input
+                      type="radio"
+                      name="response"
+                      id="reject"
+                      checked={response === false}
+                      onChange={() => setresponse(false)}
+                    />
+                    <label htmlFor="reject">No</label>
+                  </div>
+                  {item.response ? (
+                    <button
+                      className="confirm"
+                      onClick={() => window.alert("you already responded")}
+                    >
+                      Responded
+                    </button>
+                  ) : loader_btn ? (
+                    <CircularProgress className="circular_progress" />
+                  ) : (
+                    <button
+                      className="confirm"
+                      onClick={() => sendResponse(item._id, item.company_id)}
+                    >
+                      Confirm
+                    </button>
+                  )}
                 </div>
-                {item.response ? (
-                  <button
-                    className="confirm"
-                    onClick={() => window.alert("you already responded")}
-                  >
-                    Responded
-                  </button>
-                ) : loader_btn ? (
-                  <CircularProgress className="circular_progress" />
-                ) : (
-                  <button
-                    className="confirm"
-                    onClick={() => sendResponse(item._id, item.company_id)}
-                  >
-                    Confirm
-                  </button>
-                )}
-              </div>
+              )}
+              {item.role === 2 && (
+                <>
+                  <div className="date">
+                    <div className="date_title">Subject</div>
+                    <p className="date_content">{item.subject}</p>
+                  </div>
+                </>
+              )}
             </div>
           </Container>
         ))

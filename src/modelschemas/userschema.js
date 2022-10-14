@@ -148,6 +148,9 @@ const userschema = new mongoose.Schema(
     ],
     placement: [
       {
+        company_id: {
+          type: String,
+        },
         company_name: {
           type: String,
           default: "",
@@ -177,7 +180,12 @@ const userschema = new mongoose.Schema(
           type: String,
           default: "",
         },
-
+        role: {
+          type: Number,
+        },
+        click_event: {
+          type: Boolean,
+        },
         level_of_placement: {
           type: Number,
         },
@@ -188,6 +196,12 @@ const userschema = new mongoose.Schema(
           type: String,
         },
         mode: {
+          type: String,
+        },
+        subject: {
+          type: String,
+        },
+        send_date: {
           type: String,
         },
         requirements: [
@@ -207,11 +221,36 @@ const userschema = new mongoose.Schema(
     ],
     notifications_admin: [
       {
+        user_id: {
+          type: String,
+        },
         name: {
           type: String,
         },
-        response: {
+        role: {
           type: Number,
+        },
+        response: {
+          type: Boolean,
+        },
+        send_date: {
+          type: String,
+        },
+      },
+    ],
+    mails: [
+      {
+        company_id: {
+          type: String,
+        },
+        name: {
+          type: String,
+        },
+        subject: {
+          type: String,
+        },
+        response: {
+          type: Boolean,
         },
       },
     ],

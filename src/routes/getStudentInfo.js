@@ -274,6 +274,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
     malayalam,
     level_placement,
     response,
+    compa_name,
   } = req.body;
 
   console.log("filtering_students", req.body);
@@ -484,6 +485,19 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           },
 
+      compa_name && compa_name !== ""
+        ? {
+            placement: {
+              $elemMatch: {
+                company_name: compa_name,
+              },
+            },
+          }
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
       english
         ? {
             "coding.communication_languages": {

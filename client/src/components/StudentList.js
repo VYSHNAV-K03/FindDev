@@ -441,11 +441,60 @@ const StudentList = (props) => {
                             </div>
                             <div className="branch">
                               Response :{" "}
-                              {place.response === 1
-                                ? "accept"
-                                : place.response === 2
-                                ? "reject"
-                                : "pending"}
+                              <span
+                                style={{
+                                  color:
+                                    place.response === 1
+                                      ? "green"
+                                      : place.response === 2
+                                      ? "rgba(255,0,0,0.7)"
+                                      : "blue",
+                                }}
+                              >
+                                {place.response === 1
+                                  ? "accept"
+                                  : place.response === 2
+                                  ? "reject"
+                                  : "pending"}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                    {JSON.parse(localStorage.getItem("filter")) ===
+                      "placement_company" &&
+                      element.placement &&
+                      element.placement
+                        .filter(
+                          (ele) =>
+                            ele.company_name ===
+                            JSON.parse(localStorage.getItem("company_name"))
+                        )
+                        .map((place) => (
+                          <div className="second_row" key={place._id}>
+                            <div className="year">
+                              Company_name : {place.company_name}
+                            </div>
+                            <div className="year">
+                              Level : {place.level_of_placement}
+                            </div>
+                            <div className="branch">
+                              Response :{" "}
+                              <span
+                                style={{
+                                  color:
+                                    place.response === 1
+                                      ? "green"
+                                      : place.response === 2
+                                      ? "rgba(255,0,0,0.7)"
+                                      : "blue",
+                                }}
+                              >
+                                {place.response === 1
+                                  ? "accept"
+                                  : place.response === 2
+                                  ? "reject"
+                                  : "pending"}
+                              </span>
                             </div>
                           </div>
                         ))}

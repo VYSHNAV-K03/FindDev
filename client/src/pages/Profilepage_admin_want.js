@@ -151,6 +151,7 @@ const Container = styled.div`
   .certificate_btn,
   .interview_btn,
   .Select_stud_btn,
+  .Select_stud_btn_college,
   .edu_btn {
     border: 1px solid #4a5a96;
     border-radius: 10px;
@@ -201,6 +202,10 @@ const Container = styled.div`
   .Select_stud_btn {
     color: ${(props) => (props.block === 5 ? "white" : "#4a5a96")};
     background: ${(props) => (props.block === 5 ? "#4a5a96" : "white")};
+  }
+  .Select_stud_btn_college {
+    color: ${(props) => (props.block === 7 ? "white" : "#4a5a96")};
+    background: ${(props) => (props.block === 7 ? "#4a5a96" : "white")};
   }
 
   .right {
@@ -287,6 +292,7 @@ const Container = styled.div`
     .certificate_btn,
     .interview_btn,
     .Select_stud_btn,
+    .Select_stud_btn_college,
     .edu_btn {
       width: 110px;
       height: 35px;
@@ -337,6 +343,7 @@ const Container = styled.div`
     .certificate_btn,
     .interview_btn,
     .Select_stud_btn,
+    .Select_stud_btn_college,
     .edu_btn {
       margin: 5px;
     }
@@ -956,6 +963,90 @@ const Container = styled.div`
       width: 80px;
     }
   }
+  .title_block_7_mail_send {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    /* identical to box height */
+
+    color: #4a5a96;
+    margin-bottom: 50px;
+  }
+  .subject {
+    display: flex;
+    margin-bottom: 50px;
+
+    label {
+      font-family: "Montserrat";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 29px;
+
+      color: #000000;
+
+      width: 165px;
+      height: 29px;
+    }
+    textarea {
+      border: 1px solid #000000;
+      border-radius: 5px;
+
+      width: 506px;
+      height: 111px;
+
+      font-family: "Montserrat";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  .send_mail_basic {
+    background: #4a5a96;
+    border-radius: 5px;
+
+    width: 150px;
+    height: 53px;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #ffffff;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 937px) {
+    .title_block_7_mail_send {
+      font-size: 25px;
+      margin-bottom: 20px;
+    }
+    .subject {
+      label {
+        font-size: 21px;
+        width: 125px;
+      }
+      textarea {
+        width: 306px;
+      }
+    }
+    .send_mail_basic {
+      width: 120px;
+      height: 33px;
+
+      font-size: 21px;
+    }
+  }
 `;
 
 const Profilepage_admin_want = () => {
@@ -963,14 +1054,18 @@ const Profilepage_admin_want = () => {
 
   const [data, setdata] = useState();
 
+  const [role, setrole] = useState();
+
   const [yes_no, setyes_no] = useState();
 
   const [loader, setloader] = useState(false);
   const [loader_addbtn, setloader_addbtn] = useState(false);
+  const [mail_basic_loader, setmail_basic_loader] = useState(false);
 
   const navigate = useNavigate();
 
   const [rootUserName, setrootUserName] = useState();
+  const [rootId, setrootId] = useState();
 
   const [date_exam, setdate_exam] = useState(0);
 
@@ -984,6 +1079,8 @@ const Profilepage_admin_want = () => {
 
   const [exam_mode, setexam_mode] = useState("online");
   const [exam_type, setexam_type] = useState("written");
+
+  const [subject, setsubject] = useState("");
 
   const location = useLocation();
 
@@ -1005,9 +1102,6 @@ const Profilepage_admin_want = () => {
 
       setdata(res.data);
 
-      console.log(
-        res.data.placement.filter((item) => item.company_name === "TCS")
-      );
       setloader(false);
 
       console.log(res.data);
@@ -1026,6 +1120,8 @@ const Profilepage_admin_want = () => {
       const data = res.data;
 
       setrootUserName(data.name);
+      setrole(data.Role);
+      setrootId(data._id);
 
       if (res.status !== 200) {
         throw new Error(res.error);
@@ -1085,6 +1181,24 @@ const Profilepage_admin_want = () => {
     }
   };
 
+  const sendMailBasic = async () => {
+    try {
+      setmail_basic_loader(true);
+      const res = await axios.post(
+        apiUrl + `/mailsend/sendmail_basic`,
+        { id, subject },
+        { withCredentials: true }
+      );
+
+      window.alert(res.data);
+
+      setmail_basic_loader(false);
+    } catch (error) {
+      console.log(error);
+      setmail_basic_loader(false);
+    }
+  };
+
   useEffect(() => {
     getDataProfile();
     callNavbar();
@@ -1141,9 +1255,19 @@ const Profilepage_admin_want = () => {
                 <div className="certificate_btn" onClick={() => setblock(3)}>
                   Certificates
                 </div>
-                <div className="Select_stud_btn" onClick={() => setblock(5)}>
-                  Select Student
-                </div>
+                {role === 1 && (
+                  <div className="Select_stud_btn" onClick={() => setblock(5)}>
+                    Select Student
+                  </div>
+                )}
+                {role === 2 && (
+                  <div
+                    className="Select_stud_btn_college"
+                    onClick={() => setblock(7)}
+                  >
+                    Select Student
+                  </div>
+                )}
               </div>
             </div>
             <div className="right">
@@ -1400,12 +1524,10 @@ const Profilepage_admin_want = () => {
                 <div className="placement_select_container">
                   {data &&
                   data.placement.filter(
-                    (element) => element.company_name === rootUserName
+                    (element) => element.company_id === rootId
                   )[0] ? (
                     data.placement
-                      .filter(
-                        (element) => element.company_name === rootUserName
-                      )
+                      .filter((element) => element.company_id === rootId)
                       .map((item) =>
                         item.response === 0 ? (
                           <div className="pending_response">
@@ -1486,6 +1608,7 @@ const Profilepage_admin_want = () => {
                                 name=""
                                 id=""
                                 placeholder="More.."
+                                value={requirements.description}
                                 onChange={(e) =>
                                   setrequirements({
                                     laptop: requirements.laptop,
@@ -1622,6 +1745,34 @@ const Profilepage_admin_want = () => {
                           Confirm
                         </div>
                       )}
+                    </div>
+                  )}
+                </div>
+              )}
+              {block === 7 && (
+                <div className="placement_select_container">
+                  <div className="title_block_7_mail_send">
+                    Send Mail Or Notification To This Student
+                  </div>
+                  <div className="subject">
+                    <label htmlFor="subject">Subject </label>
+                    <textarea
+                      name=""
+                      id="subject"
+                      placeholder="write here.."
+                      value={subject}
+                      onChange={(e) => setsubject(e.target.value)}
+                    ></textarea>{" "}
+                  </div>
+                  {mail_basic_loader ? (
+                    <CircularProgress
+                      style={{
+                        display: "flex",
+                      }}
+                    />
+                  ) : (
+                    <div className="send_mail_basic" onClick={sendMailBasic}>
+                      Send
                     </div>
                   )}
                 </div>

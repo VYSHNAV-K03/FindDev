@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <Container>
       <Navbar role={true} />
-      {role === 1 ? <SearchArea /> : <SearchAreaCollege />}
+      <SearchArea />
       <StudentList id={location.state && location.state.id} />
     </Container>
   );
