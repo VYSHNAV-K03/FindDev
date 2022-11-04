@@ -143,7 +143,30 @@ const Container = styled.div`
 
     color: #000000;
 
+    margin-bottom: 10px;
+  }
+  .trainig_shell {
+    padding: 20px;
+  }
+  .training_status {
     margin-bottom: 40px;
+
+    background: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.14);
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 18px;
+    text-align: center;
+
+    color: ${(props) => (props.training ? "#32cd32" : "red")};
+
+    padding: 10px 20px;
+
+    border-radius: 20px;
+    border: 2px solid ${(props) => (props.training ? "#32cd32" : "red")};
   }
 
   .profile_btn,
@@ -285,6 +308,8 @@ const Container = styled.div`
     }
     .detail1 {
       font-size: 16px;
+    }
+    .training_status {
       margin-bottom: 20px;
     }
     .profile_btn,
@@ -327,6 +352,8 @@ const Container = styled.div`
     }
     .detail1 {
       font-size: 16px;
+    }
+    .training_status {
       margin-bottom: 10px;
     }
     .profile_container {
@@ -459,27 +486,77 @@ const Container = styled.div`
 
   .interview_container {
     padding: 50px;
+    width: 100%;
+    position: relative;
   }
+  .training_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #4a5a96;
+    color: white;
+    border: 1px solid #4a5a96;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 130px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    :hover {
+      transform: scale(1.05);
+    }
+  }
+
   .companies_select_title {
     font-family: "Inter";
     font-style: normal;
     font-weight: 500;
     font-size: 38px;
-    line-height: 46px;
     margin-bottom: 10px;
   }
   @media screen and (max-width: 709px) {
     .interview_container {
-      padding: 20px;
     }
     .companies_select_title {
-      font-size: 30px;
+      font-size: 25px;
     }
   }
 
   .placement_select_container {
     padding: 100px;
     width: 100%;
+    position: relative;
+  }
+
+  .final_selection_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+
+    color: #ffffff;
+
+    background: #4a5a96;
+    border-radius: 10px;
+
+    cursor: pointer;
   }
 
   .text_doyou {
@@ -769,6 +846,10 @@ const Container = styled.div`
     .placement_select_container {
       padding: 30px;
     }
+    .final_selection_btn {
+      font-size: 18px;
+      padding: 5px;
+    }
     .title_exam_level_lemd,
     .title_exammode,
     .title_examtype,
@@ -790,8 +871,9 @@ const Container = styled.div`
   }
   @media screen and (max-width: 515px) {
     .placement_select_container {
-      padding: 10px;
+      padding: 50px 10px 10px;
     }
+
     .title_exam_level_lemd,
     .title_exammode,
     .title_examtype,
@@ -1058,6 +1140,8 @@ const Profilepage_admin_want = () => {
 
   const [yes_no, setyes_no] = useState();
 
+  const [train, settrain] = useState(false);
+
   const [loader, setloader] = useState(false);
   const [loader_addbtn, setloader_addbtn] = useState(false);
   const [mail_basic_loader, setmail_basic_loader] = useState(false);
@@ -1133,6 +1217,26 @@ const Profilepage_admin_want = () => {
 
   console.log(rootUserName);
 
+  const changeTrain = async () => {
+    try {
+      setloader_addbtn(true);
+
+      const res = await axios.post(
+        apiUrl + `/mailsend/send_train`,
+        { id, train },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      window.alert(res.data);
+      getDataProfile();
+
+      setloader_addbtn(false);
+    } catch (error) {
+      console.log(error);
+      setloader_addbtn(false);
+    }
+  };
+
   const SendMail = async () => {
     try {
       setloader_addbtn(true);
@@ -1207,7 +1311,12 @@ const Profilepage_admin_want = () => {
   return (
     <div className="main">
       <Navbar />
-      <Container bg={bg1} block={block} loader={loader}>
+      <Container
+        bg={bg1}
+        block={block}
+        loader={loader}
+        training={data && data.Train}
+      >
         {loader ? (
           <div className="loader">
             <div className="loader_image">
@@ -1238,6 +1347,9 @@ const Profilepage_admin_want = () => {
                   data.education[0] &&
                   data.education[0].institution_name}
               </div>
+              <div className="training_status">
+                {data && data.Train ? "Trained" : "Untrained"}
+              </div>
 
               <div className="profile_buttons">
                 <div className="profile_btn" onClick={() => setblock(1)}>
@@ -1252,6 +1364,7 @@ const Profilepage_admin_want = () => {
                 <div className="interview_btn" onClick={() => setblock(4)}>
                   Placement
                 </div>
+
                 <div className="certificate_btn" onClick={() => setblock(3)}>
                   Certificates
                 </div>
@@ -1260,6 +1373,7 @@ const Profilepage_admin_want = () => {
                     Select Student
                   </div>
                 )}
+
                 {role === 2 && (
                   <div
                     className="Select_stud_btn_college"
@@ -1390,6 +1504,11 @@ const Profilepage_admin_want = () => {
               )}
               {block === 4 && (
                 <div className="interview_container">
+                  {role === 2 && (
+                    <div className="training_btn" onClick={() => setblock(8)}>
+                      Training
+                    </div>
+                  )}
                   <div className="companies_select_title">
                     Companies Selected For Interview:
                   </div>
@@ -1522,6 +1641,7 @@ const Profilepage_admin_want = () => {
               )}
               {block === 5 && (
                 <div className="placement_select_container">
+                  <div className="final_selection_btn">Final Selection</div>
                   {data &&
                   data.placement.filter(
                     (element) => element.company_id === rootId
@@ -1773,6 +1893,42 @@ const Profilepage_admin_want = () => {
                   ) : (
                     <div className="send_mail_basic" onClick={sendMailBasic}>
                       Send
+                    </div>
+                  )}
+                </div>
+              )}
+              {block === 8 && (
+                <div className="doyou trainig_shell">
+                  <div className="text_doyou">
+                    Are you sure he completed his placement training
+                  </div>
+                  <div className="yes_no_doyou">
+                    <input
+                      type="radio"
+                      name="train_not"
+                      id="Trained"
+                      checked={train === true}
+                      onChange={() => settrain(true)}
+                    />
+                    <label htmlFor="Trained">Yes</label>
+                    <input
+                      type="radio"
+                      name="train_not"
+                      id="Untrained"
+                      checked={train === false}
+                      onChange={() => settrain(false)}
+                    />
+                    <label htmlFor="Untrained">No</label>
+                  </div>
+                  {loader_addbtn ? (
+                    <CircularProgress
+                      style={{
+                        display: "flex",
+                      }}
+                    />
+                  ) : (
+                    <div className="confirm_doyou" onClick={changeTrain}>
+                      Confirm
                     </div>
                   )}
                 </div>

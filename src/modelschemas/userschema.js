@@ -31,9 +31,9 @@ const userschema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    ver: {
-      type: Number,
-      default: 0,
+    Train: {
+      type: Boolean,
+      default: false,
     },
     education: [
       {

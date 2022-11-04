@@ -250,6 +250,22 @@ router.post("/send_student_response", Authenticate, async (req, res) => {
   }
 });
 
+router.post("/send_train", Authenticate, async (req, res) => {
+  try {
+    await USER.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: {
+          Train: req.body.train,
+        },
+      }
+    );
+    res.status(200).send("Update training status success");
+  } catch (error) {
+    res.status(400).send("Training status error", error);
+  }
+});
+
 router.post("/sendmail_basic", Authenticate, async (req, res) => {
   try {
     console.log(req.body);
