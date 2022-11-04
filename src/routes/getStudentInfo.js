@@ -21,24 +21,34 @@ router.post(
     // console.log(req.files);
 
     const final_path_sslc =
-      req.files.sslc_certificate[0] && req.files.sslc_certificate[0].path;
+      req.files.sslc_certificate &&
+      req.files.sslc_certificate[0] &&
+      req.files.sslc_certificate[0].path;
 
     const base64_sslc =
+      req.files.sslc_certificate &&
       req.files.sslc_certificate[0] &&
       fs.readFileSync(final_path_sslc, "base64");
 
     const buffer_sslc =
-      req.files.sslc_certificate[0] && Buffer.from(base64_sslc, "base64");
+      req.files.sslc_certificate &&
+      req.files.sslc_certificate[0] &&
+      Buffer.from(base64_sslc, "base64");
 
     const final_path__plustwo =
-      req.files.plustwo_certificate[0] && req.files.plustwo_certificate[0].path;
+      req.files.plustwo_certificate &&
+      req.files.plustwo_certificate[0] &&
+      req.files.plustwo_certificate[0].path;
 
     const base64_plustwo =
+      req.files.plustwo_certificate &&
       req.files.plustwo_certificate[0] &&
       fs.readFileSync(final_path__plustwo, "base64");
 
     const buffer_plustwo =
-      req.files.plustwo_certificate[0] && Buffer.from(base64_plustwo, "base64");
+      req.files.plustwo_certificate &&
+      req.files.plustwo_certificate[0] &&
+      Buffer.from(base64_plustwo, "base64");
 
     const {
       python,
@@ -93,8 +103,12 @@ router.post(
               maths: sscl_maths,
               english: sslc_english,
               sslc_cer: {
-                data: req.files.sslc_certificate[0] && buffer_sslc,
+                data:
+                  req.files.sslc_certificate &&
+                  req.files.sslc_certificate[0] &&
+                  buffer_sslc,
                 contentType:
+                  req.files.sslc_certificate &&
                   req.files.sslc_certificate[0] &&
                   req.files.sslc_certificate[0].mimetype,
               },
@@ -108,8 +122,12 @@ router.post(
               english: plustwo_english,
               cs: plustwo_cs,
               plustwo_cer: {
-                data: req.files.plustwo_certificate[0] && buffer_plustwo,
+                data:
+                  req.files.plustwo_certificate &&
+                  req.files.plustwo_certificate[0] &&
+                  buffer_plustwo,
                 contentType:
+                  req.files.plustwo_certificate &&
                   req.files.plustwo_certificate[0] &&
                   req.files.plustwo_certificate[0].mimetype,
               },

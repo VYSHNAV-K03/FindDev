@@ -405,9 +405,11 @@ const StudentList = (props) => {
                   <div className="center_content">
                     <div className="first_row">
                       <div className="name">{element.name}</div>
-                      <div className="college_name">
-                        College of Engineerig, Thalassery
-                      </div>
+                      {element.education[0] && (
+                        <div className="college_name">
+                          {element.education[0].institution_name}
+                        </div>
+                      )}
                     </div>
                     {JSON.parse(localStorage.getItem("filter")) === "btech" && (
                       <>

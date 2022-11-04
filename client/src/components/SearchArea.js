@@ -1328,7 +1328,7 @@ const SearchArea = () => {
                   onChange={(e) => setcompa_name(e.target.value)}
                 >
                   <option value=""></option>
-                  <option value="infosys">Infosys</option>
+                  <option value="Infosys">Infosys</option>
                   <option value="TCS">TCS</option>
                   <option value="wipro">Wipro</option>
                 </select>{" "}

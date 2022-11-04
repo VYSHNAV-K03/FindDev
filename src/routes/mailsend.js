@@ -35,25 +35,26 @@ router.post("/sendmail", Authenticate, async (req, res) => {
       if (c === 0) {
         console.log("new");
         user.placement.push({
-          company_id: req.userID,
+          company_id: req.userID.toString(),
           company_name: req.rootUser.name,
           level_of_placement: 0, //it will get from body
           current_status: 1,
           response: 0,
         });
 
-        const new_interval = setInterval(async () => {
-          console.log("new ramesh");
+        const New_interval = setInterval(async () => {
+          console.log("new ramesh", req.body.id);
+          console.log("new ramesh1", req.userID);
           const new_user = await USER.findById(req.body.id);
           new_user.placement
-            .filter((item) => item.company_id === req.userID)
+            .filter((item) => item.company_id === req.userID.toString())
             .map(async (element) => {
               console.log("new ramesh response", element.response);
               if (element.response === 0) {
                 await USER.findOneAndUpdate(
                   {
                     _id: req.body.id,
-                    "placement.company_id": req.userID,
+                    "placement.company_id": req.userID.toString(),
                   },
                   {
                     $set: {
@@ -65,16 +66,15 @@ router.post("/sendmail", Authenticate, async (req, res) => {
                 );
               }
             });
-          clearInterval(new_interval);
+          clearInterval(New_interval);
         }, 120000);
-
         await user.save();
       } else {
         console.log("already present");
         if (req.body.date_new) {
           console.log("suemsh");
           await USER.findOneAndUpdate(
-            { _id: req.body.id, "placement.company_id": req.userID },
+            { _id: req.body.id, "placement.company_id": req.userID.toString() },
             {
               $set: {
                 "placement.$.level_of_placement": req.body.level_exam,
@@ -87,7 +87,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
           console.log("ramesh");
 
           await USER.findOneAndUpdate(
-            { _id: req.body.id, "placement.company_id": req.userID },
+            { _id: req.body.id, "placement.company_id": req.userID.toString() },
             {
               $set: {
                 "placement.$.level_of_placement": "0",
@@ -107,7 +107,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
             console.log("interval ramesh");
             user_after_update_done.placement
-              .filter((sumesh) => sumesh.company_id === req.userID)
+              .filter((sumesh) => sumesh.company_id === req.userID.toString())
               .map(async (ramesh) => {
                 console.log("rameshresponse", ramesh.response);
 
@@ -115,7 +115,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
                   await USER.findOneAndUpdate(
                     {
                       _id: req.body.id,
-                      "placement.company_id": req.userID,
+                      "placement.company_id": req.userID.toString(),
                     },
                     {
                       $set: {
@@ -135,7 +135,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
         console.log("hareesh");
         user.notifications.push({
           company_name: req.rootUser.name,
-          company_id: req.userID,
+          company_id: req.userID.toString(),
           role: req.rootUser.Role,
           level_of_placement: req.body.level_exam,
           date: req.body.date_new,
@@ -157,7 +157,7 @@ router.post("/sendmail", Authenticate, async (req, res) => {
 
         user.notifications.push({
           company_name: req.rootUser.name,
-          company_id: req.userID,
+          company_id: req.userID.toString(),
           level_of_placement: "0",
           role: req.rootUser.Role,
           send_date: new Date().toLocaleString(),
@@ -269,11 +269,12 @@ router.post("/sendmail_basic", Authenticate, async (req, res) => {
     transporter.sendMail({
       from: "vyshnavk891@gmail.com",
       to: user.email,
-      subject:`You have an notification from ${req.rootUser.name}`,
+      subject: `You have an notification from ${req.rootUser.name}`,
       html: `
       <h2>${req.body.subject}</h2>
       `,
     });
+    // console.log(user.email);
     res.status(200).send("Mail send successfully");
   } catch (error) {
     res.status(400).send("send mail error", error);

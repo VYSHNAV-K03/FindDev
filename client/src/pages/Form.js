@@ -1096,8 +1096,8 @@ const Form = () => {
     e.preventDefault();
 
     if (
-      !sslc_certificate ||
-      !plustwo_certificate ||
+      // !sslc_certificate ||
+      // !plustwo_certificate ||
       !college_name ||
       !branch ||
       !year ||

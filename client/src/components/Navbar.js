@@ -194,6 +194,9 @@ const Navbar = (props) => {
       });
 
       const data = res.data;
+
+      console.log(res.data.Role);
+
       if (props.role) {
         if (data.Role === 0) {
           navigate("/profile");
