@@ -293,6 +293,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
     level_placement,
     response,
     compa_name,
+    train,
   } = req.body;
 
   console.log("filtering_students", req.body);
@@ -496,6 +497,16 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
                 response: response === "p" ? 0 : response === "a" ? 1 : 2,
               },
             },
+          }
+        : {
+            education: {
+              $elemMatch: { branch: "sumeshji" },
+            },
+          },
+
+      train && train !== ""
+        ? {
+            Train: train === "t" ? true : false,
           }
         : {
             education: {

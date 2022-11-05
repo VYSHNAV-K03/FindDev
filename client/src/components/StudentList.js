@@ -12,6 +12,8 @@ import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
 import search_by_name from "../assets/icons/search_filter_name.png";
 import icon_right_blue from "../assets/icons/icon_right_blue.png";
+import untrained from "../assets/icons/untrained.png";
+import trained from "../assets/icons/trained.png";
 import { useDispatch, useSelector } from "react-redux";
 import { local_storage_off } from "../actions";
 import { CircularProgress } from "@mui/material";
@@ -231,6 +233,21 @@ width:${(props) => (props.loader ? "120px" : "150px")};
     color: #ffffff;
     cursor: pointer;
   }
+  .train_image{
+    width:30px;
+    height:30px;
+    margin:0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .train_image img{
+    width:100% ;
+    height:100% ;
+    object-fit:cover;
+
+  }
   @media screen and (max-width: 723px) {
     .input_search_name {
       max-width: 584px;
@@ -268,9 +285,9 @@ width:${(props) => (props.loader ? "120px" : "150px")};
       font-size: 14px;
     }
     .last_content {
-      min-width: 95px;
-      min-height: 33px;
-      font-size: 16px;
+      max-width: 55px;
+      max-height: 30px;
+      font-size: 12px;
     }
     .icon_right {
       width: 20px;
@@ -281,6 +298,12 @@ width:${(props) => (props.loader ? "120px" : "150px")};
       height: 100%;
       object-fit: cover;
     }
+    .train_image{
+    width:20px;
+    height:20px;
+    margin:0 5px;
+    
+  }
   }
 `;
 
@@ -573,6 +596,9 @@ const StudentList = (props) => {
                     }
                   >
                     Profile
+                  </div>
+                  <div className="train_image">
+                    <img src={element.Train ? trained : untrained} alt="" />
                   </div>
                 </div>
               )

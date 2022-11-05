@@ -632,6 +632,7 @@ const SearchArea = () => {
 
   const [level_placement, setlevel_placement] = useState();
   const [response, setresponse] = useState();
+  const [train, settrain] = useState();
 
   const [compa_name, setcompa_name] = useState();
 
@@ -672,6 +673,7 @@ const SearchArea = () => {
           level_placement,
           response,
           compa_name,
+          train,
         },
         {
           withCredentials: true,
@@ -706,7 +708,11 @@ const SearchArea = () => {
             })
         )
       );
-      localStorage.setItem("company_name", JSON.stringify(compa_name));
+
+      localStorage.setItem(
+        "company_name",
+        JSON.stringify(compa_name ? compa_name : null)
+      );
 
       setpopup(false);
       setpython(false);
@@ -734,6 +740,7 @@ const SearchArea = () => {
       sethindi(false);
       setlevel_placement();
       setresponse();
+      settrain();
       setcompa_name();
 
       setbtnloader(false);
@@ -1261,6 +1268,7 @@ const SearchArea = () => {
                 setfilter_hish(1);
                 setlevel_placement();
                 setresponse();
+                settrain();
               }}
             >
               Placement
@@ -1296,6 +1304,18 @@ const SearchArea = () => {
                   <option value="r">Reject</option>
                 </select>{" "}
               </div>{" "}
+              <div className="filter7_che">
+                <label htmlFor="branch_btech">Training</label>
+                <select
+                  name="branch"
+                  id="branch_btech"
+                  onChange={(e) => settrain(e.target.value)}
+                >
+                  <option value=""></option>
+                  <option value="t">Trained</option>
+                  <option value="u">Untrained</option>
+                </select>{" "}
+              </div>{" "}
               <button
                 className="submit_communication"
                 onClick={() => {
@@ -1315,6 +1335,7 @@ const SearchArea = () => {
               onClick={() => {
                 setfilter_hish(1);
                 setcompa_name();
+                settrain();
               }}
             >
               Placement
@@ -1331,6 +1352,18 @@ const SearchArea = () => {
                   <option value="infosys">Infosys</option>
                   <option value="TCS">TCS</option>
                   <option value="wipro">Wipro</option>
+                </select>{" "}
+              </div>{" "}
+              <div className="filter7_che">
+                <label htmlFor="branch_btech">Training</label>
+                <select
+                  name="branch"
+                  id="branch_btech"
+                  onChange={(e) => settrain(e.target.value)}
+                >
+                  <option value=""></option>
+                  <option value="t">Trained</option>
+                  <option value="u">Untrained</option>
                 </select>{" "}
               </div>{" "}
               <button
