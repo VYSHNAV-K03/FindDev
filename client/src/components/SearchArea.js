@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -770,8 +770,17 @@ const SearchArea = () => {
     }
   };
 
+  const myBtn = useRef();
   useEffect(() => {
     callNavbar();
+    console.log("btn", myBtn.current);
+
+    document.addEventListener("keyup", (event) => {
+      event.preventDefault();
+      if (event.key === "Enter") {
+        myBtn.current.click();
+      }
+    });
   }, []);
 
   return (
@@ -936,6 +945,8 @@ const SearchArea = () => {
             </div>
             <button
               className="submit_communication"
+              id="button"
+              ref={myBtn}
               onClick={() => {
                 PostData();
                 localStorage.setItem("filter", JSON.stringify("communication"));
@@ -1022,6 +1033,7 @@ const SearchArea = () => {
               </div>
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("coding"));
@@ -1069,6 +1081,7 @@ const SearchArea = () => {
 
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("coding"));
@@ -1123,6 +1136,7 @@ const SearchArea = () => {
               </div>
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("sslc"));
@@ -1177,6 +1191,7 @@ const SearchArea = () => {
               </div>
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("plustwo"));
@@ -1250,6 +1265,7 @@ const SearchArea = () => {
               </div>
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("btech"));
@@ -1317,7 +1333,9 @@ const SearchArea = () => {
                 </select>{" "}
               </div>{" "}
               <button
+                id="sumesh"
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem("filter", JSON.stringify("placement"));
@@ -1368,6 +1386,7 @@ const SearchArea = () => {
               </div>{" "}
               <button
                 className="submit_communication"
+                ref={myBtn}
                 onClick={() => {
                   PostData();
                   localStorage.setItem(
