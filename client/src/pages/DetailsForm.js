@@ -190,13 +190,22 @@ const DetailsForm = () => {
             <h2>Educational details</h2>
 
             <label className="name_college">College Name: </label>
-            <input
+            <select
               type="text"
               className=""
-              placeholder="Enter the college"
               onChange={(e) => setcollege_name(e.target.value)}
               value={college_name}
-            />
+            >
+              <option value=""></option>
+              <option value="college of engineering thalassery">
+                college of engineering thalassery
+              </option>
+              <option value="MECH">MECH</option>
+              <option value="IT">IT</option>
+              <option value="EC">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="CIVIL">CIVIL</option>
+            </select>
             <br />
             <label htmlFor="branch">Branch</label>
             <select

@@ -17,12 +17,12 @@ import trained from "../assets/icons/trained.png";
 import { useDispatch, useSelector } from "react-redux";
 import { local_storage_off } from "../actions";
 import { CircularProgress } from "@mui/material";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
 
 const Container = styled.div`
   position: relative;
   width: min(100vw, 1300px);
   margin: auto;
- 
   .loader{
     position: absolute;
     width:300px;
@@ -316,9 +316,12 @@ const StudentList = (props) => {
 
   const [nu_un, setnu_un] = useState(false);
 
+  const [exchange, setexchange] = useState(true);
+
   const [loader, setloader] = useState(false);
 
   const [name, setname] = useState("");
+  const [role, setrole] = useState();
 
   const navigate = useNavigate();
 
@@ -353,9 +356,10 @@ const StudentList = (props) => {
         withCredentials: true,
       });
 
-      const data = res.data;
+      // const data = res.data;
 
-      setname(data.name);
+      setname(res.data.name);
+      setrole(res.data.Role);
     } catch (e) {
       console.log("error", e);
       // navigate("/login");
@@ -367,7 +371,7 @@ const StudentList = (props) => {
   // console.log(JSON.parse(localStorage.getItem("ids")));
 
   // console.log(localStorage.ids);
-  console.log(localstate);
+  console.log(role);
 
   useEffect(() => {
     getStudentList();
@@ -390,7 +394,13 @@ const StudentList = (props) => {
           <input
             type="text"
             onChange={(e) => setquery(e.target.value)}
-            placeholder="Search for user"
+            placeholder={
+              exchange ? "Search by user name" : "Search by college name"
+            }
+          />
+          <ImportExportIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => setexchange(!exchange)}
           />
         </div>
       </div>
@@ -406,7 +416,25 @@ const StudentList = (props) => {
       ) : (
         data &&
         data
-          .filter((item) => item.name.toLowerCase().includes(query))
+          .filter((item) =>
+            exchange
+              ? item.name.toLowerCase().includes(query.toLowerCase())
+              : item.education[0] &&
+                item.education[0].institution_name
+                  .toLowerCase()
+                  .includes(query.toLowerCase())
+          )
+          .filter((content) =>
+            role === 2
+              ? content.education[0] &&
+                content.education[0].institution_name ==
+                  "College Of Engineering Thalassery"
+              : role === 3
+              ? content.education[0] &&
+                content.education[0].institution_name ==
+                  "College Of Engineering Vadakara"
+              : content
+          )
           .map(
             (element, index) =>
               element.Role === 0 && (

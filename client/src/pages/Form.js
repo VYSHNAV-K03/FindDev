@@ -666,6 +666,7 @@ const Edu = styled.div`
   @media screen and (max-width: 874px) {
     .inpconame_btech {
       width: 209px;
+      font-size: 12px;
     }
   }
 
@@ -835,6 +836,8 @@ const Edu = styled.div`
   @media screen and (max-width: 433px) {
     .inpconame_btech {
       width: 129px;
+      font-size: 10px;
+      font-weight: bold;
     }
     .inpbranch_btech {
       width: 129px;
@@ -1592,12 +1595,26 @@ const Form = () => {
             <div className="btech_edu">
               <div className="co_name_btech">
                 <div className="name_btech">College name</div>
-                <input
+                <select
                   type="text"
                   className="inpconame_btech"
                   onChange={(e) => setcollege_name(e.target.value)}
                   value={college_name}
-                />
+                >
+                  <option value=""></option>
+                  <option value="College Of Engineering Thalassery">
+                    College Of Engineering Thalassery
+                  </option>
+                  <option value="College Of Engineering Vadakara">
+                    College Of Engineering Vadakara
+                  </option>
+                  <option value="College Of Engineering Trivandrum">
+                    College Of Engineering Trivandrum
+                  </option>
+                  <option value="College Of Engineering Thrissur">
+                    College Of Engineering Thrissur
+                  </option>
+                </select>
               </div>
               <div className="co_name_btech">
                 <div className="name_btech">Branch</div>
