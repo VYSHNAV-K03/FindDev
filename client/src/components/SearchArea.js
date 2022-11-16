@@ -871,7 +871,7 @@ const SearchArea = () => {
                 </div>
               </div>
             )}
-            {role === 2 && (
+            {(role === 2 || role === 3 || role === 4 || role === 5) && (
               <div
                 className="educationbased"
                 onClick={() => setfilter_hish(11)}

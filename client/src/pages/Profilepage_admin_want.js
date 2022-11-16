@@ -1374,7 +1374,7 @@ const Profilepage_admin_want = () => {
                   </div>
                 )}
 
-                {role === 2 && (
+                {(role === 2 || role === 3 || role === 4 || role === 5) && (
                   <div
                     className="Select_stud_btn_college"
                     onClick={() => setblock(7)}

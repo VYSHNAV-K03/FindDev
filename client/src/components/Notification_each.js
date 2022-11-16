@@ -115,7 +115,7 @@ const Container = styled.div`
     color: #000000;
   }
   .date_content {
-    max-width:700px;
+    max-width: 700px;
     font-family: "Montserrat";
     font-style: normal;
     font-weight: 400;
@@ -241,6 +241,8 @@ const Notification_each = () => {
   const [response, setresponse] = useState(false);
   const [already_response, setalready_response] = useState();
 
+  const [notification_id, setnotification_id] = useState();
+
   const getStudent = async () => {
     try {
       setloader(true);
@@ -289,6 +291,28 @@ const Notification_each = () => {
       setloader_btn(false);
     }
   };
+
+  const viewChange = async (not_id) => {
+    try {
+      // we should use something while using post
+
+      const res = await axios.post(
+        apiUrl + `/simple/change_notification_view`,
+        {
+          not_id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  viewChange(location.state.id);
+
+  console.log(location.state.id);
 
   useEffect(() => {
     getStudent();
@@ -410,7 +434,10 @@ const Notification_each = () => {
                   )}
                 </div>
               )}
-              {item.role === 2 && (
+              {(item.role === 2 ||
+                item.role === 3 ||
+                item.role === 4 ||
+                item.role === 5) && (
                 <>
                   <div className="date">
                     <div className="date_title">Subject</div>

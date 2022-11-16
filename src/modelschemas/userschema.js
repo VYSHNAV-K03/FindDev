@@ -35,6 +35,7 @@ const userschema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
     education: [
       {
         institution_name: {
@@ -169,6 +170,10 @@ const userschema = new mongoose.Schema(
     notifications: [
       {
         response: {
+          type: Boolean,
+          default: false,
+        },
+        viewed: {
           type: Boolean,
           default: false,
         },

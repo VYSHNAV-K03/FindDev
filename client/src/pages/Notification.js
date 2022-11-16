@@ -179,7 +179,7 @@ const Notification = () => {
           notifications.reverse().map((notification, index) => (
             <ItemEach
               back={index % 2 === 0 ? false : true}
-              response={notification.response ? true : false}
+              response={notification.viewed ? true : false}
               className="item_each"
               key={notification._id}
               onClick={() =>
