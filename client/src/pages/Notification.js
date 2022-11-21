@@ -155,7 +155,6 @@ const Notification = () => {
       // navigate("/login");
     }
   };
-  console.log(notifications);
 
   useEffect(() => {
     callNavbar();
@@ -203,11 +202,11 @@ const Notification = () => {
               response={false}
               className="item_each"
               key={notification_ad._id}
-              // onClick={() =>
-              //   navigate("/notification_each", {
-              //     state: { id: notification._id },
-              //   })
-              // }
+              onClick={() =>
+                navigate("/profile_admin_want", {
+                  state: { id: notification_ad.user_id },
+                })
+              }
             >
               <div className="content">
                 {notification_ad.name}{" "}
