@@ -651,11 +651,6 @@ const SearchArea = () => {
           cplus,
           js,
           sql,
-          python_level,
-          c_level,
-          cplus_level,
-          js_level,
-          sql_level,
           english,
           hindi,
           malayalam,
@@ -812,14 +807,6 @@ const SearchArea = () => {
             className="down_icon_btn_reverse"
             onClick={() => {
               setfilter_hish(0);
-              setenglish(false);
-              setmalayalam(false);
-              sethindi(false);
-              setpython(false);
-              setc(false);
-              setcplus(false);
-              setjs(false);
-              setsql(false);
             }}
           >
             <img src={down_icon} alt="" />
@@ -962,15 +949,6 @@ const SearchArea = () => {
               className="coding_title_filter5"
               onClick={() => {
                 setfilter_hish(2);
-                setenglish(false);
-                setmalayalam(false);
-                sethindi(false);
-                setpython(false);
-                setc(false);
-                setcplus(false);
-                setjs(false);
-                setsql(false);
-                setdev_tech();
               }}
             >
               Coding Languages
@@ -1050,15 +1028,6 @@ const SearchArea = () => {
               className="development_title_filter6"
               onClick={() => {
                 setfilter_hish(2);
-                setenglish(false);
-                setmalayalam(false);
-                sethindi(false);
-                setpython(false);
-                setc(false);
-                setcplus(false);
-                setjs(false);
-                setsql(false);
-                setdev_tech();
               }}
             >
               Development
@@ -1098,10 +1067,6 @@ const SearchArea = () => {
               className="sslc_title_filter7"
               onClick={() => {
                 setfilter_hish(3);
-
-                setsslc_phy();
-                setsslc_che();
-                setsslc_maths();
               }}
             >
               SSLC
@@ -1153,10 +1118,6 @@ const SearchArea = () => {
               className="sslc_title_filter7"
               onClick={() => {
                 setfilter_hish(3);
-
-                setplustwo_phy();
-                setplustwo_che();
-                setplustwo_maths();
               }}
             >
               Plus 2
@@ -1208,10 +1169,6 @@ const SearchArea = () => {
               className="sslc_title_filter7"
               onClick={() => {
                 setfilter_hish(3);
-                setyear();
-                setbranch();
-                setcgpa();
-                setsuppli();
               }}
             >
               B.Tech
@@ -1282,9 +1239,6 @@ const SearchArea = () => {
               className="sslc_title_filter7"
               onClick={() => {
                 setfilter_hish(1);
-                setlevel_placement();
-                setresponse();
-                settrain();
               }}
             >
               Placement
@@ -1352,8 +1306,6 @@ const SearchArea = () => {
               className="sslc_title_filter7"
               onClick={() => {
                 setfilter_hish(1);
-                setcompa_name();
-                settrain();
               }}
             >
               Placement

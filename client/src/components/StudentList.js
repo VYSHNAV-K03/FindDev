@@ -106,7 +106,7 @@ width:${(props) => (props.loader ? "120px" : "150px")};
     background: rgba(61, 86, 178, 0.04);
     border-radius: 10px;
 
-    margin: 0 auto 50px auto;
+    margin: 0 auto 30px auto;
   }
   .input_search_name_1 {
     width: 100%;
@@ -414,223 +414,236 @@ const StudentList = (props) => {
           </div>
         </div>
       ) : (
-        data &&
-        data
-          .filter((item) =>
-            exchange
-              ? item.name.toLowerCase().includes(query.toLowerCase())
-              : item.education[0] &&
-                item.education[0].institution_name
-                  .toLowerCase()
-                  .includes(query.toLowerCase())
-          )
-          .filter((content) =>
-            role === 2
-              ? content.education[0] &&
-                content.education[0].institution_name ==
-                  "College Of Engineering Thalassery"
-              : role === 3
-              ? content.education[0] &&
-                content.education[0].institution_name ==
-                  "College Of Engineering Vadakara"
-              : content
-          )
-          .map(
-            (element, index) =>
-              element.Role === 0 && (
-                <div className="studenteach" key={index}>
-                  <div className="image">
-                    <img
-                      src={
-                        element.profile
-                          ? `data:${
-                              element.profile.contentType
-                            };base64, ${Buffer.from(
-                              element.profile.data.data
-                            ).toString("base64")}`
-                          : profile1
-                      }
-                      alt="profile"
-                    />
-                  </div>
-                  <div className="center_content">
-                    <div className="first_row">
-                      <div className="name">{element.name}</div>
-                      {element.education[0] && (
-                        <div className="college_name">
-                          {element.education[0].institution_name}
+        <>
+          {/* <div className="last_content">Select</div> */}
+          {data &&
+            data
+              .filter((item) =>
+                exchange
+                  ? item.name.toLowerCase().includes(query.toLowerCase())
+                  : item.education[0] &&
+                    item.education[0].institution_name
+                      .toLowerCase()
+                      .includes(query.toLowerCase())
+              )
+              .filter((content) =>
+                role === 2
+                  ? content.education[0] &&
+                    content.education[0].institution_name ==
+                      "College Of Engineering Thalassery"
+                  : role === 3
+                  ? content.education[0] &&
+                    content.education[0].institution_name ==
+                      "College Of Engineering Vadakara"
+                  : content
+              )
+              .map(
+                (element, index) =>
+                  element.Role === 0 && (
+                    <div className="studenteach" key={index}>
+                      <div className="image">
+                        <img
+                          src={
+                            element.profile
+                              ? `data:${
+                                  element.profile.contentType
+                                };base64, ${Buffer.from(
+                                  element.profile.data.data
+                                ).toString("base64")}`
+                              : profile1
+                          }
+                          alt="profile"
+                        />
+                      </div>
+                      <div className="center_content">
+                        <div className="first_row">
+                          <div className="name">{element.name}</div>
+                          {element.education[0] && (
+                            <div className="college_name">
+                              {element.education[0].institution_name}
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    {JSON.parse(localStorage.getItem("filter")) === "btech" && (
-                      <>
-                        {element.education[0] && (
-                          <div className="second_row">
-                            <div className="year">
-                              Year : {element.education[0].year}
-                            </div>
-                            <div className="branch">
-                              Branch : {element.education[0].branch}
-                            </div>
-                            <div className="cgpa">
-                              CGPA : {element.education[0].cgpa}
-                            </div>
-                            <div className="backpaper">
-                              Backpapers : {element.education[0].back_papers}
-                            </div>
-                          </div>
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "btech" && (
+                          <>
+                            {element.education[0] && (
+                              <div className="second_row">
+                                <div className="year">
+                                  Year : {element.education[0].year}
+                                </div>
+                                <div className="branch">
+                                  Branch : {element.education[0].branch}
+                                </div>
+                                <div className="cgpa">
+                                  CGPA : {element.education[0].cgpa}
+                                </div>
+                                <div className="backpaper">
+                                  Backpapers :{" "}
+                                  {element.education[0].back_papers}
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                    {JSON.parse(localStorage.getItem("filter")) ===
-                      "placement" &&
-                      element.placement &&
-                      element.placement
-                        .filter((ele) => ele.company_name === name)
-                        .map((place) => (
-                          <div className="second_row" key={place._id}>
-                            <div className="year">
-                              Level : {place.level_of_placement}
-                            </div>
-                            <div className="branch">
-                              Response :{" "}
-                              <span
-                                style={{
-                                  color:
-                                    place.response === 1
-                                      ? "green"
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "placement" &&
+                          element.placement &&
+                          element.placement
+                            .filter((ele) => ele.company_name === name)
+                            .map((place) => (
+                              <div className="second_row" key={place._id}>
+                                <div className="year">
+                                  Level : {place.level_of_placement}
+                                </div>
+                                <div className="branch">
+                                  Response :{" "}
+                                  <span
+                                    style={{
+                                      color:
+                                        place.response === 1
+                                          ? "green"
+                                          : place.response === 2
+                                          ? "rgba(255,0,0,0.7)"
+                                          : "blue",
+                                    }}
+                                  >
+                                    {place.response === 1
+                                      ? "accept"
                                       : place.response === 2
-                                      ? "rgba(255,0,0,0.7)"
-                                      : "blue",
-                                }}
-                              >
-                                {place.response === 1
-                                  ? "accept"
-                                  : place.response === 2
-                                  ? "reject"
-                                  : "pending"}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                    {JSON.parse(localStorage.getItem("filter")) ===
-                      "placement_company" &&
-                      element.placement &&
-                      element.placement
-                        .filter(
-                          (ele) =>
-                            ele.company_name ===
-                            JSON.parse(localStorage.getItem("company_name"))
-                        )
-                        .map((place) => (
-                          <div className="second_row" key={place._id}>
-                            <div className="year">
-                              Company_name : {place.company_name}
-                            </div>
-                            <div className="year">
-                              Level : {place.level_of_placement}
-                            </div>
-                            <div className="branch">
-                              Response :{" "}
-                              <span
-                                style={{
-                                  color:
-                                    place.response === 1
-                                      ? "green"
-                                      : place.response === 2
-                                      ? "rgba(255,0,0,0.7)"
-                                      : "blue",
-                                }}
-                              >
-                                {place.response === 1
-                                  ? "accept"
-                                  : place.response === 2
-                                  ? "reject"
-                                  : "pending"}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                    {JSON.parse(localStorage.getItem("filter")) ===
-                      "coding" && (
-                      <div className="second_row">
-                        {element.coding[0] &&
-                          element.coding[0].languages &&
-                          element.coding[0].languages
-                            .filter((cod) => cod.language_name !== "null")
-                            .map((item) => (
-                              <div className="year">
-                                {item.language_name} :{" "}
-                                {item.language_level === "undefined"
-                                  ? "beginner"
-                                  : item.language_level}
+                                      ? "reject"
+                                      : "pending"}
+                                  </span>
+                                </div>
                               </div>
                             ))}
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "placement_company" &&
+                          element.placement &&
+                          element.placement
+                            .filter(
+                              (ele) =>
+                                ele.company_name ===
+                                JSON.parse(localStorage.getItem("company_name"))
+                            )
+                            .map((place) => (
+                              <div className="second_row" key={place._id}>
+                                <div className="year">
+                                  Company_name : {place.company_name}
+                                </div>
+                                <div className="year">
+                                  Level : {place.level_of_placement}
+                                </div>
+                                <div className="branch">
+                                  Response :{" "}
+                                  <span
+                                    style={{
+                                      color:
+                                        place.response === 1
+                                          ? "green"
+                                          : place.response === 2
+                                          ? "rgba(255,0,0,0.7)"
+                                          : "blue",
+                                    }}
+                                  >
+                                    {place.response === 1
+                                      ? "accept"
+                                      : place.response === 2
+                                      ? "reject"
+                                      : "pending"}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "coding" && (
+                          <div className="second_row">
+                            {element.coding[0] &&
+                              element.coding[0].languages &&
+                              element.coding[0].languages
+                                .filter((cod) => cod.language_name !== "null")
+                                .map((item) => (
+                                  <div className="year">
+                                    {item.language_name} :{" "}
+                                    {item.language_level === "undefined"
+                                      ? "beginner"
+                                      : item.language_level}
+                                  </div>
+                                ))}
 
-                        {/* <div className="icon_right">
+                            {/* <div className="icon_right">
                           <img src={icon_right_blue} alt="" />
                         </div> */}
-                      </div>
-                    )}
-                    {JSON.parse(localStorage.getItem("filter")) === "sslc" &&
-                      element.education &&
-                      element.education.map((sslc) =>
-                        sslc.sslc.map((sslc_each) => (
-                          <div className="second_row">
-                            <div className="year">Maths :{sslc_each.maths}</div>
-                            <div className="branch">
-                              Physics :{sslc_each.phy}
-                            </div>
-                            <div className="branch">
-                              Chemistry :{sslc_each.che}
-                            </div>
                           </div>
-                        ))
-                      )}
-                    {JSON.parse(localStorage.getItem("filter")) === "plustwo" &&
-                      element.education &&
-                      element.education.map((sslc) =>
-                        sslc.plustwo.map((sslc_each) => (
+                        )}
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "sslc" &&
+                          element.education &&
+                          element.education.map((sslc) =>
+                            sslc.sslc.map((sslc_each) => (
+                              <div className="second_row">
+                                <div className="year">
+                                  Maths :{sslc_each.maths}
+                                </div>
+                                <div className="branch">
+                                  Physics :{sslc_each.phy}
+                                </div>
+                                <div className="branch">
+                                  Chemistry :{sslc_each.che}
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "plustwo" &&
+                          element.education &&
+                          element.education.map((sslc) =>
+                            sslc.plustwo.map((sslc_each) => (
+                              <div className="second_row">
+                                <div className="year">
+                                  Maths :{sslc_each.maths}
+                                </div>
+                                <div className="branch">
+                                  Physics :{sslc_each.phy}
+                                </div>
+                                <div className="branch">
+                                  Chemistry :{sslc_each.che}
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        {JSON.parse(localStorage.getItem("filter")) ===
+                          "communication" && (
                           <div className="second_row">
-                            <div className="year">Maths :{sslc_each.maths}</div>
-                            <div className="branch">
-                              Physics :{sslc_each.phy}
-                            </div>
-                            <div className="branch">
-                              Chemistry :{sslc_each.che}
-                            </div>
+                            {element.coding[0] &&
+                              element.coding[0].communication_languages &&
+                              element.coding[0].communication_languages
+                                .filter((lang) => lang.language_name !== "null")
+                                .map((item) => (
+                                  <div className="year">
+                                    {item.language_name}
+                                  </div>
+                                ))}
                           </div>
-                        ))
-                      )}
-                    {JSON.parse(localStorage.getItem("filter")) ===
-                      "communication" && (
-                      <div className="second_row">
-                        {element.coding[0] &&
-                          element.coding[0].communication_languages &&
-                          element.coding[0].communication_languages
-                            .filter((lang) => lang.language_name !== "null")
-                            .map((item) => (
-                              <div className="year">{item.language_name}</div>
-                            ))}
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div
-                    className="last_content"
-                    onClick={() =>
-                      navigate("/profile_admin_want", {
-                        state: { id: element._id },
-                      })
-                    }
-                  >
-                    Profile
-                  </div>
-                  <div className="train_image">
-                    <img src={element.Train ? trained : untrained} alt="" />
-                  </div>
-                </div>
-              )
-          )
+                      <div
+                        className="last_content"
+                        onClick={() =>
+                          navigate("/profile_admin_want", {
+                            state: { id: element._id },
+                          })
+                        }
+                      >
+                        Profile
+                      </div>
+                      <div className="train_image">
+                        <img src={element.Train ? trained : untrained} alt="" />
+                      </div>
+                    </div>
+                  )
+              )}
+        </>
       )}
     </Container>
   );

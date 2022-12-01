@@ -9,6 +9,8 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import { apiUrl } from "../data/api";
 import Navbar from "../components/Navbar";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import GeneratePdf from "./generatePdf";
 
 const Container = styled.div`
   position: relative;
@@ -39,8 +41,46 @@ const Container = styled.div`
       color: white;
     }
   }
+  .update_details_2 {
+    position: absolute;
+    right: 170px;
+    top: 10px;
+    color: #4a5a96;
+    border: 1px solid #4a5a96;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    :hover {
+      transform: scale(1.05);
+      background: #4a5a96;
+      color: white;
+    }
+  }
+  @media screen and (max-width: 710px) {
+    .update_details_2 {
+      right: 0;
+      left: 10px;
+    }
+  }
   @media screen and (max-width: 450px) {
     .update_details {
+      font-size: 15px;
+      width: 120px;
+      height: 28px;
+    }
+    .update_details_2 {
       font-size: 15px;
       width: 120px;
       height: 28px;
@@ -1089,6 +1129,20 @@ const Profilepage = () => {
             <div className="right">
               {block === 1 && (
                 <div className="profile_container">
+                  <PDFDownloadLink
+                    document={<GeneratePdf data={data} />}
+                    filename="FORM"
+                  >
+                    {({ loading }) =>
+                      loading ? (
+                        <button className="update_details_2">
+                          Loading Document...
+                        </button>
+                      ) : (
+                        <button className="update_details_2">Resume</button>
+                      )
+                    }
+                  </PDFDownloadLink>
                   <div className="email_container style_profile_elements_bold">
                     <div className="width_profile_elements">Email</div>
                     <div className="user_name style_profile_elements_light">
@@ -1259,36 +1313,38 @@ const Profilepage = () => {
                           </div>
                         </div>
                       </div>
-                      {data && data.education[0] && data.education[0].sslc[0] && (
-                        <div className="btech_details sslc">
-                          <div className="view">view</div>
-                          <div className="title_btech">High School</div>
-                          <div className="element_detail">
-                            <div className="title_element">Mathematics</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].maths}%
+                      {data &&
+                        data.education[0] &&
+                        data.education[0].sslc[0] && (
+                          <div className="btech_details sslc">
+                            <div className="view">view</div>
+                            <div className="title_btech">High School</div>
+                            <div className="element_detail">
+                              <div className="title_element">Mathematics</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].maths}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">Physics</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].phy}%
+                              </div>
+                            </div>{" "}
+                            <div className="element_detail">
+                              <div className="title_element">Chemistry</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].che}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">English</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].english}%
+                              </div>
                             </div>
                           </div>
-                          <div className="element_detail">
-                            <div className="title_element">Physics</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].phy}%
-                            </div>
-                          </div>{" "}
-                          <div className="element_detail">
-                            <div className="title_element">Chemistry</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].che}%
-                            </div>
-                          </div>
-                          <div className="element_detail">
-                            <div className="title_element">English</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].english}%
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                        )}
                       {data &&
                         data.education[0] &&
                         data.education[0].plustwo[0] && (

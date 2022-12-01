@@ -10,9 +10,49 @@ import { apiUrl } from "../data/api";
 import Navbar from "../components/Navbar";
 import DateTimePicker from "react-datetime-picker";
 import { CircularProgress } from "@mui/material";
+import jsPDF from "jspdf";
+import PDFFile from "./generatePdf";
+import generatePdf from "./generatePdf";
+import GeneratePdf from "./generatePdf";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const Container = styled.div`
   position: relative;
+
+  .update_details {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #4a5a96;
+    border: 1px solid #4a5a96;
+    border-radius: 10px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 38px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    :hover {
+      transform: scale(1.05);
+      background: #4a5a96;
+      color: white;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .update_details {
+      font-size: 15px;
+      width: 120px;
+      height: 28px;
+    }
+  }
 
   .loader {
     position: absolute;
@@ -1386,7 +1426,23 @@ const Profilepage_admin_want = () => {
             </div>
             <div className="right">
               {block === 1 && (
-                <div className="profile_container">
+                <div className="profile_container" id="profile">
+                  <PDFDownloadLink
+                    document={<GeneratePdf data={data} />}
+                    filename="FORM"
+                  >
+                    {({ loading }) =>
+                      loading ? (
+                        <button className="update_details">
+                          Loading Document...
+                        </button>
+                      ) : (
+                        <button className="update_details">Resume</button>
+                      )
+                    }
+                  </PDFDownloadLink>
+
+                  {/* <button onClick={() => generatePdf("sumesh")}>Print</button> */}
                   <div className="email_container style_profile_elements_bold">
                     <div className="width_profile_elements">Email</div>
                     <div className="user_name style_profile_elements_light">
@@ -1504,7 +1560,7 @@ const Profilepage_admin_want = () => {
               )}
               {block === 4 && (
                 <div className="interview_container">
-                  {role === 2 && (
+                  {(role === 2 || role === 3) && (
                     <div className="training_btn" onClick={() => setblock(8)}>
                       Training
                     </div>
@@ -1562,36 +1618,38 @@ const Profilepage_admin_want = () => {
                           </div>
                         </div>
                       </div>
-                      {data && data.education[0] && data.education[0].sslc[0] && (
-                        <div className="btech_details sslc">
-                          <div className="view">view</div>
-                          <div className="title_btech">High School</div>
-                          <div className="element_detail">
-                            <div className="title_element">Mathematics</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].maths}%
+                      {data &&
+                        data.education[0] &&
+                        data.education[0].sslc[0] && (
+                          <div className="btech_details sslc">
+                            <div className="view">view</div>
+                            <div className="title_btech">High School</div>
+                            <div className="element_detail">
+                              <div className="title_element">Mathematics</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].maths}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">Physics</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].phy}%
+                              </div>
+                            </div>{" "}
+                            <div className="element_detail">
+                              <div className="title_element">Chemistry</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].che}%
+                              </div>
+                            </div>
+                            <div className="element_detail">
+                              <div className="title_element">English</div>
+                              <div className="content_btech">
+                                {data.education[0].sslc[0].english}%
+                              </div>
                             </div>
                           </div>
-                          <div className="element_detail">
-                            <div className="title_element">Physics</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].phy}%
-                            </div>
-                          </div>{" "}
-                          <div className="element_detail">
-                            <div className="title_element">Chemistry</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].che}%
-                            </div>
-                          </div>
-                          <div className="element_detail">
-                            <div className="title_element">English</div>
-                            <div className="content_btech">
-                              {data.education[0].sslc[0].english}%
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                        )}
                       {data &&
                         data.education[0] &&
                         data.education[0].plustwo[0] && (
@@ -1933,6 +1991,7 @@ const Profilepage_admin_want = () => {
                   )}
                 </div>
               )}
+              {block === 9 && <GeneratePdf data={data} />}
             </div>
           </div>
         )}

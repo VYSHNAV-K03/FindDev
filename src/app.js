@@ -10,6 +10,7 @@ const corsOptions = {
   origin: "https://onetouch-vectorux.herokuapp.com/",
 
   // origin: "http://localhost:3000",
+
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -23,7 +24,9 @@ const AuthRoute = require("./routes/auth");
 const getStudentInfo = require("./routes/getStudentInfo");
 const mailSendRoute = require("./routes/mailsend");
 const simpleRoute = require("./routes/simple_routes");
-
+app.get("/", (req, res) => {
+  res.send("hello");
+});
 app.use("/api", AuthRoute);
 app.use("/api/student", getStudentInfo);
 app.use("/api/mailsend", mailSendRoute);

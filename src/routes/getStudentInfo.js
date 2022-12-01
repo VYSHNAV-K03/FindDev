@@ -299,7 +299,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
   console.log("filtering_students", req.body);
 
   const user = await USER.find({
-    $or: [
+    $and: [
       python
         ? {
             "coding.languages": {
@@ -309,7 +309,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.languages": { $elemMatch: { language_name: "werdkdk" } },
+            Role: 0,
           },
       c
         ? {
@@ -318,7 +318,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.languages": { $elemMatch: { language_name: "wefdfkr" } },
+            Role: 0,
           },
       js
         ? {
@@ -327,7 +327,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.languages": { $elemMatch: { language_name: "wedfjlkdr" } },
+            Role: 0,
           },
       sql
         ? {
@@ -338,7 +338,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.languages": { $elemMatch: { language_name: "wer" } },
+            Role: 0,
           },
       cplus
         ? {
@@ -349,7 +349,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.languages": { $elemMatch: { language_name: "wer" } },
+            Role: 0,
           },
       dev_tech
         ? {
@@ -360,11 +360,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            coding: {
-              $elemMatch: {
-                dev_status: "satheesh",
-              },
-            },
+            Role: 0,
           },
 
       sslc_maths
@@ -372,9 +368,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             "education.sslc": { $elemMatch: { maths: { $gte: sslc_maths } } },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
 
       sslc_che
@@ -382,9 +376,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             "education.sslc": { $elemMatch: { che: { $gte: sslc_che } } },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       sslc_phy
         ? {
@@ -393,11 +385,8 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
-
       plustwo_maths
         ? {
             "education.plustwo": {
@@ -405,18 +394,14 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       plustwo_che
         ? {
             "education.plustwo": { $elemMatch: { che: { $gte: plustwo_che } } },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       plustwo_phy
         ? {
@@ -425,9 +410,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       year
         ? {
@@ -436,9 +419,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       cgpa
         ? {
@@ -447,9 +428,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       suppli
         ? {
@@ -458,9 +437,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       branch
         ? {
@@ -469,9 +446,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
 
       level_placement
@@ -484,9 +459,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
 
       response && response !== ""
@@ -499,9 +472,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
 
       train && train !== ""
@@ -509,9 +480,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             Train: train === "t" ? true : false,
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
 
       compa_name && compa_name !== ""
@@ -523,9 +492,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            education: {
-              $elemMatch: { branch: "sumeshji" },
-            },
+            Role: 0,
           },
       english
         ? {
@@ -536,13 +503,8 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.communication_languages": {
-              $elemMatch: {
-                language_name: "sumesh",
-              },
-            },
+            Role: 0,
           },
-
       hindi
         ? {
             "coding.communication_languages": {
@@ -552,11 +514,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.communication_languages": {
-              $elemMatch: {
-                language_name: "sumesh",
-              },
-            },
+            Role: 0,
           },
       malayalam
         ? {
@@ -567,11 +525,7 @@ router.post("/get_filter_stud", Authenticate, async (req, res) => {
             },
           }
         : {
-            "coding.communication_languages": {
-              $elemMatch: {
-                language_name: "sumesh",
-              },
-            },
+            Role: 0,
           },
     ],
   });
