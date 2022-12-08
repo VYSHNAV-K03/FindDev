@@ -7,8 +7,8 @@ require("dotenv").config();
 const app = express();
 
 // origin: "https://onetouch-vectorux.herokuapp.com/",
-// origin: "http://localhost:3000",
 const corsOptions = {
+  // origin: "http://localhost:3000",
   origin: "https://one-touch-gyy5.onrender.com/",
   credentials: true,
 };
@@ -23,9 +23,9 @@ const AuthRoute = require("./routes/auth");
 const getStudentInfo = require("./routes/getStudentInfo");
 const mailSendRoute = require("./routes/mailsend");
 const simpleRoute = require("./routes/simple_routes");
-app.get("/", (req, res) => {
-  res.send("hello");
-});
+// app.get("/", (req, res) => {
+//   res.send("hello");
+// });
 app.use("/api", AuthRoute);
 app.use("/api/student", getStudentInfo);
 app.use("/api/mailsend", mailSendRoute);
