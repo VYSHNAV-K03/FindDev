@@ -1,7 +1,0 @@
-{
-  "name": "onetouchionic",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}

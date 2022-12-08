@@ -11,7 +11,7 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
 import search_by_name from "../assets/icons/search_filter_name.png";
-import icon_right_blue from "../assets/icons/icon_right_blue.png";
+import send_icon from "../assets/icons/send_icon.png";
 import untrained from "../assets/icons/untrained.png";
 import trained from "../assets/icons/trained.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,7 +106,7 @@ width:${(props) => (props.loader ? "120px" : "150px")};
     background: rgba(61, 86, 178, 0.04);
     border-radius: 10px;
 
-    margin: 0 auto 30px auto;
+    margin: 0 auto 0px auto;
   }
   .input_search_name_1 {
     width: 100%;
@@ -142,7 +142,52 @@ width:${(props) => (props.loader ? "120px" : "150px")};
 
     color: rgba(61, 86, 178, 0.5);
   }
+.bulk_select_items{
+  padding:10px;
+  display: flex;
+  align-items: center;
 
+}
+.bulk_btn{
+  margin-right: 5px;
+  min-width: 80px;
+}
+.bulk_msg_input{
+  margin-right: 5px;
+}
+.send_btn{
+  width: 30px;
+  height: 30px;
+
+}
+.send_btn img{
+  width:100%;
+  height: 100;
+  object-fit: cover;
+  cursor: pointer;
+}
+.bulk_select_check{
+  margin-right: 5px;
+  width:20px;
+  height:20px;
+  cursor: pointer;
+}
+.all_select_check{
+  margin:0 5px;
+}
+.bulk_select_label{
+  font-size:20px ;
+  font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    cursor: pointer;
+
+    margin:5px 0px 5px 0;
+    /* identical to box height */
+
+    color: #000000;
+}
   .studenteach {
     display: flex;
     align-items: center;
@@ -249,6 +294,27 @@ width:${(props) => (props.loader ? "120px" : "150px")};
 
   }
   @media screen and (max-width: 723px) {
+  .bulk_btn{
+    margin-right: 5px;
+    min-width: 80px;
+  }
+  .bulk_msg_input{
+    margin-right: 5px;
+    min-width: 180px;
+  }
+  .send_btn{
+    min-width: 30px;
+    min-height: 30px;
+  }
+.send_btn img{
+  width:100%;
+  height: 100;
+  object-fit: cover;
+  cursor: pointer;
+}
+.bulk_select_check{
+  margin-right: 5px;
+}
     .input_search_name {
       max-width: 584px;
       height: 60px;
@@ -323,13 +389,23 @@ const StudentList = (props) => {
   const [name, setname] = useState("");
   const [role, setrole] = useState();
 
+  const [bulk_msg, setbulk_msg] = useState();
+
+  const [bulk_array_full, setbulk_array_full] = useState();
+
+  const [bulk_btn, setbulk_btn] = useState(false);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
+  const bulk_array = [];
+
   const localstate = useSelector((state) => state.changeLocalStorage);
 
-  console.log(props.id);
+  const [checked_all, setchecked_all] = useState(false);
+
+  console.log("ids filtered", props.id);
   // props.id ? setnu_un(true) : setnu_un(false);
 
   const getStudentList = async () => {
@@ -345,7 +421,7 @@ const StudentList = (props) => {
       setloader(false);
       dispatch(local_storage_off());
     } catch (error) {
-      console.log(error);
+      console.log("get stud eror", error);
       setloader(false);
     }
   };
@@ -361,7 +437,7 @@ const StudentList = (props) => {
       setname(res.data.name);
       setrole(res.data.Role);
     } catch (e) {
-      console.log("error", e);
+      console.log("navcall error", e);
       // navigate("/login");
     }
   };
@@ -371,7 +447,61 @@ const StudentList = (props) => {
   // console.log(JSON.parse(localStorage.getItem("ids")));
 
   // console.log(localStorage.ids);
-  console.log(role);
+  console.log("role", role);
+
+  const handleSelectAll = (e) => {
+    const { checked } = e.target;
+
+    data &&
+      data
+        .filter((item) =>
+          exchange
+            ? item.name.toLowerCase().includes(query.toLowerCase())
+            : item.education[0] &&
+              item.education[0].institution_name
+                .toLowerCase()
+                .includes(query.toLowerCase())
+        )
+        .filter((content) =>
+          role === 2
+            ? content.education[0] &&
+              content.education[0].institution_name ==
+                "College Of Engineering Thalassery"
+            : role === 3
+            ? content.education[0] &&
+              content.education[0].institution_name ==
+                "College Of Engineering Vadakara"
+            : content
+        )
+        .map(
+          (element, index) =>
+            element.Role === 0 &&
+            (checked
+              ? bulk_array.push(element._id)
+              : bulk_array.pop(element._id))
+        );
+    console.log("select all array", bulk_array);
+    setbulk_array_full(bulk_array);
+    setchecked_all(e.target.checked);
+  };
+
+  const SendBulkMessage = async (array) => {
+    try {
+      const res = await axios.post(
+        apiUrl + "/mailsend/sendall_notification",
+        {
+          bulk_array_full,
+          bulk_msg,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("send all notification", res);
+    } catch (error) {
+      console.log("bulksenderror", error);
+    }
+  };
 
   useEffect(() => {
     getStudentList();
@@ -381,7 +511,7 @@ const StudentList = (props) => {
       setnu_un(false);
     }
     callNavbar();
-    console.log(name);
+    // console.log(bulk_array);
   }, [localstate, localStorage.ids]);
 
   return (
@@ -415,7 +545,53 @@ const StudentList = (props) => {
         </div>
       ) : (
         <>
-          {/* <div className="last_content">Select</div> */}
+          {role !== 1 && (
+            <div className="bulk_select_items">
+              <div
+                className="last_content bulk_btn"
+                onClick={() => setbulk_btn(!bulk_btn)}
+              >
+                Bulk Select
+              </div>
+              {bulk_btn && (
+                <>
+                  <input
+                    type="text"
+                    className="bulk_msg_input"
+                    name=""
+                    id=""
+                    value={bulk_msg}
+                    onChange={(e) => setbulk_msg(e.target.value)}
+                  />
+                  <div
+                    className="send_btn"
+                    onClick={() => SendBulkMessage(bulk_array)}
+                  >
+                    <img src={send_icon} alt="" />
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+          {bulk_btn && (
+            <>
+              <input
+                type="checkbox"
+                className="all_select_check"
+                name=""
+                id="all_select"
+                onChange={(e) => {
+                  console.log("checkedall", e.target.checked);
+                  handleSelectAll(e);
+                  setchecked_all(e.target.checked);
+                }}
+              />
+              <label className="bulk_select_label" htmlFor="all_select">
+                Select All
+              </label>
+            </>
+          )}
+
           {data &&
             data
               .filter((item) =>
@@ -440,8 +616,38 @@ const StudentList = (props) => {
               .map(
                 (element, index) =>
                   element.Role === 0 && (
-                    <div className="studenteach" key={index}>
-                      <div className="image">
+                    <div
+                      className="studenteach"
+                      htmlFor="check"
+                      key={element._id}
+                    >
+                      {bulk_btn && (
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="check"
+                          onChange={(e) => {
+                            bulk_btn &&
+                              (bulk_array.includes(element._id)
+                                ? bulk_array.pop(element._id)
+                                : bulk_array.push(element._id));
+                            console.log(bulk_array);
+                            checked_all
+                              ? (e.target.checked = true)
+                              : (e.target.checked = bulk_array.includes(
+                                  element._id
+                                ));
+                          }}
+                          checked={
+                            checked_all
+                              ? true
+                              : bulk_array.includes(element._id)
+                          }
+                          className="bulk_select_check"
+                          readOnly
+                        />
+                      )}
+                      <div className="image" htmlFor="check">
                         <img
                           src={
                             element.profile

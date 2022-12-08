@@ -191,6 +191,8 @@ const Container = styled.div`
     object-fit: cover;
   }
   .filter_name_btn {
+    display: flex;
+    width: 100%;
     font-family: "Montserrat";
     font-style: normal;
     font-weight: 400;
@@ -776,6 +778,13 @@ const SearchArea = () => {
         myBtn.current.click();
       }
     });
+
+    // document.body.addEventListener("click", (e) => {
+    //   console.log(e.path[0].id);
+    //   if (e.path[0].id !== "filter_section") {
+    //     // setfilter_hish(0);
+    //   }
+    // });
   }, []);
 
   return (
@@ -790,16 +799,32 @@ const SearchArea = () => {
       >
         Clear Filters
       </div>
-      <div className="searchbyfilter_btn">
-        <div className="filter_icon_btn" onClick={() => setfilter_hish(1)}>
-          <img src={filter_icon} alt="" />
+      <div className="searchbyfilter_btn" >
+        <div
+          className="filter_icon_btn"
+          // id={filter_hish === 0 && "filter_section"}
+          onClick={() =>
+            filter_hish === 0 ? setfilter_hish(1) : setfilter_hish(0)
+          }
+        >
+          <img src={filter_icon} alt=""  />
         </div>
-        <div className="filter_name_btn" onClick={() => setfilter_hish(1)}>
+        <div
+          className="filter_name_btn"
+          
+          onClick={() =>
+            filter_hish === 0 ? setfilter_hish(1) : setfilter_hish(0)
+          }
+        >
           Search by filter
         </div>
         {filter_hish === 0 && (
-          <div className="down_icon_btn" onClick={() => setfilter_hish(1)}>
-            <img src={down_icon} alt="" />
+          <div
+            className="down_icon_btn"
+            
+            onClick={() => setfilter_hish(1)}
+          >
+            <img src={down_icon} alt=""  />
           </div>
         )}
         {filter_hish !== 0 && (
@@ -813,7 +838,7 @@ const SearchArea = () => {
           </div>
         )}
         {filter_hish === 1 && (
-          <div className="first_filter_section">
+          <div className="first_filter_section outside">
             <div className="skillbased" onClick={() => setfilter_hish(2)}>
               <div className="logo_skill">
                 <img src={logo_skill} alt="" />

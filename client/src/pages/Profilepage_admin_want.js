@@ -1427,21 +1427,22 @@ const Profilepage_admin_want = () => {
             <div className="right">
               {block === 1 && (
                 <div className="profile_container" id="profile">
-                  <PDFDownloadLink
-                    document={<GeneratePdf data={data} />}
-                    filename="FORM"
-                  >
-                    {({ loading }) =>
-                      loading ? (
-                        <button className="update_details">
-                          Loading Document...
-                        </button>
-                      ) : (
-                        <button className="update_details">Resume</button>
-                      )
-                    }
-                  </PDFDownloadLink>
-
+                  {role !== 1 && (
+                    <PDFDownloadLink
+                      document={<GeneratePdf data={data} />}
+                      filename="FORM"
+                    >
+                      {({ loading }) =>
+                        loading ? (
+                          <button className="update_details">
+                            Loading Document...
+                          </button>
+                        ) : (
+                          <button className="update_details">Resume</button>
+                        )
+                      }
+                    </PDFDownloadLink>
+                  )}
                   {/* <button onClick={() => generatePdf("sumesh")}>Print</button> */}
                   <div className="email_container style_profile_elements_bold">
                     <div className="width_profile_elements">Email</div>
@@ -1708,12 +1709,15 @@ const Profilepage_admin_want = () => {
                       .filter((element) => element.company_id === rootId)
                       .map((item) =>
                         item.response === 0 ? (
-                          <div className="pending_response">
+                          <div className="pending_response" key={item._id}>
                             Mail send successfully . please wait for his
                             response
                           </div>
                         ) : item.response === 1 ? (
-                          <div className="level_exam_more_detail">
+                          <div
+                            className="level_exam_more_detail"
+                            key={item._id}
+                          >
                             <div className="exam_level_lemd">
                               <div className="title_exam_level_lemd">
                                 Exam Level
@@ -1853,7 +1857,7 @@ const Profilepage_admin_want = () => {
                             )}
                           </div>
                         ) : (
-                          <div className="doyou">
+                          <div className="doyou" key={item._id}>
                             <div className="text_doyou">
                               Do you want to select this student?{" "}
                             </div>

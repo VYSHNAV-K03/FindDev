@@ -297,4 +297,30 @@ router.post("/sendmail_basic", Authenticate, async (req, res) => {
   }
 });
 
+router.post("/sendall_notification", Authenticate, async (req, res) => {
+  try {
+    const { bulk_msg, bulk_array_full } = req.body;
+    // console.log(bulk_array_full);
+    console.log(bulk_msg);
+
+    for (i in bulk_array_full) {
+      console.log(bulk_array_full[i]);
+      const user = await USER.findById({
+        _id: bulk_array_full[i],
+      });
+      user.notifications.push({
+        company_id: req.userID,
+        company_name: req.rootUser.name,
+        subject: bulk_msg,
+        role: req.rootUser.Role,
+        send_date: new Date().toLocaleString(),
+      });
+      await user.save();
+    }
+    res.status(200).send("hello");
+  } catch (error) {
+    res.status(400).send("bulkerror", bulk_array);
+  }
+});
+
 module.exports = router;
