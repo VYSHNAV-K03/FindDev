@@ -27,7 +27,6 @@ app.use((req, res, next) => {
     "GET, POST, PATCH, DELETE, OPTIONS"
   );
 
-  req.setHeader("cookie", req.headers?.cookie);
   next();
 });
 
