@@ -7,12 +7,20 @@ require("dotenv").config();
 const app = express();
 
 // origin: "https://onetouch-vectorux.herokuapp.com/",
-const corsOptions = {
-  // origin: "http://localhost:3000",
-  origin: "https://one-touch-gyy5.onrender.com/",
-  credentials: true,
-};
-app.use(cors(corsOptions));
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    // origin: "https://one-touch-gyy5.onrender.com/",
+    credentials: true,
+  })
+);
+
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   next();
+// });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
