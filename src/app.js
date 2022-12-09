@@ -11,6 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
     // origin: "https://one-touch-gyy5.onrender.com/",
     credentials: true,
   })
