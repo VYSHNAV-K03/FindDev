@@ -10,24 +10,22 @@ require("dotenv").config({
 //this is the middleware we use in about page
 const Authenticate = async (req, res, next) => {
   try {
-    // const token = req.cookies.jwt;
-    console.log(req.headers.cookie);
+    const token = req.cookies.jwt;
     // console.log(token);
     //decoded token
-    // const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
+    const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
     // console.log(verifyToken._id);
 
     const rootUser = await USER.findOne({
-      _id: "6364ccc5e435f8eefb7e5ea9",
-      // _id: verifyToken._id,
-      // "tokens.token": token,
+      _id: verifyToken._id,
+      "tokens.token": token,
     });
     // console.log(rootUser);
     if (!rootUser) {
       throw new Error("User Not found");
     }
 
-    // req.token = token;
+    req.token = token;
     req.rootUser = rootUser;
     req.userID = rootUser._id;
 
