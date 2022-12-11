@@ -75,7 +75,7 @@ router.post("/signin", async (req, res) => {
         } else {
           const token = await userExist.generateAuthToken();
           res.cookie("jwt", token, {
-            sameSite: "strict",
+            // sameSite: "strict",
             secure: true,
             expires: new Date(Date.now() + 300000),
             httpOnly: true,
