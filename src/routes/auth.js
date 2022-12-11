@@ -74,12 +74,7 @@ router.post("/signin", async (req, res) => {
           res.status(404).send("check password");
         } else {
           const token = await userExist.generateAuthToken();
-          res.cookie("jwt", token, {
-            // sameSite: "strict",
-            secure: true,
-            expires: new Date(Date.now() + 300000),
-            httpOnly: true,
-          });
+          res.cookie("jwt", token);
 
           res.status(200).send("user login successfully");
         }
@@ -93,6 +88,13 @@ router.post("/signin", async (req, res) => {
     console.log("error", e);
   }
 });
+
+// {
+//   // sameSite: "strict",
+//   secure: true,
+//   expires: new Date(Date.now() + 300000),
+//   httpOnly: true,
+// }
 
 router.get("/signout", Authenticate, (req, res) => {
   res.clearCookie("jwt", { path: "/" }); //path : cookie path
