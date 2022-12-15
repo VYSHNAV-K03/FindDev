@@ -8,6 +8,7 @@ const { upload } = require("../helpers/filehelper");
 const Authenticate = require("../middleware/authenticate");
 const wbm = require("wbm");
 const { emitWarning } = require("process");
+const jwt = require("jsonwebtoken");
 
 router.use(cookieParser());
 
@@ -60,6 +61,12 @@ router.post("/signup", upload.single("file"), async (req, res) => {
   }
 });
 
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.SECRET_KEY, {
+    expiresIn: "3d",
+  });
+};
+
 router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -73,10 +80,11 @@ router.post("/signin", async (req, res) => {
         if (!isMatch) {
           res.status(404).send("check password");
         } else {
+          // const token = await generateToken(userExist._id);
           const token = await userExist.generateAuthToken();
           res.cookie("jwt", token);
 
-          res.status(200).send("user login successfully");
+          res.status(201).json({ token: token });
         }
       } else {
         res.status(404).send("Invalid Credentials");

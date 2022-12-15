@@ -17,6 +17,8 @@ import { apiUrl } from "../data/api";
 import { CircularProgress } from "@mui/material";
 import styled from "styled-components";
 import { NavLink, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+import jwt from "jwt-decode";
 
 function Copyright(props) {
   return (
@@ -43,6 +45,9 @@ export default function SignIn() {
     email: "",
     password: "",
   });
+
+  const cookies = new Cookies();
+
   const navigate = useNavigate();
 
   const [loader_addbtn, setloader_addbtn] = React.useState(false);
@@ -60,6 +65,7 @@ export default function SignIn() {
   const Postdata = async (e) => {
     e.preventDefault(); //????
     const { email, password } = user;
+
     try {
       setloader_addbtn(true);
 
@@ -73,7 +79,14 @@ export default function SignIn() {
           withCredentials: true,
         }
       );
-      if (res.status !== 200) {
+
+      console.log("signin frontend", new Date(jwt(res.data.token).exp * 1000));
+      const expiredate = new Date(jwt(res.data.token).exp * 1000);
+      cookies.set("jwt_decod", res.data.token, {
+        expires: new Date(jwt(res.data.token).exp * 1000),
+      });
+
+      if (res.status !== 201) {
         throw new Error(res.error);
       }
       setloader_addbtn(false);

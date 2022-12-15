@@ -10,8 +10,8 @@ require("dotenv").config({
 //this is the middleware we use in about page
 const Authenticate = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
-    // console.log(token);
+    const token = req.cookies.jwt_decod;
+    console.log("token authenticate", token);
     //decoded token
     const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
     // console.log(verifyToken._id);
