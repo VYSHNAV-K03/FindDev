@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { local_storage_off } from "../actions";
 import { CircularProgress } from "@mui/material";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
+import Cookies from "universal-cookie";
 
 const Container = styled.div`
   position: relative;
@@ -397,6 +398,8 @@ const StudentList = (props) => {
 
   const navigate = useNavigate();
 
+  const cookies = new Cookies();
+
   const dispatch = useDispatch();
 
   const bulk_array = [];
@@ -428,9 +431,15 @@ const StudentList = (props) => {
 
   const callNavbar = async () => {
     try {
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       // const data = res.data;
 

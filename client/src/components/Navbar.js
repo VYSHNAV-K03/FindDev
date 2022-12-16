@@ -8,6 +8,7 @@ import nav_icon from "../assets/icons/nav_icon.png";
 import noti_nav from "../assets/icons/noti_nav.png";
 
 import { Buffer } from "buffer";
+import Cookies from "universal-cookie";
 
 const Container = styled.div`
   display: flex;
@@ -179,6 +180,8 @@ const Navbar = (props) => {
   const [login, setlogin] = useState(true);
   const [profileimg, setprofileimg] = useState();
 
+  const cookies = new Cookies();
+
   const [name, setname] = useState("profile_name");
 
   const [detail_more, setdetail_more] = useState(false);
@@ -189,9 +192,15 @@ const Navbar = (props) => {
 
   const callNavbar = async () => {
     try {
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = res.data;
 

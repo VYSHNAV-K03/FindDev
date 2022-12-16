@@ -15,6 +15,7 @@ import logo_placement from "../assets/icons/placement_logo_filter.png";
 import right_arrow from "../assets/icons/right_arrow.png";
 import { useDispatch } from "react-redux";
 import { local_storage_clear } from "../actions";
+import Cookies from "universal-cookie";
 
 const Container = styled.div`
   padding: 50px 0 50px 0;
@@ -582,6 +583,8 @@ const Container = styled.div`
 const SearchArea = () => {
   // hish
 
+  const cookies = new Cookies();
+
   const [filter_hish, setfilter_hish] = useState(0);
 
   //hish
@@ -751,9 +754,15 @@ const SearchArea = () => {
 
   const callNavbar = async () => {
     try {
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = res.data;
 
@@ -799,7 +808,7 @@ const SearchArea = () => {
       >
         Clear Filters
       </div>
-      <div className="searchbyfilter_btn" >
+      <div className="searchbyfilter_btn">
         <div
           className="filter_icon_btn"
           // id={filter_hish === 0 && "filter_section"}
@@ -807,11 +816,10 @@ const SearchArea = () => {
             filter_hish === 0 ? setfilter_hish(1) : setfilter_hish(0)
           }
         >
-          <img src={filter_icon} alt=""  />
+          <img src={filter_icon} alt="" />
         </div>
         <div
           className="filter_name_btn"
-          
           onClick={() =>
             filter_hish === 0 ? setfilter_hish(1) : setfilter_hish(0)
           }
@@ -819,12 +827,8 @@ const SearchArea = () => {
           Search by filter
         </div>
         {filter_hish === 0 && (
-          <div
-            className="down_icon_btn"
-            
-            onClick={() => setfilter_hish(1)}
-          >
-            <img src={down_icon} alt=""  />
+          <div className="down_icon_btn" onClick={() => setfilter_hish(1)}>
+            <img src={down_icon} alt="" />
           </div>
         )}
         {filter_hish !== 0 && (

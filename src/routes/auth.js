@@ -82,7 +82,7 @@ router.post("/signin", async (req, res) => {
         } else {
           // const token = await generateToken(userExist._id);
           const token = await userExist.generateAuthToken();
-          res.cookie("jwt", token);
+          // res.cookie("jwt", token);
 
           res.status(201).json({ token: token });
         }
@@ -110,7 +110,7 @@ router.get("/signout", Authenticate, (req, res) => {
 });
 
 //for getting data for frontend
-router.get("/getData", Authenticate, async (req, res) => {
+router.post("/getData", Authenticate, async (req, res) => {
   try {
     // wbm
     //   .start()
