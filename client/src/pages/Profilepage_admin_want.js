@@ -15,6 +15,7 @@ import PDFFile from "./generatePdf";
 import generatePdf from "./generatePdf";
 import GeneratePdf from "./generatePdf";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import Cookies from "universal-cookie";
 
 const Container = styled.div`
   position: relative;
@@ -1212,6 +1213,8 @@ const Profilepage_admin_want = () => {
   const id = location.state.id;
   const z = 0;
 
+  const cookies = new Cookies();
+
   const getDataProfile = async () => {
     try {
       setloader(true);
@@ -1237,9 +1240,15 @@ const Profilepage_admin_want = () => {
 
   const callNavbar = async () => {
     try {
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = res.data;
 
@@ -1263,7 +1272,7 @@ const Profilepage_admin_want = () => {
 
       const res = await axios.post(
         apiUrl + `/mailsend/send_train`,
-        { id, train },
+        { id, train, token: cookies.get("jwt_decod") },
         { withCredentials: true }
       );
       console.log(res.data);
@@ -1284,7 +1293,7 @@ const Profilepage_admin_want = () => {
       if (yes_no) {
         const res = await axios.post(
           apiUrl + `/mailsend/sendmail`,
-          { id },
+          { id, token: cookies.get("jwt_decod") },
           { withCredentials: true }
         );
         console.log(res.data);
@@ -1310,7 +1319,15 @@ const Profilepage_admin_want = () => {
 
         const res = await axios.post(
           apiUrl + `/mailsend/sendmail`,
-          { id, date_new, requirements, level_exam, exam_type, exam_mode },
+          {
+            id,
+            date_new,
+            requirements,
+            level_exam,
+            exam_type,
+            exam_mode,
+            token: cookies.get("jwt_decod"),
+          },
           { withCredentials: true }
         );
         setloader_addbtn(false);
@@ -1330,7 +1347,7 @@ const Profilepage_admin_want = () => {
       setmail_basic_loader(true);
       const res = await axios.post(
         apiUrl + `/mailsend/sendmail_basic`,
-        { id, subject },
+        { id, subject, token: cookies.get("jwt_decod") },
         { withCredentials: true }
       );
 

@@ -674,6 +674,7 @@ const SearchArea = () => {
           response,
           compa_name,
           train,
+          token: cookies.get("jwt_decod"),
         },
         {
           withCredentials: true,

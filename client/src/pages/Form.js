@@ -8,6 +8,7 @@ import { apiUrl } from "../data/api";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import Navbar from "../components/Navbar";
+import Cookies from "universal-cookie";
 
 const Coc = styled.div`
   display: flex;
@@ -1048,6 +1049,8 @@ const Devy = styled.div`
 const Container = styled.div``;
 
 const Form = () => {
+  const cookies = new Cookies();
+
   const [component, setcomponent] = useState(1);
 
   const [btnloader, setbtnloader] = useState(false);
@@ -1155,6 +1158,7 @@ const Form = () => {
         formData.append("plustwo_cs", plustwo_cs);
         formData.append("sslc_certificate", sslc_certificate);
         formData.append("plustwo_certificate", plustwo_certificate);
+        formData.append("token", cookies.get("jwt_decod"));
 
         const res = await axios.post(
           apiUrl + `/student/upload_stud`,
@@ -1174,9 +1178,15 @@ const Form = () => {
 
   const callNavbar = async () => {
     try {
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       if (res.status !== 200) {
         throw new Error(res.error);

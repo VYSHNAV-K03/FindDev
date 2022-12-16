@@ -6,6 +6,7 @@ import axios from "axios";
 import { apiUrl } from "../data/api";
 import loader_logo from "../assets/loader/onetouch_logo.png";
 import { CircularProgress } from "@mui/material";
+import Cookies from "universal-cookie";
 
 const MainContainer = styled.div`
   position: relative;
@@ -230,6 +231,8 @@ const Notification_each = () => {
 
   const [notification, setnotification] = useState([]);
 
+  const cookies = new Cookies();
+
   const navigate = useNavigate();
 
   const [loader, setloader] = useState(false);
@@ -247,9 +250,15 @@ const Notification_each = () => {
     try {
       setloader(true);
 
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       setcompany_email(res.data.email);
       setrole(res.data.Role);
@@ -280,6 +289,7 @@ const Notification_each = () => {
           response,
           not_id,
           company_id,
+          token: cookies.get("jwt_decod"),
         },
         { withCredentials: true }
       );
@@ -300,6 +310,7 @@ const Notification_each = () => {
         apiUrl + `/simple/change_notification_view`,
         {
           not_id,
+          token: cookies.get("jwt_decod"),
         },
         {
           withCredentials: true,

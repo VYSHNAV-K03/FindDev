@@ -501,6 +501,7 @@ const StudentList = (props) => {
         {
           bulk_array_full,
           bulk_msg,
+          token: cookies.get("jwt_decod"),
         },
         {
           withCredentials: true,

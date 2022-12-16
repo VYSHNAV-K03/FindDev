@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { apiUrl } from "../data/api";
 import loader_logo from "../assets/loader/onetouch_logo.png";
+import Cookies from "universal-cookie";
 
 const Container = styled.div`
   position: relative;
@@ -128,13 +129,21 @@ const Notification = () => {
 
   const navigate = useNavigate();
 
+  const cookies = new Cookies();
+
   const callNavbar = async () => {
     try {
       setloader(true);
 
-      const res = await axios.get(apiUrl + `/getData`, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        apiUrl + `/getData`,
+        {
+          token: cookies.get("jwt_decod"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = res.data;
 
