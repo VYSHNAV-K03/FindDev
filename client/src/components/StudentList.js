@@ -19,6 +19,7 @@ import { local_storage_off } from "../actions";
 import { CircularProgress } from "@mui/material";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import Cookies from "universal-cookie";
+import bulk_select_btn from "../assets/icons/bulk_select_btn.png";
 
 const Container = styled.div`
   position: relative;
@@ -149,16 +150,44 @@ width:${(props) => (props.loader ? "120px" : "150px")};
   align-items: center;
 
 }
+.bulkmsg_button{
+  width:50px ;
+  height:50px;
+  cursor: pointer;
+  margin:5px 10px;
+}
+.bulkmsg_button img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
 .bulk_btn{
   margin-right: 5px;
   min-width: 80px;
 }
 .bulk_msg_input{
-  margin-right: 5px;
+  padding:5px;
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  border-radius: 10px;
+  width:700px;
+  height:100px;
 }
 .send_btn{
-  width: 30px;
-  height: 30px;
+  background: #4A5A96;
+  padding:5px 15px;
+border-radius: 5px;
+cursor: pointer;
+
+font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+margin-left: 10px;
+
+color: #FFFFFF;
+
 
 }
 .send_btn img{
@@ -299,13 +328,25 @@ width:${(props) => (props.loader ? "120px" : "150px")};
     margin-right: 5px;
     min-width: 80px;
   }
+
+  .bulkmsg_button{
+  width:30px ;
+  height:30px;
+  cursor: pointer;
+  margin:5px;
+}
+
   .bulk_msg_input{
     margin-right: 5px;
-    min-width: 180px;
+    width: 300px;
+    height:60px;
   }
   .send_btn{
-    min-width: 30px;
-    min-height: 30px;
+    width: 60px;
+    height: 30px;
+    font-size: 18px;
+    padding:5px 5px;
+    text-align: center;
   }
 .send_btn img{
   width:100%;
@@ -496,6 +537,7 @@ const StudentList = (props) => {
 
   const SendBulkMessage = async (array) => {
     try {
+      setloader(true);
       const res = await axios.post(
         apiUrl + "/mailsend/sendall_notification",
         {
@@ -508,7 +550,10 @@ const StudentList = (props) => {
         }
       );
       console.log("send all notification", res);
+      setloader(false);
     } catch (error) {
+      setloader(false);
+
       console.log("bulksenderror", error);
     }
   };
@@ -558,18 +603,19 @@ const StudentList = (props) => {
           {role !== 1 && (
             <div className="bulk_select_items">
               <div
-                className="last_content bulk_btn"
+                className="bulkmsg_button"
                 onClick={() => setbulk_btn(!bulk_btn)}
               >
-                Bulk Select
+                <img src={bulk_select_btn} alt="" srcset="" />
               </div>
               {bulk_btn && (
                 <>
-                  <input
+                  <textarea
                     type="text"
                     className="bulk_msg_input"
                     name=""
                     id=""
+                    placeholder="type message here..."
                     value={bulk_msg}
                     onChange={(e) => setbulk_msg(e.target.value)}
                   />
@@ -577,7 +623,7 @@ const StudentList = (props) => {
                     className="send_btn"
                     onClick={() => SendBulkMessage(bulk_array)}
                   >
-                    <img src={send_icon} alt="" />
+                    send
                   </div>
                 </>
               )}
